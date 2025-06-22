@@ -115,6 +115,7 @@
 
         <!-- Room Details Column -->
         <div class="details-column">
+
             <h1 class="room-title">Deluxe Room</h1>
             <p class="room-description">Perfect for solo travelers or couples looking for comfort and elegance with a city view.</p>
             
@@ -200,10 +201,17 @@
             -->
             <div class="price-section mt-4">
                 <a href="{{ route('booking-deluxe') }}" style="text-decoration: none;">
+                    
                     <div class="price-amount">₱3,200 <span class="text-muted">/ night</span></div>
+                    <div class="button-group">
                     <button class="book-btn">Book Now</button>
                     <button class="cart-btn">Add To Cart</button>
+                    </div>
                 </a>
+            </div>
+
+            <div class="continue-shopping">
+            <a href="{{ route('room') }}" class="continue-btn"> Continue Browsing Rooms</a>
             </div>
         </div>
     </section>

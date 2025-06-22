@@ -625,57 +625,49 @@ background: rgba(38, 102, 167, 0.05);
 }
 
 .price-section {
-margin-top: 30px;
-background: rgba(38, 102, 167, 0.34);
-padding: 20px;
-border-radius: 8px;
-text-align: center;
-text-decoration: none;
+  margin-top: 30px;
+  background: rgba(38, 102, 167, 0.34);
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
 }
 
 .price-amount {
-font-size: 32px;
-font-weight: 700;
-color: var(--hotel-navy);
-text-decoration: none;
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--hotel-navy);
+  margin-bottom: 15px; /* Space between price and buttons */
+}
+
+.button-group {
+  display: flex;        /* Flexbox container */
+  gap: 10px;            /* Space between buttons */
+}
+
+.book-btn, .cart-btn {
+  flex: 1;              /* Equal width for both buttons */
+  padding: 14px;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  text-align: center;
 }
 
 .book-btn {
-display: block;
-width: 100%;
-padding: 14px;
-background: var(--hotel-navy);
-color: white;
-border: none;
-border-radius: 6px;
-font-size: 16px;
-font-weight: 600;
-margin-top: 15px;
-cursor: pointer;
-transition: all 0.3s;
-text-decoration: none;
-}
-
-.book-btn:hover {
-transform: translateY(-2px);
-background: var(--hotel-blue);
-text-decoration: none;
+  background: var(--hotel-navy);
 }
 
 .cart-btn {
-display: block;
-width: 100%;
-padding: 14px;
-background:rgb(84, 85, 88);
-color: white;
-border: none;
-border-radius: 6px;
-font-size: 16px;
-font-weight: 600;
-margin-top: 15px;
-cursor: pointer;
-transition: all 0.3s;
-text-decoration: none;
+  background: rgb(84, 85, 88);
+}
+
+.book-btn:hover {
+  transform: translateY(-2px);
+  background: var(--hotel-blue);
 }
 
 .cart-btn:hover {
@@ -768,3 +760,42 @@ body {
 }
 }
 
+.continue-shopping {
+    margin: 1.5rem 0;
+    text-align: center;
+}
+
+.continue-btn {
+    display: inline-block;
+    padding: 0.6rem 1.2rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #2a4365; /* Deep blue (adjust to your theme) */
+    text-decoration: none;
+    background-color: #f7fafc; /* Light gray background */
+    border: 1px solid #cbd5e0; /* Subtle border */
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.continue-btn:hover {
+    background-color: #ebf8ff; /* Light blue hover */
+    border-color: #90cdf4;
+    transform: translateY(-1px); /* Slight lift */
+}
+
+.continue-btn:active {
+    transform: translateY(0);
+}
+
+/* Arrow animation */
+.continue-btn:hover::before {
+    transform: translateX(-3px);
+}
+
+.continue-btn::before {
+    content: "←";
+    display: inline-block;
+    margin-right: 0.4rem;
+    transition: transform 0.2s ease;
+}
