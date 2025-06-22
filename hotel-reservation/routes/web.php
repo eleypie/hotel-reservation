@@ -43,6 +43,11 @@ Route::get('/about', function () {
     return view('about');
 })->name('about');
 
+// About Us
+Route::get('/history', function () {
+    return view('history');
+})->name('history');
+
 // Sign In
 Route::get('/signin', function () {
     return view('signin');

@@ -121,7 +121,7 @@
     @endif
 </div>
 
-    <div class="cart-container-sample">
+    <div class="cart-container-sample-layout">
         <div class="cart-header">
             <h1 class="cart-title">Your Reservation</h1>
             <p class="cart-subtitle">Review your selected accommodations</p>
