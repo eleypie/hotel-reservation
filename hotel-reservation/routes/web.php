@@ -1,0 +1,119 @@
+<?php
+
+use Illuminate\Support\Facades\Route;
+
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider within a group which
+| contains the "web" middleware group. Now create something great!
+|
+*/
+
+// Home
+Route::get('/', function () {
+    return view('home'); // or your home view
+})->name('home');
+
+// Rooms
+Route::get('/room', function () {
+    return view('room'); // update path if needed
+})->name('room');
+
+// Amenities
+Route::get('/amenities', function () {
+    return view('ameneties');
+})->name('ameneties');
+
+// My Cart
+Route::get('/cart', function () {
+    return view('cart');
+})->name('cart');
+
+// Contact Us
+Route::get('/contact', function () {
+    return view('contact');
+})->name('contact');
+
+// About Us
+Route::get('/about', function () {
+    return view('about');
+})->name('about');
+
+// Sign In
+Route::get('/signin', function () {
+    return view('signin');
+})->name('signin');
+
+// Create Account
+Route::get('/create-account', function () {
+    return view('create-account');
+})->name('create-account');
+
+                    //View Room Types 
+
+//Deluxe Room            
+Route::get('/view-room-deluxe', function () {
+    return view('view-room.deluxe');  // Note: dot notation for folder structure
+})->name('deluxe');
+
+//Superior Room
+Route::get('/view-room-superior', function () {
+    return view('view-room.superior');  
+})->name('superior');
+
+//Superior Room
+Route::get('/view-room-premier', function () {
+    return view('view-room.premier');  
+})->name('premier');
+
+//Family Room
+Route::get('/view-room-family', function () {
+    return view('view-room.family');
+})->name('family');
+
+//Executive Room
+Route::get('/view-room-executive', function () {
+    return view('view-room.executive');
+})->name('executive');
+
+//Honeymoon Room
+Route::get('/view-room-honeymoon', function () {
+    return view('view-room.honeymoon');
+})->name('honeymoon');
+
+
+                    //Booking Form per Room Type
+                    
+// Deluxe Room Booking
+Route::get('/booking-form-deluxe', function () {
+    return view('booking-form.book-deluxe');
+})->name('booking-deluxe');
+
+// Executive Room Booking
+Route::get('/booking-form-executive', function () {
+    return view('booking-form.book-executive');
+})->name('booking-executive');
+
+// Family Room Booking
+Route::get('/booking-form-family', function () {
+    return view('booking-form.book-family');
+})->name('booking-family');
+
+// Honeymoon Room Booking
+Route::get('/booking-form-honeymoon', function () {
+    return view('booking-form.book-honeymoon');
+})->name('booking-honeymoon');
+
+// Premier Room Booking
+Route::get('/booking-form-premier', function () {
+    return view('booking-form.book-premier');
+})->name('booking-premier');
+
+// Superior Room Booking
+Route::get('/booking-form-superior', function () {
+    return view('booking-form.book-superior');
+})->name('booking-superior');

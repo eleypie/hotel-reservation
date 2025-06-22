@@ -1,0 +1,104 @@
+
+:root {
+    --hotel-navy: #1a365d;
+    --hotel-blue:rgb(30, 82, 145);
+    --hotel-gray: #1a4c5d;
+    --hotel-light: #f8f9fa;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
+}
+
+.logo-font {
+    color: var(--hotel-navy);
+}
+
+.login-container {
+    background-color: var(--hotel-light);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.login-image {
+    background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), 
+                url('https://res.cloudinary.com/lastminute/image/upload/q_auto/v1746440041/Genel_Goruntu_5_x1tmz0.jpg');
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+
+.login-image::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to right, rgba(0,0,0,0.7) 0%, transparent 100%);
+}
+
+.login-image-content {
+    position: relative;
+    z-index: 2;
+    color: var(--hotel-light);
+    padding: 2rem;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.btn-primary {
+    background-color: var(--hotel-navy);
+    border-color: var(--hotel-navy);
+    padding: 12px 24px;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+
+.btn-primary:hover {
+    background-color: var(--hotel-blue);
+    border-color:  var(--hotel-blue);
+}
+
+.form-control {
+    padding: 12px 15px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+}
+
+.form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.25rem rgba(139, 107, 74, 0.25);
+}
+
+.link-accent {
+    color: var(--accent-color);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.link-accent:hover {
+    color: #d9b265;
+    text-decoration: underline;
+}
+
+.welcome-text {
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    font-weight: 300;
+}
+
+.welcome-text strong {
+    font-weight: 600;
+    color: var(--hotel-gray);
+}
+
+@media (max-width: 768px) {
+    .login-image {
+        height: 300px;
+    }
+}

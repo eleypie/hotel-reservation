@@ -1,0 +1,142 @@
+:root {
+    --hotel-navy: #1a365d;
+    --hotel-blue: rgb(30, 82, 145);
+    --hotel-gray: #1a4c5d;
+    --hotel-light: #f8f9fa;
+    --hotel-gold: #d4af37;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    color: #333;
+    background-color: #f5f5f5;
+}
+
+.logo-font {
+    color: var(--hotel-navy);
+    font-family: 'Playfair Display', serif;
+}
+
+.register-container {
+    background-color: white;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.register-image {
+    background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), 
+                url('https://res.cloudinary.com/lastminute/image/upload/q_auto/v1746440041/Genel_Goruntu_5_x1tmz0.jpg');
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+
+.register-image::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to right, rgba(0,0,0,0.7) 0%, transparent 100%);
+}
+
+.register-image-content {
+    position: relative;
+    z-index: 2;
+    color: white;
+    padding: 2rem;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.btn-primary {
+    background-color: var(--hotel-navy);
+    border-color: var(--hotel-navy);
+    padding: 12px 24px;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+
+.btn-primary:hover {
+    background-color: var(--hotel-blue);
+    border-color: var(--hotel-blue);
+}
+
+.form-control {
+    padding: 12px 15px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+}
+
+.form-control:focus {
+    border-color: var(--hotel-navy);
+    box-shadow: 0 0 0 0.25rem rgba(26, 54, 93, 0.25);
+}
+
+.link-accent {
+    color: var(--hotel-navy);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.link-accent:hover {
+    color: var(--hotel-blue);
+    text-decoration: underline;
+}
+
+.welcome-text {
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    font-weight: 300;
+}
+
+.welcome-text strong {
+    font-weight: 600;
+    color: var(--hotel-gray);
+}
+
+.password-toggle {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: var(--hotel-gray);
+}
+
+.input-group-text {
+    background-color: white;
+    border-right: none;
+}
+
+.form-floating>.form-control:not(:placeholder-shown)~label {
+    color: var(--hotel-gray);
+}
+
+.form-floating>.form-control:focus~label {
+    color: var(--hotel-navy);
+}
+
+.progress {
+    height: 6px;
+    margin-top: 5px;
+}
+
+.progress-bar {
+    background-color: var(--hotel-navy);
+}
+
+.password-strength {
+    font-size: 0.8rem;
+    margin-top: 5px;
+}
+
+@media (max-width: 768px) {
+    .register-image {
+        height: 300px;
+    }
+}
