@@ -380,3 +380,318 @@ nav ul li {
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
 }
 
+.cart-container-sample-layout {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    background: var(--hotel-light);
+    backdrop-filter: blur(10px);
+    margin-top: 20px;
+    margin-bottom: 20px;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(26, 54, 93, 0.3);
+}
+
+.cart-header {
+    text-align: center;
+    margin-bottom: 50px;
+    padding-bottom: 30px;
+    border-bottom: 2px solid var(--hotel-blue);
+}
+
+.cart-title {
+    font-size: 3rem;
+    color: var(--primary-color);
+    margin-bottom: 10px;
+    font-weight: 300;
+    letter-spacing: 2px;
+}
+
+.cart-subtitle {
+    font-size: 1.2rem;
+    color: #666;
+    font-weight: 300;
+}
+
+.cart-content {
+    display: grid;
+    grid-template-columns: 1fr 400px;
+    gap: 40px;
+    margin-bottom: 40px;
+}
+
+.cart-items {
+    background: #fff;
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.cart-item {
+    display: grid;
+    grid-template-columns: 120px 1fr auto;
+    gap: 20px;
+    padding: 25px 0;
+    border-bottom: 1px solid #eee;
+    align-items: center;
+}
+
+.cart-item:last-child {
+    border-bottom: none;
+}
+
+.item-image {
+    width: 120px;
+    height: 80px;
+    border-radius: 10px;
+    object-fit: cover;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.item-details h3 {
+    font-size: 1.4rem;
+    color: var(--primary-color);
+    margin-bottom: 8px;
+    font-weight: 400;
+}
+
+.item-features {
+    color: #666;
+    font-size: 0.95rem;
+    margin-bottom: 10px;
+}
+
+.item-dates {
+    color: var(--hotel-blue);
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.item-actions {
+    text-align: right;
+}
+
+.item-price {
+    font-size: 1.6rem;
+    color: var(--primary-color);
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+.quantity-controls {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.qty-btn {
+    width: 35px;
+    height: 35px;
+    border: 2px solid var(--hotel-blue);
+    background: transparent;
+    color: var(--hotel-blue);
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.2rem;
+    font-weight: bold;
+    transition: var(--transition);
+}
+
+.qty-btn:hover {
+    background: var(--hotel-blue);
+    color: white;
+}
+
+.qty-input {
+    width: 50px;
+    text-align: center;
+    border: 1px solid #ddd;
+    padding: 8px;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+.remove-btn {
+    background: transparent;
+    border: none;
+    color: #e74c3c;
+    cursor: pointer;
+    font-size: 0.9rem;
+    text-decoration: underline;
+    transition: color 0.3s ease;
+}
+
+.remove-btn:hover {
+    color: #c0392b;
+}
+
+.cart-summary {
+    background: linear-gradient(135deg, var(--hotel-navy) 0%, var(--hotel-gray) 100%);
+    color: white;
+    padding: 30px;
+    border-radius: 15px;
+    height: fit-content;
+    position: sticky;
+    top: 20px;
+}
+
+.summary-title {
+    font-size: 1.8rem;
+    margin-bottom: 25px;
+    color: var(--hotel-light);
+    text-align: center;
+    font-weight: 300;
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    padding: 10px 0;
+}
+
+.summary-row.total {
+    border-top: 2px solid var(--hotel-blue);
+    padding-top: 20px;
+    margin-top: 20px;
+    font-size: 1.3rem;
+    font-weight: 600;
+}
+
+.promo-section {
+    margin: 25px 0;
+    padding: 20px 0;
+    border-top: 1px solid rgba(30, 82, 145, 0.3);
+    border-bottom: 1px solid rgba(30, 82, 145, 0.3);
+}
+
+.promo-input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid rgba(30, 82, 145, 0.3);
+    border-radius: 8px;
+    background: rgba(248, 249, 250, 0.1);
+    color: white;
+    margin-bottom: 10px;
+}
+
+.promo-input::placeholder {
+    color: #ccc;
+}
+
+.promo-btn {
+    width: 100%;
+    padding: 12px;
+    background: var(--hotel-blue);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: var(--transition);
+}
+
+.promo-btn:hover {
+    background: var(--hotel-navy);
+}
+
+.checkout-btn {
+    width: 100%;
+    padding: 18px;
+    background: linear-gradient(135deg, var(--hotel-blue) 0%, var(--hotel-navy) 100%);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    margin-top: 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.checkout-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(30, 82, 145, 0.4);
+}
+
+.continue-shopping {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.continue-btn {
+    color: var(--hotel-blue);
+    text-decoration: none;
+    font-size: 1.1rem;
+    padding: 12px 30px;
+    border: 2px solid var(--hotel-blue);
+    border-radius: 8px;
+    transition: var(--transition);
+    display: inline-block;
+}
+
+.continue-btn:hover {
+    background: var(--hotel-blue);
+    color: white;
+}
+
+.empty-cart {
+    text-align: center;
+    padding: 60px 20px;
+    color: #666;
+}
+
+.empty-cart-icon {
+    font-size: 4rem;
+    margin-bottom: 20px;
+    opacity: 0.3;
+}
+
+@media (max-width: 768px) {
+    .cart-content {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+
+    .cart-item {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 15px;
+    }
+
+    .item-image {
+        justify-self: center;
+    }
+
+    .item-actions {
+        text-align: center;
+    }
+
+    .cart-title {
+        font-size: 2rem;
+    }
+
+    .quantity-controls {
+        justify-content: center;
+    }
+}
+
+.security-badges {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+    opacity: 0.7;
+}
+
+.security-badge {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 8px 12px;
+    border-radius: 5px;
+    font-size: 0.8rem;
+    text-align: center;
+}
