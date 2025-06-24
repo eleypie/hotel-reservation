@@ -19,15 +19,24 @@
             <div>
                 <h1 class="welcome-text">Create your <strong>Account</strong></h1>
                 <p class="text-muted mb-4">Join our luxury community to access exclusive benefits</p>
-                
+                 @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <strong>Whoops! Something went wrong.</strong>
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
                 <form method="POST" action="{{ route('register') }}">
                     @csrf
 
                     <div class="row">
                         <div class="col-md-6 mb-3">
-                            <label for="name" class="form-label">First Name</label>
-                            <input type="text" class="form-control" name="name" value="{{ old('name') }}" required autofocus>
-                            @error('name') <small class="text-danger">{{ $message }}</small> @enderror
+                            <label for="first_name" class="form-label">First Name</label>
+                            <input type="text" class="form-control" name="first_name" value="{{ old('first_name') }}" required autofocus>
+                            @error('first_name') <small class="text-danger">{{ $message }}</small> @enderror
                         </div>
                         <div class="col-md-6 mb-3">
                             <label for="last_name" class="form-label">Last Name</label>

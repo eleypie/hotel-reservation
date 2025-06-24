@@ -33,11 +33,13 @@
                         <div class="mb-4">
                             <label for="email" class="form-label">Email Address</label>
                             <input type="email" class="form-control" id="email" placeholder="your@email.com">
+                            @error('email') <small class="text-danger">{{ $message }}</small> @enderror
                         </div>
                         
                         <div class="mb-4">
                             <label for="password" class="form-label">Password</label>
                             <input type="password" class="form-control" id="password" placeholder="••••••••">
+                            @error('password') <small class="text-danger">{{ $message }}</small> @enderror
                             <div class="d-flex justify-content-end mt-2">
                                 <a href="#forgot-password" class="text-muted small">Forgot Password?</a>
                             </div>
