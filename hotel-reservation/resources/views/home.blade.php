@@ -1,55 +1,10 @@
 @extends('layouts.app') 
 
 @section('content')
-        <!-- Header Section -->
-    <header>
-        <div class="header-container">
-            <a href="#" class="logo">TheHaven</a>
-            
-            <input type="checkbox" id="side-menu" class="side-menu">
-            <label class="hamb" for="side-menu">
-                <span class="hamb-line"></span>
-            </label>
-            
-            <nav>
-                <ul>
-                    <li><a href="{{ route('home') }}">Home</a></li>
-                    <li><a href="{{ route('room') }}">Rooms</a></li>
-                    <li><a href="{{ route('ameneties') }}">Amenities</a></li>
-                    <li><a href="{{ route('cart') }}">My Cart</a></li>
-                    <li><a href="{{ route('contact') }}">Contact Us</a></li>
-                    <li><a href="{{ route('about') }}">About Us</a></li>
-                    @auth
-                    <li class="nav-profile dropdown">
-                    <button class="btn d-flex align-items-center dropdown-toggle" type="button" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                        <div class="profile-pic-container me-2">
-                            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Profile" class="profile-pic" style="width: 40px; height: 40px; border-radius: 50%;">
-                        </div>
-                        <span class="profile-name">{{ Auth::user()->first_name }}</span>
-                    </button>
 
-                    <ul class="dropdown-menu dropdown-menu-end mt-2 shadow" aria-labelledby="profileDropdown">
-                        <li><a class="dropdown-item" href="#"><i class="fas fa-history me-2"></i>My Stays</a></li>
-                        <li>
-                            <form action="{{ route('logout') }}" method="POST" class="d-inline">
-                                @csrf
-                                <button class="dropdown-item" type="submit"><i class="fas fa-sign-out-alt me-2"></i>Sign Out</button>
-                            </form>
-                        </li>
-                    </ul>
-                    </li>
-                    @endauth
-                    
-                    @guest
-                    <div class="auth-buttons">
-                        <a href="{{ route('login') }}" class="sign-in">Sign In</a>
-                        <a href="{{ route('register') }}" class="sign-up">Create Account</a>
-                    </div>
-                    @endguest
-                </ul>
-            </nav>  
-        </div>
-    </header>
+@section('title', 'Home')
+
+@include('nav')
 
     <!-- Hero Section -->
 <section class="hero-section">

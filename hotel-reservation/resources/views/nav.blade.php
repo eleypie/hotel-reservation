@@ -1,0 +1,47 @@
+<header>
+        <div class="header-container">
+            <a href="#" class="logo">TheHaven</a>
+            
+            <input type="checkbox" id="side-menu" class="side-menu">
+            <label class="hamb" for="side-menu">
+                <span class="hamb-line"></span>
+            </label>
+            
+            <nav>
+                <ul>
+                    <li><a href="{{ route('home') }}">Home</a></li>
+                    <li><a href="{{ route('room') }}">Rooms</a></li>
+                    <li><a href="{{ route('ameneties') }}">Amenities</a></li>
+                    <li><a href="{{ route('cart') }}">My Cart</a></li>
+                    <li><a href="{{ route('contact') }}">Contact Us</a></li>
+                    <li><a href="{{ route('about') }}">About Us</a></li>
+                    @auth
+                    <li class="nav-profile">
+                        <div class="profile-dropdown">
+                            <button class="profile-toggle" id="profileDropdown">
+                                <div class="profile-pic-container">
+                                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Profile" class="profile-pic">
+                                </div>
+                                <span class="profile-name">{{ Auth::user()->first_name }}</span>
+                                <i class="fas fa-chevron-down dropdown-arrow"></i>
+                            </button>
+                            <div class="dropdown-menu" id="dropdownMenu">
+                                <a href="#"><i class="fas fa-history"></i> My Stays</a>
+                                <form action="{{ route('logout') }}" method="POST" class="d-inline">
+                                @csrf
+                                <button class="dropdown-item" type="submit"><i class="fas fa-sign-out-alt me-2"></i>Sign Out</button>
+                            </form>
+                            </div>
+                        </div>
+                    </li>
+                    @endauth
+                    @guest
+                     <div class="auth-buttons">
+                        <a href="{{ route('login') }}" class="sign-in">Sign In</a>
+                        <a href="{{ route('register') }}" class="sign-up">Create Account</a>
+                    </div>
+                    @endguest
+                </ul>
+            </nav>  
+        </div>
+    </header>

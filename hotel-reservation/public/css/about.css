@@ -555,4 +555,9 @@ nav ul li {
         border-top-right-radius: 0.5rem;
         border-bottom-right-radius: 0.5rem;
     }
+} 
+
+.content-image {
+    overflow: hidden; /* Ensures rounded corners work properly */
 }
+

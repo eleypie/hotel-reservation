@@ -1,72 +1,12 @@
 
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <title>Room | TheHaven</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Experience luxury in our Deluxe Room with premium amenities and stunning views">
+@extends('layouts.app') 
 
-    <!-- Fonts & Icons -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+@section('content')
 
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+@section('title', 'Room')
 
-    <!-- Date Range Picker CSS -->
-    <link rel="stylesheet" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css">
-
-    <!-- Custom CSS -->
-    <link href="{{ asset('css/room.css') }}" rel="stylesheet" />
-</head>
-
-<body>
-
-    <!-- Header Section -->
-    <header>
-        <div class="header-container">
-            <a href="#" class="logo">TheHaven</a>
-            
-            <input type="checkbox" id="side-menu" class="side-menu">
-            <label class="hamb" for="side-menu">
-                <span class="hamb-line"></span>
-            </label>
-            
-            <nav>
-                <ul>
-                    <li><a href="{{ route('home') }}">Home</a></li>
-                    <li><a href="{{ route('room') }}">Rooms</a></li>
-                    <li><a href="{{ route('ameneties') }}">Amenities</a></li>
-                    <li><a href="{{ route('cart') }}">My Cart</a></li>
-                    <li><a href="{{ route('contact') }}">Contact Us</a></li>
-                    <li><a href="{{ route('about') }}">About Us</a></li>
-                    
-                    <li class="nav-profile">
-                        <div class="profile-dropdown">
-                            <button class="profile-toggle">
-                                <div class="profile-pic-container">
-                                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Profile" class="profile-pic">
-                                </div>
-                                <span class="profile-name">John D.</span>
-                                <i class="fas fa-chevron-down dropdown-arrow"></i>
-                            </button>
-                            <div class="dropdown-menu">
-                                <a href="#"><i class="fas fa-history"></i> My Stays</a>
-                                <a href="#"><i class="fas fa-sign-out-alt"></i> Sign Out</a>
-                            </div>
-                        </div>
-                    </li>
-
-                    <div class="auth-buttons">
-                        <a href="{{ route('signin') }}" class="sign-in">Sign In</a>
-                        <a href="{{ route('create-account') }}" class="sign-up">Create Account</a>
-                    </div>
-                </ul>
-            </nav>  
-        </div>
-    </header>
+@include('nav')
 
     <!-- Featured Rooms Section -->
     <section class="section" id="rooms">
@@ -647,5 +587,4 @@
         </div>
         <!-- Copyright -->
     </footer>
-</body>
-</html>
+@endsection
