@@ -167,7 +167,7 @@ nav ul li a:hover::after {
 
 .profile-dropdown {
     position: relative;
-    z-index: 1000;
+    z-index: 1070 !important;
 }
 
 .profile-toggle {
