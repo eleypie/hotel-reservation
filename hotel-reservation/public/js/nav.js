@@ -1,6 +1,7 @@
+const profileDropdown = document.getElementById('profileDropdown');
+const dropdownMenu = document.getElementById('dropdownMenu');
+
 document.addEventListener('DOMContentLoaded', function() {
-            const profileDropdown = document.getElementById('profileDropdown');
-            const dropdownMenu = document.getElementById('dropdownMenu');
             
             if (profileDropdown && dropdownMenu) {
                 profileDropdown.addEventListener('click', function(e) {

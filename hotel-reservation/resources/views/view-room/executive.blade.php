@@ -1,69 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <title>Executive Suite | TheHaven</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Experience luxury in our Executive Suite with premium amenities and stunning views">
+@extends('layouts.app') 
 
-    <!-- Fonts & Icons -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+@section('content')
 
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+@section('title', 'Executive')
 
-    <!-- Date Range Picker CSS -->
-    <link rel="stylesheet" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css">
-
-    <!-- Custom CSS -->
-    <link href="{{ asset('css/view-room.css') }}" rel="stylesheet" />
-</head>
-
-<body>
-    <!-- Header Section -->
-    <header>
-        <div class="header-container">
-            <a href="#" class="logo">TheHaven</a>
-            
-            <input type="checkbox" id="side-menu" class="side-menu">
-            <label class="hamb" for="side-menu">
-                <span class="hamb-line"></span>
-            </label>
-            
-            <nav>
-                <ul>
-                    <li><a href="{{ route('home') }}">Home</a></li>
-                    <li><a href="{{ route('room') }}">Rooms</a></li>
-                    <li><a href="{{ route('ameneties') }}">Amenities</a></li>
-                    <li><a href="{{ route('cart') }}">My Cart</a></li>
-                    <li><a href="{{ route('contact') }}">Contact Us</a></li>
-                    <li><a href="{{ route('about') }}">About Us</a></li>
-                    
-                    <li class="nav-profile">
-                        <div class="profile-dropdown">
-                            <button class="profile-toggle">
-                                <div class="profile-pic-container">
-                                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Profile" class="profile-pic">
-                                </div>
-                                <span class="profile-name">John D.</span>
-                                <i class="fas fa-chevron-down dropdown-arrow"></i>
-                            </button>
-                            <div class="dropdown-menu">
-                                <a href="#"><i class="fas fa-history"></i> My Stays</a>
-                                <a href="#"><i class="fas fa-sign-out-alt"></i> Sign Out</a>
-                            </div>
-                        </div>
-                    </li>
-
-                    <div class="auth-buttons">
-                        <a href="{{ route('signin') }}" class="sign-in">Sign In</a>
-                        <a href="{{ route('create-account') }}" class="sign-up">Create Account</a>
-                    </div>
-                </ul>
-            </nav>  
-        </div>
-    </header>
+@include('nav')
 
     <!-- Main Content Section -->
     <section class="full-page-section">
@@ -152,7 +93,7 @@
 
             <h4 class="mt-4">Availability</h3>
             <!-- Date Range Picker -->
-            <input type="text" id="dateRange" class="form-control mt-2" placeholder="Select date range" readonly>
+            <input type="text" class="form-control daterange-input" id="daterange" placeholder="Select dates" name="daterange">
 
             <!--
             <h3 class="mt-4">Reviews</h3>
@@ -215,33 +156,4 @@
         </div>
     </section>
 
-    <!-- Bootstrap JS Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    
-    <!-- Custom Scripts -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const mainCarousel = document.getElementById('mainCarousel');
-            const thumbnails = document.querySelectorAll('#carousel-thumbs img');
-            
-            mainCarousel.addEventListener('slid.bs.carousel', function (e) {
-                const activeIndex = e.to;
-                
-                thumbnails.forEach((thumb, index) => {
-                    thumb.classList.remove('selected');
-                    if (parseInt(thumb.getAttribute('data-bs-slide-to')) === activeIndex) {
-                        thumb.classList.add('selected');
-                    }
-                });
-            });
-            
-            thumbnails.forEach(thumb => {
-                thumb.addEventListener('click', function() {
-                    thumbnails.forEach(t => t.classList.remove('selected'));
-                    this.classList.add('selected');
-                });
-            });
-        });
-    </script>
-</body>
-</html>
+@endsection

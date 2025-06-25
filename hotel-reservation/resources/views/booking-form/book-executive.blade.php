@@ -14,7 +14,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Date Range Picker CSS -->
-    <link rel="stylesheet" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 
     <!-- Custom CSS -->
         <link href="{{ asset('css/booking-form.css') }}" rel="stylesheet" />
@@ -22,48 +22,7 @@
 
 <body>
     <!-- Header Section -->
-    <header>
-        <div class="header-container">
-            <a href="#" class="logo">TheHaven</a>
-            
-            <input type="checkbox" id="side-menu" class="side-menu">
-            <label class="hamb" for="side-menu">
-                <span class="hamb-line"></span>
-            </label>
-            
-            <nav>
-                <ul>
-                    <li><a href="{{ route('home') }}">Home</a></li>
-                    <li><a href="{{ route('room') }}">Rooms</a></li>
-                    <li><a href="{{ route('ameneties') }}">Amenities</a></li>
-                    <li><a href="{{ route('cart') }}">My Cart</a></li>
-                    <li><a href="{{ route('contact') }}">Contact Us</a></li>
-                    <li><a href="{{ route('about') }}">About Us</a></li>
-                    
-                    <li class="nav-profile">
-                        <div class="profile-dropdown">
-                            <button class="profile-toggle">
-                                <div class="profile-pic-container">
-                                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Profile" class="profile-pic">
-                                </div>
-                                <span class="profile-name">John D.</span>
-                                <i class="fas fa-chevron-down dropdown-arrow"></i>
-                            </button>
-                            <div class="dropdown-menu">
-                                <a href="#"><i class="fas fa-history"></i> My Stays</a>
-                                <a href="#"><i class="fas fa-sign-out-alt"></i> Sign Out</a>
-                            </div>
-                        </div>
-                    </li>
-
-                    <div class="auth-buttons">
-                        <a href="{{ route('signin') }}" class="sign-in">Sign In</a>
-                        <a href="{{ route('create-account') }}" class="sign-up">Create Account</a>
-                    </div>
-                </ul>
-            </nav>  
-        </div>
-    </header>
+    @include('nav')
         <div class="container-fluid">
         <div class="booking-container d-lg-flex">
             <!-- Image Container (Visible on all screens) -->
@@ -326,53 +285,9 @@
     </div>
     </div>
 
-    <script type="text/javascript">
-    // Initialize date range picker
-    $(document).ready(function() {
-        $('.daterange-input').daterangepicker({
-            opens: 'left',
-            autoUpdateInput: false,
-            locale: {
-                cancelLabel: 'Clear',
-                format: 'MM/DD/YYYY'
-            }
-        });
-        
-        $('.daterange-input').on('apply.daterangepicker', function(ev, picker) {
-            $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
-        });
-        
-        $('.daterange-input').on('cancel.daterangepicker', function(ev, picker) {
-            $(this).val('');
-        });
-    });
-
-    // show receipt when form is submitted 
-        document.querySelector('form').addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        // Update modal with current data
-        const now = new Date();
-        document.getElementById('modal-date-time').textContent = now.toLocaleString('en-US', {
-            month: 'long', 
-            day: 'numeric', 
-            year: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit'
-        });
-        
-        // Generate random transaction ID
-        const transId = 'GC' + Math.floor(Math.random() * 10000000000);
-        document.getElementById('modal-transaction-id').textContent = transId;
-        
-        // Show modal
-        var receiptModal = new bootstrap.Modal(document.getElementById('paymentReceiptModal'));
-        receiptModal.show();
-        
-        // You can add AJAX form submission here if needed
-    });
-</script>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <script src="{{ asset('js/script.js') }}"></script>
 </body>
 </html>

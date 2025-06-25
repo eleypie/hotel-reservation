@@ -2,7 +2,7 @@
 
 @section('content')
 
-@section('title', 'Home')
+@section('title', 'About')
 
 @include('nav')
 
