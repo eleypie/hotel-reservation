@@ -1,36 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <!-- Fonts & Icons -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Date Range Picker CSS -->
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
-
-    <!-- Custom CSS -->
-    <link href="{{ asset('css/contact.css') }}" rel="stylesheet" />
-
-
-    <!-- Custom CSS -->
-    <link href="{{ asset('css/booking-form.css') }}" rel="stylesheet" />
-</head>
-<body>
-            <form action="" method="post" id="bookingForm">
-                <div class="price-section mt-4">
-                    <button type="button" class="book-btn" id="submitBooking">
-                    <i class="fas fa-lock me-2"></i> Complete Secure Booking
-                    </button>
-                </div>
-            </form>
-
-            <div class="modal fade" id="paymentReceiptModal" tabindex="-1" aria-hidden="true">
+<div class="modal fade" id="paymentReceiptModal" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                 <div class="modal-header  text-white">
@@ -51,6 +19,11 @@
                     </div>
                     </div>
                     
+                    <div 
+                        id="bookingData" 
+                        data-room-type="{{ $room_type }}" >
+                    </div>
+
                     <div class="row">
                     <div class="col-md-6">
                         <div class="receipt-details">
@@ -69,7 +42,7 @@
                         </div>
                         <div class="d-flex justify-content-between py-2">
                             <span class="text-muted">Amount Paid:</span>
-                            <span class="fw-bold">₱716.55</span>
+                            <span class="fw-bold" id="total_price">₱716.55</span>
                         </div>
                         </div>
                     </div>
@@ -127,80 +100,31 @@
                     </div>
                 </div>
                 
+                <!-- model after clicking the two button -->
                 <div class="modal-footer justify-content-center">
-                    <button class="btn btn-primary me-2">
+                <a href="#" id="downloadReceiptBtn" class="btn btn-primary me-2">
                     <i class="fas fa-download me-1"></i> Download Receipt
-                    </button>
-                    <button class="btn btn-success">
+                </a>
+                <a href="#" id="emailReceiptBtn" class="btn btn-success">
                     <i class="fas fa-envelope me-1"></i> Email Receipt
-                    </button>
+                </a>
                 </div>
                 </div>
-            </div>
-            </div>
+            </div> 
 
-
-    
-    <!-- Add jQuery (required for some Bootstrap components) -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
-    <script>
-document.addEventListener('DOMContentLoaded', function() {
-  // Get references to elements
-  const bookingForm = document.getElementById('bookingForm');
-  const submitBtn = document.getElementById('submitBooking');
-  const receiptModal = new bootstrap.Modal(document.getElementById('paymentReceiptModal'));
-  
-  // When booking button is clicked
-  submitBtn.addEventListener('click', function() {
-    // Validate form first
-    if (bookingForm.checkValidity()) {
-      // Get form data
-      const formData = new FormData(bookingForm);
-      
-      // Update modal with dynamic data
-      const now = new Date();
-      document.getElementById('modal-date-time').textContent = 
-        now.toLocaleString('en-US', {
-          month: 'long', 
-          day: 'numeric', 
-          year: 'numeric',
-          hour: '2-digit',
-          minute: '2-digit'
-        });
-      
-      // Generate random transaction ID
-      document.getElementById('modal-transaction-id').textContent = 
-        'GC' + Math.floor(Math.random() * 10000000000);
-      
-      // You can update other modal fields with form data here
-      // For example:
-      // document.querySelector('.booking-details span:nth-child(2)').textContent = 
-      //   formData.get('room_type');
-      
-      // Show the receipt modal
-      receiptModal.show();
-      
-      // Optional: Submit form via AJAX
-      /*
-      fetch('/process-booking', {
-        method: 'POST',
-        body: formData
-      })
-      .then(response => response.json())
-      .then(data => {
-        // Handle server response if needed
-      });
-      */
-    } else {
-      // Show validation errors
-      bookingForm.reportValidity();
-    }
-  });
-});
-</script>
-</body>
-</html>
+                <div class="modal fade" id="receiptActionModal" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-sm modal-dialog-centered">
+                    <div class="modal-content text-center">
+                    <div class="modal-header bg-success text-white justify-content-center">
+                        <h5 class="modal-title" id="receiptActionModalLabel">Success</h5>
+                    </div>
+                    <div class="modal-body">
+                        <p id="receiptActionMessage">Action completed successfully.</p>
+                        <a href="{{ route('home') }}" class="btn btn-primary mt-2" id="modalReturnHome">
+                        Return to Home
+                        </a>
+                    </div>
+                    </div>
+                </div>
+                </div>
+            </div> 

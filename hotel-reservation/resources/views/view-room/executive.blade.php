@@ -140,9 +140,9 @@
             </div>
             -->
             <div class="price-section mt-4">
-                <a href="{{ route('booking-deluxe') }}" style="text-decoration: none;">
+                <a href="{{ route('booking-executive') }}" style="text-decoration: none;">
                     
-                    <div class="price-amount">₱3,200 <span class="text-muted">/ night</span></div>
+                    <div class="price-amount">₱7,500 <span class="text-muted">/ night</span></div>
                     <div class="button-group">
                     <button class="book-btn">Book Now</button>
                     <button class="cart-btn">Add To Cart</button>

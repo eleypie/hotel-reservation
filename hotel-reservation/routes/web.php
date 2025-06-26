@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\BookingController;
 use App\Http\Controllers\Auth\Request; 
 
 /*
@@ -145,4 +146,7 @@ Route::post('/login', [LoginController::class, 'login']);
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::get('/test', function () {
     return view('test'); // or your home view
-})->name('test');
+})->name('test'); 
+
+Route::post('/book', [BookingController::class, 'store'])->name('booking.store')->middleware('auth');
+
