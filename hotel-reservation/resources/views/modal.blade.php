@@ -102,15 +102,17 @@
                 
                 <!-- model after clicking the two button -->
                 <div class="modal-footer justify-content-center">
-                <a href="#" id="downloadReceiptBtn" class="btn btn-primary me-2">
+                <a href="#" id="downloadReceiptBtn" class="btn btn-primary me-2" target="_blank">
                     <i class="fas fa-download me-1"></i> Download Receipt
                 </a>
+
                 <a href="#" id="emailReceiptBtn" class="btn btn-success">
                     <i class="fas fa-envelope me-1"></i> Email Receipt
                 </a>
                 </div>
                 </div>
             </div> 
+
 
                 <div class="modal fade" id="receiptActionModal" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog modal-sm modal-dialog-centered">

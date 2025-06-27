@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\BookingController;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\WelcomeMail;
 use App\Http\Controllers\Auth\Request; 
 
 /*
@@ -148,5 +150,12 @@ Route::get('/test', function () {
     return view('test'); // or your home view
 })->name('test'); 
 
-Route::post('/book', [BookingController::class, 'store'])->name('booking.store')->middleware('auth');
+Route::post('/book', [BookingController::class, 'store'])->name('booking.store')->middleware('auth'); 
 
+Route::get('/test-mail', function () {
+    return 'Booking Receipt mail sent!';
+});
+
+Route::get('/booking/{booking}/receipt', [BookingController::class, 'downloadReceipt'])
+    ->name('booking.receipt.download')
+    ->middleware('auth'); // optional if only logged-in users can download

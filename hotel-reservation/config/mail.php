@@ -34,6 +34,9 @@ return [
     */
 
     'mailers' => [
+        'mailtrap-sdk' => [
+                'transport' => 'mailtrap-sdk'
+            ],
         'smtp' => [
             'transport' => 'smtp',
             'host' => env('MAIL_HOST', 'smtp.mailgun.org'),

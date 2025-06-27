@@ -80,53 +80,61 @@ document.addEventListener('DOMContentLoaded', function () {
     if (data) {
         const modal = new bootstrap.Modal(document.getElementById('paymentReceiptModal'));
 
-        // Populate modal with session data
+        // Populate modal
         document.getElementById('modal-transaction-id').textContent = data.gcash_ref || 'N/A';
         document.getElementById('modal-date-time').textContent = new Date().toLocaleString();
         document.querySelector('.booking-details .fw-bold').textContent = data.booking_id;
         document.querySelector('.booking-details div:nth-child(2) + div span:nth-child(2)').textContent = data.room_type;
         document.getElementById('total_price').textContent = `₱${parseFloat(data.price).toLocaleString(undefined, { minimumFractionDigits: 2 })}`;
 
-        // Check-in and out
-        const allSpans = document.querySelectorAll('.booking-details .d-flex span');
-        allSpans.forEach(span => {
+        // Check-in/out
+        document.querySelectorAll('.booking-details .d-flex span').forEach(span => {
             if (span.textContent.includes('Check-in')) span.nextElementSibling.textContent = data.check_in;
             if (span.textContent.includes('Check-out')) span.nextElementSibling.textContent = data.check_out;
         });
 
-        // GCash details
+        // GCash
         document.querySelector('.verification-section .row span:nth-child(2)').textContent = data.gcash_ref;
         document.querySelector('.verification-section .row span:last-child').textContent = '+63 ' + data.gcash_phone;
 
+        // ✅ Set download button link
+        const downloadBtn = document.getElementById('downloadReceiptBtn');
+        if (downloadBtn && data.booking_id) {
+            downloadBtn.href = `/booking/${data.booking_id}/receipt`; // your route
+            downloadBtn.setAttribute('target', '_blank');
+        }
+
         modal.show();
+    }
+
+    // Email/download feedback modal
+    const receiptModal = new bootstrap.Modal(document.getElementById('receiptActionModal'));
+    const actionMsg = document.getElementById('receiptActionMessage');
+    const emailBtn = document.getElementById('emailReceiptBtn');
+    const downloadBtn = document.getElementById('downloadReceiptBtn');
+    const emailInput = document.querySelector('input[name="email"]');
+
+    const userEmail = data?.email || emailInput?.value || 'your@email.com';
+
+    if (downloadBtn) {
+        downloadBtn.addEventListener('click', function (e) {
+            // Let the file download happen (no preventDefault), but show confirmation
+            setTimeout(() => {
+                actionMsg.textContent = 'Receipt downloaded successfully.';
+                receiptModal.show();
+            }, 500); // Slight delay to allow download
+        });
+    }
+
+    if (emailBtn) {
+        emailBtn.addEventListener('click', function (e) {
+            e.preventDefault(); // Prevent redirect for now
+            actionMsg.textContent = 'Email sent to ' + userEmail;
+            receiptModal.show();
+        });
     }
 });
 
-
-
-//action succesful modal
- const receiptModal = new bootstrap.Modal(document.getElementById('receiptActionModal'));
- const actionMsg = document.getElementById('receiptActionMessage');
-
- const emailBtn = document.getElementById('emailReceiptBtn');
- const downloadBtn = document.getElementById('downloadReceiptBtn');
-
-    // Replace this with actual user email if available
- const userEmail = document.querySelector('input[name="email"]')?.value || 'your@email.com';
-document.addEventListener('DOMContentLoaded', function () {
-
-    downloadBtn.addEventListener('click', function (e) {
-        e.preventDefault();
-        actionMsg.textContent = 'Receipt downloaded successfully.';
-        receiptModal.show();
-    });
-
-    emailBtn.addEventListener('click', function (e) {
-        e.preventDefault();
-        actionMsg.textContent = 'Email sent to ' + userEmail;
-        receiptModal.show();
-    });
-}); 
 
 // price summary 
 document.addEventListener("DOMContentLoaded", function () {

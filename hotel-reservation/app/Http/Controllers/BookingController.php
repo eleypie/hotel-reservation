@@ -6,9 +6,25 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Booking;
 use Carbon\Carbon;
+use App\Mail\BookingReceiptMail;
+use Illuminate\Support\Facades\Mail;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Auth;
 
 class BookingController extends Controller
 { 
+    public function downloadReceipt($bookingId)
+{
+    $booking = \App\Models\Booking::where('booking_id', $bookingId)->first();
+
+    if (!$booking) {
+        abort(404, 'Booking not found');
+    }
+
+    $pdf = Pdf::loadView('emails.receipt_pdf', compact('booking'));
+    return $pdf->download('BookingReceipt_' . $booking->booking_id . '.pdf');
+    dd($booking); 
+}
     
    public function store(Request $request)
 {
@@ -27,7 +43,7 @@ class BookingController extends Controller
         'note'             => 'nullable|string'
     ]);
 
-    // Parse the date range (mm/dd/yyyy - mm/dd/yyyy)
+    
     [$start, $end] = explode(' - ', $request->daterange);
     try {
         $checkIn  = Carbon::createFromFormat('m/d/Y', trim($start));
@@ -38,7 +54,6 @@ class BookingController extends Controller
 
     $nights = $checkOut->diffInDays($checkIn);
 
-    // Match lowercase room types
     $rates = [
         'deluxe'     => 3200,
         'family'     => 6800,
@@ -49,14 +64,12 @@ class BookingController extends Controller
     ];
     $ratePerNight = $rates[strtolower($request->room_type)] ?? 5500;
 
-    // Compute pricing
     $subtotal = $ratePerNight * $nights;
     $tax      = $subtotal * 0.15;
     $service  = 1200;
     $total    = $subtotal + $tax + $service;
 
-    // Save booking
-    Booking::create([
+    $booking  = Booking::create([
         'booking_id'       => $bookingId,
         'room_type'        => $request->room_type,
         'check_in_date'    => $checkIn,
@@ -69,8 +82,12 @@ class BookingController extends Controller
         'price'            => $total
     ]);
 
+    Mail::to($request->email)->send(new BookingReceiptMail($booking));
+    session()->flash('booking_id', $booking->id);
+
     return redirect()->back()->with([
     'show_modal' => true,
+    'booking_id' => $booking->id,
     'modal_data' => [
         'booking_id'   => $bookingId, 
         'room_type'    => $request->room_type,
