@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\Auth\Request; 
+use App\Http\Controllers\AdminController;
 
 /*
 |--------------------------------------------------------------------------
@@ -130,11 +131,13 @@ Route::get('/booking-form-superior', function () {
 Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home')->middleware('auth');
 Route::post('/register', [RegisterController::class, 'register'])->name('register'); 
+
 Route::get('/', function () {
     return auth()->check()
         ? redirect('/home')   // if logged in, go to home
         : view('home');    // if guest, show landing page
 });
+
 Route::get('/logout', function () {
     Auth::logout();
     return redirect('/');
@@ -150,3 +153,6 @@ Route::get('/test', function () {
 
 Route::post('/book', [BookingController::class, 'store'])->name('booking.store')->middleware('auth');
 
+Route::get('/admin', [AdminController::class, 'index'])
+    ->middleware(['auth', 'role:Admin|Super Admin|Receptionist'])
+    ->name('admin.page');
