@@ -7,9 +7,12 @@ use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Spatie\Permission\Traits\HasRoles;
 
 class LoginController extends Controller
 {
+    use HasRoles;
+
     protected $redirectTo = '/home';
 
     public function __construct()
@@ -35,7 +38,14 @@ class LoginController extends Controller
 
         if (Auth::attempt($credentials, $request->filled('remember'))) {
             // Login successful
-            return redirect()->intended($this->redirectTo);
+            $user = Auth::user();
+
+            if($user->hasRole('user')) {
+                return redirect()->intended($this->redirectTo);
+            } else {
+                return redirect()->route('admin.page');
+            }
+
         }
 
         // Login failed

@@ -7,6 +7,7 @@ use App\Http\Controllers\BookingController;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\WelcomeMail;
 use App\Http\Controllers\Auth\Request; 
+use App\Http\Controllers\AdminController;
 
 /*
 |--------------------------------------------------------------------------
@@ -132,11 +133,13 @@ Route::get('/booking-form-superior', function () {
 Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home')->middleware('auth');
 Route::post('/register', [RegisterController::class, 'register'])->name('register'); 
+
 Route::get('/', function () {
     return auth()->check()
         ? redirect('/home')   // if logged in, go to home
         : view('home');    // if guest, show landing page
 });
+
 Route::get('/logout', function () {
     Auth::logout();
     return redirect('/');
@@ -159,3 +162,6 @@ Route::get('/test-mail', function () {
 Route::get('/booking/{booking}/receipt', [BookingController::class, 'downloadReceipt'])
     ->name('booking.receipt.download')
     ->middleware('auth'); // optional if only logged-in users can download
+Route::get('/admin', [AdminController::class, 'index'])
+    ->middleware(['auth', 'role:Admin|Super Admin|Receptionist'])
+    ->name('admin.page');
