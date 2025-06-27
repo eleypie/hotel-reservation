@@ -41,6 +41,17 @@ document.addEventListener('DOMContentLoaded', function() {
     
     if (checkInInput) checkInInput.value = today;
     if (checkOutInput) checkOutInput.value = today;
+
+    const modal = document.getElementById('delete-confirm');
+    modal.addEventListener('show.bs.modal', function (event) {
+        const button = event.relatedTarget;
+
+        const title = button.getAttribute('data-title');
+        const body = button.getAttribute('data-body');
+
+        modal.querySelector('.modal-title').textContent = title;
+        modal.querySelector('#modalBody').textContent = body;
+    });
 });
 
 // // Logout functionality
@@ -205,3 +216,17 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('checkInDate').value = today;
     document.getElementById('checkOutDate').value = today;
 });
+
+// function modalContent() {
+//     const deleteModal = document.getElementById('delete-confirm');
+//     deleteModal.addEventListener('show.bs.modal', function (event) {
+//         const button = event.relatedTarget;
+//         const title = button.getAttribute('data-title');
+//         const body = button.getAttribute('data-body');
+//         const modalTitle = deleteModal.querySelector('.modal-title');
+//         const modalBody = deleteModal.querySelector('#modalBody');
+
+//         if (title) modalTitle.textContent = title;
+//         if (body) modalBody.textContent = body;
+//     });
+// }

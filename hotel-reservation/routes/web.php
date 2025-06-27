@@ -9,6 +9,7 @@ use App\Mail\WelcomeMail;
 use App\Http\Controllers\Auth\Request; 
 use App\Http\Controllers\AdminController;
 
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -162,6 +163,41 @@ Route::get('/test-mail', function () {
 Route::get('/booking/{booking}/receipt', [BookingController::class, 'downloadReceipt'])
     ->name('booking.receipt.download')
     ->middleware('auth'); // optional if only logged-in users can download
+
+// admin page routes
+// return views
 Route::get('/admin', [AdminController::class, 'index'])
     ->middleware(['auth', 'role:Admin|Super Admin|Receptionist'])
-    ->name('admin.page');
+    ->name('admin-dashboard');
+
+Route::get('/admin/rooms', function() {
+    return view('admin.rooms');
+})
+->middleware(['auth', 'role:Admin|Super Admin'])
+->name('admin-rooms');
+
+Route::get('/admin/bookings', function() {
+    return view('admin.bookings');
+})
+->middleware(['auth', 'role:Admin|Super Admin|Receptionist'])
+->name('admin-bookings');
+
+Route::get('/admin/check-in', function() {
+    return view('admin.check-in');
+})
+->middleware(['auth', 'role:Admin|Super Admin|Receptionist'])
+->name('admin-checkin');
+
+Route::get('/admin/employees', [AdminController::class, 'displayEmployees'])
+    ->middleware(['auth', 'role:Super Admin'])
+    ->name('admin-employees');
+
+// store data
+Route::post('/admin/employees', [AdminController::class, 'storeEmployee'])
+    ->middleware(['auth', 'role:Super Admin'])
+    ->name('employees-store');
+
+// delete record
+Route::delete('/admin/users/{id}', [AdminController::class, 'destroy'])
+    ->middleware(['auth', 'role:Super Admin'])
+    ->name('delete');

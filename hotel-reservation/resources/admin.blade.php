@@ -5,28 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href={{ asset('css\admin.css') }}>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    {{-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"> --}}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
     <title>Hotel Admin Dashboard</title>
 </head>
 <body>
-    {{-- <div id="loginContainer" class="login-container">
-        <form class="login-form" id="loginForm">
-            <div class="login-header">
-                <h1>Hotel Admin</h1>
-                <p>Please sign in to continue</p>
-            </div>
-            <div class="form-group">
-                <label for="username">Username</label>
-                <input type="text" id="username" name="username" required>
-            </div>
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password" required>
-            </div>
-            <button type="submit" class="login-btn">Sign In</button>
-        </form>
-    </div> --}}
-
     <div id="adminContainer" class="admin-container" style="display: block;">
         <header class="admin-header">
             <button onclick="showSideNav()" id="openNavbar" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -62,6 +45,9 @@
                             </li>
                             <li class="nav-item">
                                 <a href="#" class="nav-link" onclick="showSection('staff', this)">Staff Assignments</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link" onclick="showSection('employee-management', this)">Employee Management</a>
                             </li>
                             <li class="nav-item">
                                 <a href="#" class="nav-link" onclick="showSection('reports', this)">Reports</a>
@@ -279,6 +265,48 @@
                 </div>
             </div>
 
+            <div id="employee-management" class="section hidden">
+                <div class="page-header">
+                    <h1>Employee Management</h1>
+                    <p>Manage employee accounts and permissions.</p>
+                </div>
+                <div class="content-section">
+                    <div class="section-header">
+                        <h2 class="section-title">Employees</h2>
+                        <button class="btn btn-primary" onclick="openModal('addEmployeeModal')">
+                            New Employee
+                        </button>
+                    </div>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Role</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($users as $user)
+                            <tr>
+                                <td>{{$user->first_name}} {{$user->last_name}}</td>
+                                <td>{{$user->getRoleNames()->first();}}</td>
+                                <td>
+                                    <button class="btn btn-warning" onclick="editRoom(this)">Edit</button>
+                                    <form method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete-confirm" 
+                                            data-title="Delete Employee" data-body="Are you sure you want to delete this employee?">
+                                            Delete
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                            @endforeach
+                    </table>
+                </div>
+            </div>
+
             <div id="reports" class="section hidden">
                 <div class="page-header">
                     <h1>Reports & Analytics</h1>
@@ -443,7 +471,76 @@
             </form>
         </div>
     </div>
+
+    <div id="addEmployeeModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Add New Employee</h2>
+                <button class="close-btn" onclick="closeModal('addEmployeeModal')">&times;</button>
+            </div>
+            <form method="POST" action="{{ route('employees.store') }}">
+                @csrf
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="first-name">First Name</label>
+                        <input type="text" name="first_name" required>
+                        <label for="last-name">Last Name</label>
+                        <input type="text" name="last_name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" name="email"  required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" name="password"  required>
+                    </div>
+                    <div class="form-group">
+                        <label>Role</label>
+                        <select name="role" required>
+                            @foreach ($roles as $role)
+                                <option value="{{ $role->name }}">{{ ucfirst($role->name) }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Add Employee</button>
+            </form>
+            @if (session('success'))
+                <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
+                    {{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            @endif
+
+            @if (session('error'))
+                <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
+                    {{ session('error') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            @endif
+        </div>
+    </div>
+
+    <div class="modal fade" id="delete-confirm" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="modalLabel"></h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p id="modalBody"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger">Delete</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src={{ asset('js\admin.js') }}></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    </body>
+</body>
 </html>  

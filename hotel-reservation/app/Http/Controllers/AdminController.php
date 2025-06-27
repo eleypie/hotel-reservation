@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use App\Models\User;
+use App\Models\Booking;
+use Spatie\Permission\Models\Role;
 
 class AdminController extends Controller
 {
@@ -18,7 +22,20 @@ class AdminController extends Controller
      */
     public function index()
     {
-        return view('admin');
+        $roles = Role::all();
+        $users = User::whereDoesntHave('roles', function ($query) {
+                    $query->where('name', 'User');
+                })->get();
+        return view('admin.dashboard', compact('roles', 'users'));
+    }
+
+    public function displayEmployees()
+    {
+        $roles = Role::all();
+        $users = User::whereDoesntHave('roles', function ($query) {
+                    $query->where('name', 'User');
+                })->get();
+        return view('admin.employees', compact('roles', 'users'));
     }
 
     /**
@@ -37,7 +54,28 @@ class AdminController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function storeEmployee(Request $request) {
+        $request->validate([
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|string|min:6',
+            'role' => 'required|exists:roles,name',
+        ]);
+
+        $user = User::create([
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+        ]);
+
+        $user->assignRole($request->role);
+        
+        return redirect()->back()->with('success', 'Employee added successfully!');
+    }
+    
+     public function store(Request $request)
     {
         //
     }
@@ -84,6 +122,7 @@ class AdminController extends Controller
      */
     public function destroy($id)
     {
-        //
+        User::destroy($id);
+        return redirect()->back()->with('success', 'Record deleted successfully!');
     }
 }

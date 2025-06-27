@@ -43,7 +43,7 @@ class LoginController extends Controller
             if($user->hasRole('user')) {
                 return redirect()->intended($this->redirectTo);
             } else {
-                return redirect()->route('admin.page');
+                return redirect()->route('admin-dashboard');
             }
 
         }

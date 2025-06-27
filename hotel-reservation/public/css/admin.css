@@ -514,6 +514,22 @@ body {
     display: none !important;
 }
 
+#delete-confirm {
+    padding-top: 10rem;
+}
+
+.actions-col {
+    width: 25%;
+}
+
+.actions-btns {
+    display: flex;
+    direction: row;
+    align-content: center;
+    justify-content: center;
+    gap: 5px;
+}
+
 @media (max-width: 768px) {
     .sidebar {
         transform: translateX(-100%);
