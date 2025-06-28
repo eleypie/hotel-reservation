@@ -173,13 +173,13 @@ Route::get('/admin', [AdminController::class, 'index'])
 Route::get('/admin/rooms', function() {
     return view('admin.rooms');
 })
-->middleware(['auth', 'role:Admin|Super Admin'])
+->middleware('permission:view-room')
 ->name('admin-rooms');
 
 Route::get('/admin/bookings', function() {
     return view('admin.bookings');
 })
-->middleware(['auth', 'role:Admin|Super Admin|Receptionist'])
+->middleware('permission:create-booking')
 ->name('admin-bookings');
 
 Route::get('/admin/check-in', function() {
@@ -189,12 +189,12 @@ Route::get('/admin/check-in', function() {
 ->name('admin-checkin');
 
 Route::get('/admin/employees', [AdminController::class, 'displayEmployees'])
-    ->middleware(['auth', 'role:Super Admin'])
+    ->middleware('permission:view-user')
     ->name('admin-employees');
 
 // store data
 Route::post('/admin/employees', [AdminController::class, 'storeEmployee'])
-    ->middleware(['auth', 'role:Super Admin'])
+    ->middleware('permission:create-user')
     ->name('employees-store');
 
 // delete record

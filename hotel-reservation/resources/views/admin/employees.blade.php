@@ -11,9 +11,11 @@
     <div class="content-section">
         <div class="section-header">
             <h2 class="section-title">Employees</h2>
-            <button class="btn btn-primary" onclick="openModal('addEmployeeModal')">
-                New Employee
-            </button>
+            @can('create-user')
+                <button class="btn btn-primary" onclick="openModal('addEmployeeModal')">
+                    New Employee
+                </button>
+            @endcan
         </div>
         <table class="data-table">
             <thead>
@@ -29,11 +31,15 @@
                     <td>{{$user->first_name}} {{$user->last_name}}</td>
                     <td>{{$user->getRoleNames()->first();}}</td>
                     <td class="actions-btns">
-                        <button class="btn btn-warning" onclick="editRoom(this)">Edit</button>
-                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete-confirm" 
-                                data-title="Delete Employee" data-body="Are you sure you want to delete this employee?">
-                                Delete
-                        </button>
+                        @can('edit-user')
+                            <button class="btn btn-warning">Edit</button>
+                        @endcan
+                        @can('delete-user')
+                            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete-confirm" 
+                                    data-title="Delete Employee" data-body="Are you sure you want to delete this employee?">
+                                    Delete
+                            </button>
+                        @endcan
                     </td>
                 </tr>
                 @endforeach

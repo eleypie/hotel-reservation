@@ -14,17 +14,31 @@ class RoleSeeder extends Seeder
      */
     public function run()
     {
-        Role::create(['name' => 'Super Admin']);
+        $superAdmin = Role::create(['name' => 'Super Admin']);
         $admin = Role::create(['name' => 'Admin']);
         $receptionist = Role::create(['name' => 'Receptionist']);
         $user = Role::create(['name' => 'User']);
 
-        $admin->givePermissionTo([
+        $superAdmin->givePermissionTo([
+             'create-role',
+            'edit-role',
+            'delete-role',
+            'view-user',
             'create-user',
             'edit-user',
             'delete-user',
             'create-booking',
             'delete-booking',
+            'view-room',
+            'add-room',
+            'edit-room'
+        ]);
+
+        $admin->givePermissionTo([
+            'view-user',
+            'create-booking',
+            'delete-booking',
+            'view-room',
             'add-room',
             'edit-room'
         ]);
@@ -32,6 +46,7 @@ class RoleSeeder extends Seeder
         $receptionist->givePermissionTo([
             'create-booking',
             'delete-booking',
+            'view-room',
             'add-room',
             'edit-room'
         ]);

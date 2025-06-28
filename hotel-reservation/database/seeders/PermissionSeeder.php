@@ -19,11 +19,13 @@ class PermissionSeeder extends Seeder
             'create-role',
             'edit-role',
             'delete-role',
+            'view-user',
             'create-user',
             'edit-user',
             'delete-user',
             'create-booking',
             'delete-booking',
+            'view-room',
             'add-room',
             'edit-room'
         ];

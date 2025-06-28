@@ -15,9 +15,9 @@
             <button onclick="showSideNav()" id="openNavbar" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <i class="bi bi-list"></i>
             </button> 
-            <button class="logout-btn" onclick="logout()">
+            <button class="logout-btn" action="{{ route('logout')}}">
                 <i class="bi bi-box-arrow-right"></i> 
-                    <span class="logout-text">Logout</span>
+                    <a style="color:white; text-decoration: none;" href="{{ route('logout')}}">Logout</a>
             </button>
         </header>
         <aside class="sidebar" id="sideNav">
@@ -32,19 +32,21 @@
                         </div>                
                         <ul class="nav-menu">
                             <li class="nav-item"><a class="nav-link" href="{{ route('admin-dashboard') }}">Dashboard</a></li>
-                            
-                            @if(in_array(Auth::user()->role, ['Super Admin', 'Admin']))
+
+                            @can('view-room')
                                 <li class="nav-item"><a class="nav-link" href="{{ route('admin-rooms') }}">Room Management</a></li>
-                            @endif
-
+                            @endcan
+                            
+                            @can('create-booking')
                             <li class="nav-item"><a class="nav-link" href="{{ route('admin-bookings') }}">Booking Management</a></li>
+                            @endcan
 
-                            @if(in_array(Auth::user()->role, ['Super Admin']))
+                            @can('view-user')
                                 <li class="nav-item"><a class="nav-link" href="{{ route('admin-employees') }}">Employees</a></li>
-                            @endif
+                            @endcan
 
                             <li class="nav-item"><a class="nav-link" href="#">Reports</a></li>
-                            <li class="nav-item"><a class="nav-link text-danger" href="#">Logout</a></li>
+                            <li class="nav-item"><a class="nav-link text-danger" href="{{ route('logout')}}">Logout</a></li>
                         </ul>
                     </div>
                 </div>
