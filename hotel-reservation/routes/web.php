@@ -201,3 +201,6 @@ Route::post('/admin/employees', [AdminController::class, 'storeEmployee'])
 Route::delete('/admin/users/{id}', [AdminController::class, 'destroy'])
     ->middleware(['auth', 'role:Super Admin'])
     ->name('delete');
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
