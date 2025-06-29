@@ -41,80 +41,85 @@ class BookingController extends Controller
     
     public function store(Request $request)
     {
-
         $latest = Booking::orderBy('booking_id', 'desc')->first();
         $nextId = $latest ? $latest->id + 1 : 1;
         $bookingId = 'BOOK-' . str_pad($nextId, 5, '0', STR_PAD_LEFT); 
 
         $request->validate([
-            'room_id'            => 'required|exists:rooms,room_id',
-            'daterange'          => 'required|string',
-            'email_confirmation' => 'required|email',
-            'guest_count'        => 'required|string',
-            'gcash_phone'        => 'required|string|max:11',
-            'gcash_reference'    => 'required|string|max:255',
-            'note'               => 'nullable|string'
+            'room_type'         => 'required|exists:room_types,room_type',
+            'check_in_date'     => 'required|date',
+            'check_out_date'    => 'required|date|after:check_in_date',
+            'email_confirmation'=> 'required|email',
+            'guest_count'       => 'required|string',
+            // 'gcash_phone'       => 'required|string|max:11',
+            // 'gcash_reference'   => 'required|string|max:255',
+            'note'              => 'nullable|string',
         ]);
 
-        
-        [$start, $end] = explode(' - ', $request->daterange);
-        try {
-            $checkIn  = Carbon::createFromFormat('m/d/Y', trim($start));
-            $checkOut = Carbon::createFromFormat('m/d/Y', trim($end));
-        } catch (\Exception $e) {
-            return back()->withErrors(['daterange' => 'Invalid date format'])->withInput();
+        $checkIn = Carbon::parse($request->check_in_date);
+        $checkOut = Carbon::parse($request->check_out_date);
+
+        // Get the first available room that matches the type and is not booked during the selected range
+        $availableRoom = Room::with('roomType')
+            ->where('room_type', $request->room_type)
+            ->whereDoesntHave('bookings', function ($query) use ($checkIn, $checkOut) {
+                $query->where('check_in_date', '<', $checkOut)
+                    ->where('check_out_date', '>', $checkIn);
+            })->first();
+
+        if (!$availableRoom) {
+            return back()->withErrors(['room_type' => 'No available room for the selected dates.'])->withInput();
         }
 
+        $ratePerNight = $availableRoom->roomType->price;
         $nights = $checkOut->diffInDays($checkIn);
-
-        $room = Room::with('roomType')->findOrFail($request->room_id);
-        $ratePerNight = $room->roomType->price;
-
         $subtotal = $ratePerNight * $nights;
-        $tax      = $subtotal * 0.15;
-        $service  = 1200;
-        $total    = $subtotal + $tax + $service;
+        $tax = $subtotal * 0.15;
+        $service = 1200;
+        $total = $subtotal + $tax + $service;
 
-        $userId = null;
-        if (Auth::check() && Auth::user()->role === 'User') {
-            $userId = Auth::id();
-        }
-
-        $booking  = Booking::create([
-            'booking_id'       => $bookingId,
-            'user_id'          => $userId,
-            'room_id'          => $request->room_id,
-            'check_in_date'    => $checkIn,
-            'check_out_date'   => $checkOut,
-            'email_confirm'    => $request->email,
-            'guest_count'      => $request->guest_count,
-            'gcash_phone'      => $request->gcash_phone,
-            'gcash_reference'  => $request->gcash_reference,
-            'note'             => $request->note,
-            'total_price'            => $total
+        $userId = Auth::check() && Auth::user()->role === 'User' ? Auth::id() : null;
+        if (!Auth::check()) {
+        return redirect()->route('login')->with('error', 'You must be logged in to book.');
+}
+        logger('User ID is: ' . $userId);
+        $booking = Booking::create([
+            'booking_id'        => $bookingId,
+            'user_id'           => $userId,
+            'room_id'           => $availableRoom->room_id,
+            'check_in_date'     => $checkIn,
+            'check_out_date'    => $checkOut,
+            'email_confirmation'=> $request->email_confirmation,
+            'guest_count'       => $request->guest_count,
+            // 'gcash_phone'       => $request->gcash_phone,
+            // 'gcash_reference'   => $request->gcash_reference,
+            'note'              => $request->note,
+            'total_price'       => $total,
+            'status'           => 'pending' // ✅ Add this line!
         ]);
 
-        Mail::to($request->email)->send(new BookingReceiptMail($booking));
+        Mail::to($request->email_confirmation)->send(new BookingReceiptMail($booking));
         session()->flash('booking_id', $booking->id);
 
         return redirect()->back()->with([
             'show_modal' => true,
             'booking_id' => $booking->id,
             'modal_data' => [
-                'booking_id'   => $bookingId, 
-                'room_id'      => $request->room_id,
-                'check_in'     => $checkIn->format('F j, Y'),
-                'check_out'    => $checkOut->format('F j, Y'),
-                'gcash_ref'    => $request->gcash_reference,
-                'gcash_phone'  => $request->gcash_phone,
-                'total_price'        => $total,
+                'booking_id'  => $bookingId,
+                'room_id'     => $availableRoom->room_id,
+                'check_in'    => $checkIn->format('F j, Y'),
+                'check_out'   => $checkOut->format('F j, Y'),
+                'gcash_ref'   => $request->gcash_reference,
+                'gcash_phone' => $request->gcash_phone,
+                'total_price' => $total,
             ],
         ]);
     }
 
+
     public function receptionBookingStore(Request $request) {
         //$roomType = Room::where('room_type', $request->room_type)->pluck('room_type');
-
+        dd(Auth::check(), Auth::id(), Auth::user());
         $checkIn = Carbon::parse($request->check_in_date);
         $checkOut = Carbon::parse($request->check_out_date);
 
@@ -198,5 +203,11 @@ class BookingController extends Controller
     return response()->json([
         'unavailable_dates' => $unavailableDates
     ]);
-    }
+    } 
+
+    public function showDeluxeForm()
+{
+    return view('booking-form.book-deluxe');
+}
+
 }

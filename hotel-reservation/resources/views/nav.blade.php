@@ -17,7 +17,6 @@
                     <li><a href="{{ route('home') }}">Home</a></li>
                     <li><a href="{{ route('room') }}">Rooms</a></li>
                     <li><a href="{{ route('ameneties') }}">Amenities</a></li>
-                    <li><a href="{{ route('cart') }}">My Cart</a></li>
                     <li><a href="{{ route('contact') }}">Contact Us</a></li>
                     <li><a href="{{ route('about') }}">About Us</a></li>
                     @auth

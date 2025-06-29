@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\WelcomeMail;
 use App\Http\Controllers\Auth\Request; 
 use App\Http\Controllers\Admin\EmployeeController;
+use Illuminate\Support\Facades\Auth;
 
 
 /*
@@ -102,9 +103,8 @@ Route::get('/view-room-honeymoon', function () {
                     //Booking Form per Room Type
                     
 // Deluxe Room Booking
-Route::get('/booking-form-deluxe', function () {
-    return view('booking-form.book-deluxe');
-})->name('booking-deluxe');
+Route::get('/booking-form-deluxe', [BookingController::class, 'showDeluxeForm'])->name('booking-deluxe');
+
 
 // Executive Room Booking
 Route::get('/booking-form-executive', function () {
@@ -209,5 +209,4 @@ Route::delete('/admin/users/{user_id}', [EmployeeController::class, 'destroy'])
 
 Route::get('/room-availability', [BookingController::class, 'roomAvailability']);
 
-Auth::routes();
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+

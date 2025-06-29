@@ -1,3 +1,14 @@
+@if ($errors->any())
+    <div class="alert alert-danger">
+        <ul class="mb-0">
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+
+
 <div class="col-lg-6">
                 <div class="booking-form">
                     <h4 class="form-title">Complete Your Booking</h4>
@@ -5,17 +16,22 @@
                 
                     <form id="booking-form" action="{{ route('booking.store') }}" method="POST">
                         @csrf
-                        <input type="hidden" name="room_type" value="{{ $roomType }}">
-                        <div id="roomData" data-rate="{{ $ratePerNight }}" data-room-type="{{ $roomType }}"></div>
+                        
+                        
+                        <input type="hidden" name="room_type" value="{{ $roomTypeId }}">
+                        <div id="roomData" data-rate="{{ $ratePerNight }}" data-room-type="{{ $roomTypeId }}"></div>
                         <div class="form-group">
                             <label for="daterange">Check-in & Check-out</label>
                             <i class="far fa-calendar-alt"></i>
-                            <input type="text" name="daterange" value="01/01/2018 - 01/15/2018" class="form-control">
+                            <input type="text" id="bookingDates" class="form-control" required>
+                            <input type="hidden" name="check_in_date" id="check_in_date">
+                            <input type="hidden" name="check_out_date" id="check_out_date">
+                             {{-- <input type="text" name="daterange" value="01/01/2018 - 01/15/2018" class="form-control"> --}}
                         </div>
 
                         <div class="form-group">
                             <label for="email">Email Address</label>
-                            <input name="email" type="email" class="form-control" id="email" value="guest@example.com">
+                            <input name="email_confirmation" type="email" class="form-control" id="email" value="guest@example.com">
                         </div>
                         
                         <div class="form-group">
@@ -99,7 +115,7 @@
                             </div>
                             <div class="price-row total-row">
                                 <span>Total Amount</span>
-                                <span>₱20,175.00</span>
+                                <span id="">₱20,175.00</span>
                             </div>
                         </div>
                         
