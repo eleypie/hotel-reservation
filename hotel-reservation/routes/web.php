@@ -192,10 +192,26 @@ Route::get('/admin/employees', [EmployeeController::class, 'displayEmployees'])
     ->middleware('permission:view-user')
     ->name('admin-employees');
 
+Route::get('/admin/employees/create', [EmployeeController::class, 'create'])
+    ->middleware('permission:create-user')
+    ->name('admin-employees-create');
+
+Route::get('/admin/employees/edit', [EmployeeController::class, 'edit'])
+    ->middleware('permission:edit-user')
+    ->name('admin-employees-edit');
+
+Route::get('/admin/employees/edit/{employee}', [EmployeeController::class, 'edit'])
+    ->middleware('permission:edit-user')
+    ->name('admin-employees-update');
+
 // store data
 Route::post('/admin/employees/create', [EmployeeController::class, 'storeEmployee'])
     ->middleware('permission:create-user')
     ->name('employees-store');
+
+Route::put('/admin/employees/update/{employee}', [EmployeeController::class, 'update'])
+    ->middleware('permission:edit-user')
+    ->name('employees-update');
 
 Route::post('/admin/bookings/create', [BookingController::class, 'receptionBookingStore'])
     ->middleware('permission:create-booking')
@@ -205,7 +221,7 @@ Route::post('/admin/bookings/create', [BookingController::class, 'receptionBooki
 // delete record
 Route::delete('/admin/users/{user_id}', [EmployeeController::class, 'destroy'])
     ->middleware(['auth', 'role:Super Admin'])
-    ->name('delete');
+    ->name('employee-delete');
 
 Route::get('/room-availability', [BookingController::class, 'roomAvailability']);
 
