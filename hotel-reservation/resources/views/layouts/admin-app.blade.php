@@ -83,10 +83,12 @@ admin-app.blade.php
                     <div class="user-avatar">SA</div>
                     <span>Super Admin</span>
                 </div>
-                <button class="logout-btn">
-                    <i class="bi bi-box-arrow-right"></i>
-                    <span>Logout</span>
-                </button>
+                <a href={{ route('logout') }} style="text-decoration: none">
+                    <button class="logout-btn">
+                        <i class="bi bi-box-arrow-right"></i>
+                        <span>Logout</span>
+                    </button>
+                </a>
             </div>
         </header>
 
@@ -104,16 +106,14 @@ admin-app.blade.php
             <nav>
             <ul class="nav-menu">
                 <li class="nav-item">
-                    <a href="{{ route('admin-dashboard') }}" 
-                    class="nav-link {{ request()->routeIs('admin-dashboard') ? 'active' : '' }}">
+                    <a href="{{ route('admin-dashboard') }}" class="nav-link">
                         <i class="bi bi-speedometer2"></i>
                         <span>Dashboard</span>
                     </a>
                 </li>
-                @can('create-booking')
+                @can('view-room')
                 <li class="nav-item">
-                    <a href="{{ route('admin-rooms') }}" 
-                    class="nav-link {{ request()->routeIs('admin-rooms') ? 'active' : '' }}">
+                    <a href="{{ route('admin-rooms') }}" class="nav-link">
                         <i class="bi bi-door-open"></i>
                         <span>Room Management</span>
                     </a>
@@ -121,8 +121,7 @@ admin-app.blade.php
                 @endcan
                 @can('create-booking')
                 <li class="nav-item">
-                    <a href="{{ route('admin-bookings') }}" 
-                    class="nav-link {{ request()->routeIs('admin-bookings') ? 'active' : '' }}">
+                    <a href="{{ route('admin-bookings') }}" class="nav-link">
                         <i class="bi bi-calendar-check"></i>
                         <span>Booking Management</span>
                     </a>
@@ -130,20 +129,23 @@ admin-app.blade.php
                 @endcan
                 @can('view-user')
                 <li class="nav-item">
-                    <a href="{{ route('admin-employees') }}" 
-                    class="nav-link {{ request()->routeIs('admin-employees') ? 'active' : '' }}">
+                    <a href="{{ route('admin-employees') }}" class="nav-link">
                         <i class="bi bi-people"></i>
-                        <span>Employees</span>
+                        <span>Employee Management</span>
                     </a>
                 </li>
                 @endcan
-                
+                @can('edit-role')
+                <li class="nav-item">
+                    <a href="{{ route('admin-roles') }}" class="nav-link">
+                        <i class="bi bi-person-lock"></i>
+                        <span>Role Management</span>
+                    </a>
+                </li>
+                @endcan
             </ul>
         </nav>
         </aside>
-
-        
-
         <main class="container">
             @yield('content')
         </main>
@@ -153,5 +155,6 @@ admin-app.blade.php
     <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
     <script src={{ asset('js\admin.js') }}></script>
+    @yield('scripts')
 </body>
 </html>

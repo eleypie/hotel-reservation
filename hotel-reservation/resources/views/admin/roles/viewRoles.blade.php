@@ -1,20 +1,20 @@
 @extends('layouts.admin-app')
 
-@section('title', 'Employees')
+@section('title', 'Roles')
 
 @section('content')
 <main class="main-content">
     <div class="page-header">
-        <h1>Employee Management</h1>
-        <p>Manage employee accounts and permissions.</p>
+        <h1>Roles Management</h1>
+        <p>Manage user roles and permissions.</p>
     </div>
     <div class="content-section">
         <div class="section-header">
-            <h2 class="section-title">Employees</h2>
+            <h2 class="section-title">Roles</h2>
             @can('create-user')
-                <a href="{{ route('admin-employees-create') }}"> 
+                <a href="{{ route('admin-role-create') }}"> 
                     <button class="btn btn-primary">
-                        New Employee
+                        New Role
                     </button>
                 </a>
             @endcan
@@ -22,32 +22,70 @@
         <table class="data-table">
             <thead>
                 <tr>
-                    <th>Name</th>
                     <th>Role</th>
+                    <th>Permissions</th>
                     <th class="actions-col">Actions</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach($users as $user)
+                @foreach($roles as $role)
                 <tr>
-                    <td>{{$user->first_name}} {{$user->last_name}}</td>
-                    <td>{{$user->getRoleNames()->first();}}</td>
+                    <td>{{ $role->name }}</td>
+                    <td>
+                        @if($role->permissions->isNotEmpty())
+                            <ul class="permissions-container">
+                                @foreach($role->permissions as $permission)
+                                    <li class="permission-item">{{ $permission->name }}</li>
+                                @endforeach
+                            </ul>
+                        @else
+                            <em>No permissions</em>
+                        @endif
+                    </td>
                     <td class="actions-btns">
                         @can('edit-user')
-                            <a href="{{ route('admin-employees-update', $user->user_id) }}">
+                            <a href="{{ route('admin-role-edit', $role) }}">
                                 <button class="btn btn-warning">Edit</button>
                             </a>
                         @endcan
                         @can('delete-user')
-                            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete-confirm" 
-                                    data-role-id="{{ $user->user_id }}">
+                            <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                                    data-bs-target="#delete-confirm" data-role-id="{{ $role->id }}">
                                     Delete
                             </button>
                         @endcan
                     </td>
                 </tr>
                 @endforeach
+            </tbody>
         </table>
+
+        <table class="data-table" style="margin: 4rem 0rem">
+            <tr>
+                <td>
+                    <div class="section-header">
+                        <h2 class="section-title">Permissions</h2>
+                        @can('manage-permissions')
+                            <a href="{{ route('manage-permission') }}"> 
+                                <button class="btn btn-primary">
+                                    Manage Permissions
+                                </button>
+                            </a>
+                        @endcan
+                    </div>
+                    @if($permissions->isNotEmpty())
+                        <ul class="permissions-container">
+                            @foreach($permissions as $permission)
+                                <li class="permission-item" style="font-size:0.8rem">{{ $permission->name }}</li>
+                            @endforeach
+                        </ul>
+                    @else
+                        <em>No permissions</em>
+                    @endif
+                </td>
+            </tr>
+        </table>
+                    
 
         @if (session('success') || session('error'))
             <div class="position-fixed top-0 end-0 p-3 statusMessage" style="z-index: 1100;">
@@ -63,56 +101,20 @@
         @endif
     </div>
 </main>
-
-<div id="addEmployeeModal" class="modal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h2>Add New Employee</h2>
-            <button class="close-btn" onclick="closeModal('addEmployeeModal')">&times;</button>
-        </div>
-        <form method="POST" action="{{ route('employees-store') }}">
-            @csrf
-            <div class="form-grid">
-                <div class="form-group">
-                    <label for="first-name">First Name</label>
-                    <input type="text" name="first_name" required>
-                    <label for="last-name">Last Name</label>
-                    <input type="text" name="last_name" required>
-                </div>
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" name="email"  required>
-                </div>
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" name="password"  required>
-                </div>
-                <div class="form-group">
-                    <label>Role</label>
-                    <select name="role" required>
-                        @foreach ($roles as $role)
-                            <option value="{{ $role->name }}">{{ ucfirst($role->name) }}</option>
-                        @endforeach
-                    </select>
-                </div>
-            </div>
-            <button type="submit" class="btn btn-primary">Add Employee</button>
-        </form>
-    </div>
-</div>
+@endsection
 
 <div class="modal fade" id="delete-confirm" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">
-        <div class="modal-content" >
+        <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="modalLabel">Delete Employee</h1>
+                <h1 class="modal-title fs-5" id="modalLabel">Delete Role</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <p id="modalBody">Are you sure you want to delete this employee?</p>
+                <p id="modalBody">Are you sure you want to delete this role?</p>
             </div>
             <div class="modal-footer">
-                <form id="deleteForm" method="POST" action={{ route('employee-delete', $user->user_id)}}>
+                <form id="deleteForm" method="POST" action={{ route('role-delete', $role->id)}}>
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="btn btn-danger">Delete</button>
@@ -122,7 +124,6 @@
         </div>
     </div>
 </div>
-@endsection
 
 @section('scripts')
 <script>
@@ -142,11 +143,12 @@
 
     deleteModal.addEventListener('show.bs.modal', function (event) {
         const button = event.relatedTarget;
-        const empId = button.getAttribute('data-role-id');
+        const roleId = button.getAttribute('data-role-id');
         const form = deleteModal.querySelector('#deleteForm');
 
-        const action = "{{ route('employee-delete', ':id') }}".replace(':id', empId);
+        const action = "{{ route('role-delete', ':id') }}".replace(':id', roleId);
         form.action = action;
     });
 </script>
 @endsection
+

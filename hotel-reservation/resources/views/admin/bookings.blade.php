@@ -80,10 +80,21 @@ document.addEventListener('click', function(e) {
                             <td>{{ $booking->check_out_date }}</td>
                             <td><span class="status-badge status-{{ strtolower($booking->status) }}">{{ $booking->status}}</span></td>
                             <td>
-                                <div class="action-buttons">
-                                    <button class="btn btn-info" onclick="viewBooking({{ $booking->booking_id }})">View</button>
+                                <div class="actions-btns">
+                                    @can('edit-booking')
+                                        <a href="">
+                                            <button class="btn btn-info">Edit</button>
+                                        </a>
+                                    @endcan
+                                    @can('delete-booking')
+                                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete-confirm" 
+                                                data-title="Delete Booking" data-body="Are you sure you want to delete this booking?">
+                                                Delete
+                                        </button>
+                                    @endcan
+                                    {{-- <button class="btn btn-info" onclick="viewBooking({{ $booking->booking_id }})">View</button>
                                     <button class="btn btn-warning" onclick="editBooking({{ $booking->booking_id }})">Edit</button>
-                                    <button class="btn btn-danger" onclick="deleteBooking({{ $booking->booking_id }})">Delete</button>
+                                    <button class="btn btn-danger" onclick="deleteBooking({{ $booking->booking_id }})">Delete</button> --}}
                                 </div>
                             </td>
                         </tr>
@@ -100,9 +111,13 @@ document.addEventListener('click', function(e) {
                         <td><span class="status-badge status-confirmed">Confirmed</span></td>
                         <td>
                             <div class="action-buttons">
+                                @can('edit-booking')
                                 <button class="btn btn-info" onclick="viewBooking('BK001')">View</button>
-                                <button class="btn btn-warning" onclick="editBooking('BK001')">Edit</button>
+                                @endcan
+                                {{-- <button class="btn btn-warning" onclick="editBooking('BK001')">Edit</button> --}}
+                                @can('delete-booking')
                                 <button class="btn btn-danger" onclick="deleteBooking('BK001')">Delete</button>
+                                @endcan
                             </div>
                         </td>
                     </tr>

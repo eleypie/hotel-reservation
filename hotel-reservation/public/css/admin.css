@@ -731,6 +731,34 @@
     background-color: #e0a800;
 }
 
+.permissions-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    
+}
+
+.permission-item {
+    margin-left: -2.5rem;
+    margin-right: 3rem;
+    font-size: 0.7rem;
+    list-style: none;
+    background-color: #e0f0ff; 
+    color: #004080; 
+    padding: 4px 12px;
+    border-radius: 999px; 
+    white-space: nowrap;
+    border: 1px solid #b0d4f1;
+}
+
+.modal-dialog {
+    padding-top: 10rem
+}
+
+.statusMessage, .inputError {
+    margin-top: 4rem;
+}
+
 /* Animation */
 @keyframes fadeIn {
     from {

@@ -14,9 +14,11 @@
     <div class="content-section">
         <div class="section-header">
             <h2 class="section-title">Rooms</h2>
+            @can('add-room')
             <button class="btn btn-primary" onclick="openModal('addRoomModal')">
                     Add New Room
             </button>
+            @endcan
         </div>
         <table class="data-table" id="roomsTable">
             <thead>
@@ -25,7 +27,7 @@
                     <th>Type</th>
                     <th>Rate/Night</th>
                     <th>Status</th>
-                    <th>Amenities</th>
+                    {{-- <th>Amenities</th> --}}
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -35,10 +37,12 @@
                     <td>Suite</td>
                     <td>$250</td>
                     <td><span class="status-badge status-available">Available</span></td>
-                    <td>WiFi, AC, Mini Bar</td>
+                    {{-- <td>WiFi, AC, Mini Bar</td> --}}
                     <td>
+                        @can('edit-room')
                         <button class="btn btn-warning" onclick="editRoom(this)">Edit</button>
                         <button class="btn btn-danger" onclick="deleteRoom(this)">Delete</button>
+                        @endcan
                     </td>
                 </tr>
                 <tr>
@@ -46,10 +50,12 @@
                     <td>Standard</td>
                     <td>$150</td>
                     <td><span class="status-badge status-occupied">Occupied</span></td>
-                    <td>WiFi, AC</td>
+                    {{-- <td>WiFi, AC</td> --}}
                     <td>
+                        @can('edit-room')
                         <button class="btn btn-warning" onclick="editRoom(this)">Edit</button>
                         <button class="btn btn-danger" onclick="deleteRoom(this)">Delete</button>
+                        @endcan
                     </td>
                 </tr>
                 <tr>
@@ -57,10 +63,12 @@
                     <td>Deluxe</td>
                     <td>$200</td>
                     <td><span class="status-badge status-maintenance">Maintenance</span></td>
-                    <td>WiFi, AC, Balcony</td>
+                    {{-- <td>WiFi, AC, Balcony</td> --}}
                     <td>
+                        @can('edit-room')
                         <button class="btn btn-warning">Edit</button>
                         <button class="btn btn-danger">Delete</button>
+                        @endcan
                     </td>
                 </tr>
             </tbody>

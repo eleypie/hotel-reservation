@@ -8,8 +8,9 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\WelcomeMail;
 use App\Http\Controllers\Auth\Request; 
 use App\Http\Controllers\Admin\EmployeeController;
+use App\Http\Controllers\Admin\RoleController;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\SuperAdminController;
+use App\Http\Controllers\Admin\PermissionController;
 
 
 
@@ -190,6 +191,7 @@ Route::get('/admin/check-in', function() {
 ->middleware(['auth', 'role:Admin|Super Admin|Receptionist'])
 ->name('admin-checkin');
 
+// Employee CRUD
 Route::get('/admin/employees', [EmployeeController::class, 'displayEmployees'])
     ->middleware('permission:view-user')
     ->name('admin-employees');
@@ -205,8 +207,7 @@ Route::get('/admin/employees/edit', [EmployeeController::class, 'edit'])
 Route::get('/admin/employees/edit/{employee}', [EmployeeController::class, 'edit'])
     ->middleware('permission:edit-user')
     ->name('admin-employees-update');
-
-// store data
+    
 Route::post('/admin/employees/create', [EmployeeController::class, 'storeEmployee'])
     ->middleware('permission:create-user')
     ->name('employees-store');
@@ -215,15 +216,49 @@ Route::put('/admin/employees/update/{employee}', [EmployeeController::class, 'up
     ->middleware('permission:edit-user')
     ->name('employees-update');
 
+Route::delete('/admin/users/{user_id}', [EmployeeController::class, 'destroy'])
+    ->middleware(['auth', 'role:Super Admin'])
+    ->name('employee-delete');
+
+//Roles CRUD
+Route::get('/admin/role', [RoleController::class, 'index'])
+    ->middleware('permission:create-role')
+    ->name('admin-roles');
+
+Route::post('/admin/role/create', [RoleController::class, 'store'])
+    ->middleware('permission:create-role')
+    ->name('role-store');
+
+Route::get('/admin/role/create', [RoleController::class, 'create'])
+    ->middleware('permission:create-role')
+    ->name('admin-role-create');
+
+Route::get('/admin/role/edit/{role}', [RoleController::class, 'edit'])
+    ->middleware('permission:edit-role')
+    ->name('admin-role-edit');
+
+Route::put('/admin/role/update/{role}', [RoleController::class, 'update'])
+    ->middleware('permission:edit-role')
+    ->name('role-update');
+
+Route::delete('/admin/role/delete/{role}', [RoleController::class, 'destroy'])
+    ->middleware('permission:delete-role')
+    ->name('role-delete');
+
+Route::get('/admin/permissions', [PermissionController::class, 'index'])
+    ->middleware('permission:manage-permissions')
+    ->name('manage-permission');
+
+
+
+// store data
+
 Route::post('/admin/bookings/create', [BookingController::class, 'receptionBookingStore'])
     ->middleware('permission:create-booking')
     ->name('manual-booking');
 
 
 // delete record
-Route::delete('/admin/users/{user_id}', [EmployeeController::class, 'destroy'])
-    ->middleware(['auth', 'role:Super Admin'])
-    ->name('employee-delete');
 
 Route::get('/room-availability', [BookingController::class, 'roomAvailability']);
 

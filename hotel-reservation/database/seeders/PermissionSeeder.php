@@ -24,11 +24,13 @@ class PermissionSeeder extends Seeder
             'edit-user',
             'delete-user',
             'create-booking',
+            'edit-booking',
             'delete-booking',
             'view-room',
             'add-room',
             'edit-room',
-            'view-admin-site'
+            'view-admin-site',
+            'manage-permissions'
         ];
 
         foreach ($permissions as $permission) {
