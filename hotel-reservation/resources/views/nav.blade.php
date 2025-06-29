@@ -1,7 +1,13 @@
 <header>
         <div class="header-container">
-            <a href="#" class="logo">TheHaven</a>
-            
+        <a href="{{ route('home') }}" class="logo">
+            <img src="{{ asset('images/logo.png') }}" alt="TheHaven Logo" class="logo-image">
+            <span class="logo-text">TheHaven</span>
+        </a>
+
+         <!-- Replace Laravel's default favicon with your hotel logo -->
+<link rel="shortcut icon" href="{{ asset('logo.ico') }}?v={{ time() }}">
+   
             <input type="checkbox" id="side-menu" class="side-menu">
             <label class="hamb" for="side-menu">
                 <span class="hamb-line"></span>
@@ -23,9 +29,11 @@
                     <li class="nav-profile">
                         <div class="profile-dropdown">
                             <button class="profile-toggle" id="profileDropdown">
+                                <!-- Profile Picture
                                 <div class="profile-pic-container">
                                     <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Profile" class="profile-pic">
                                 </div>
+                                 -->
                                 <span class="profile-name">{{ Auth::user()->first_name }}</span>
                                 <i class="fas fa-chevron-down dropdown-arrow"></i>
                             </button>
