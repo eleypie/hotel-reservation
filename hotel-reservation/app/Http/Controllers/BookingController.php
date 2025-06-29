@@ -183,20 +183,20 @@ class BookingController extends Controller
         ->with('room')
         ->get(['check_in_date', 'check_out_date']);
 
-    $unavailableDates = [];
+        $unavailableDates = [];
 
-    foreach ($bookings as $booking) {
-        $current = strtotime($booking->check_in_date);
-        $end = strtotime($booking->check_out_date);
+        foreach ($bookings as $booking) {
+            $current = strtotime($booking->check_in_date);
+            $end = strtotime($booking->check_out_date);
 
-        while ($current <= $end) {
-            $unavailableDates[] = date('Y-m-d', $current);
-            $current = strtotime('+1 day', $current);
+            while ($current <= $end) {
+                $unavailableDates[] = date('Y-m-d', $current);
+                $current = strtotime('+1 day', $current);
+            }
         }
-    }
 
-    return response()->json([
-        'unavailable_dates' => $unavailableDates
-    ]);
+        return response()->json([
+            'unavailable_dates' => $unavailableDates
+        ]);
     }
 }

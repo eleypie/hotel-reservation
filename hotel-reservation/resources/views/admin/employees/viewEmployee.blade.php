@@ -12,9 +12,11 @@
         <div class="section-header">
             <h2 class="section-title">Employees</h2>
             @can('create-user')
-                <button class="btn btn-primary" onclick="openModal('addEmployeeModal')">
-                    New Employee
-                </button>
+                <a href="{{ route('admin-employees-create') }}"> 
+                    <button class="btn btn-primary">
+                        New Employee
+                    </button>
+                </a>
             @endcan
         </div>
         <table class="data-table">
@@ -32,7 +34,9 @@
                     <td>{{$user->getRoleNames()->first();}}</td>
                     <td class="actions-btns">
                         @can('edit-user')
-                            <button class="btn btn-warning">Edit</button>
+                            <a href="{{ route('admin-employees-update', $user->user_id) }}">
+                                <button class="btn btn-warning">Edit</button>
+                            </a>
                         @endcan
                         @can('delete-user')
                             <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete-confirm" 
@@ -99,6 +103,43 @@
     </div>
 </div>
 
+{{-- <div id="editEmployeeModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Edit Employee</h2>
+            <button class="close-btn" onclick="closeModal('addEmployeeModal')">&times;</button>
+        </div>
+        <form method="POST" action="{{ route('employees-update') }}">
+            @csrf
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="first-name">First Name</label>
+                    <input type="text" name="first_name" required>
+                    <label for="last-name">Last Name</label>
+                    <input type="text" name="last_name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" name="email"  required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" name="password"  required>
+                </div>
+                <div class="form-group">
+                    <label>Role</label>
+                    <select name="role" required>
+                        @foreach ($roles as $role)
+                            <option value="{{ $role->name }}">{{ ucfirst($role->name) }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Add Employee</button>
+        </form>
+    </div>
+</div> --}}
+
 <div class="modal fade" id="delete-confirm" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -110,7 +151,7 @@
                 <p id="modalBody">Are you sure you want to delete this employee?</p>
             </div>
             <div class="modal-footer">
-                <form method="POST" action={{ route('delete', $user->user_id)}}>
+                <form method="POST" action={{ route('employee-delete', $user->user_id)}}>
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="btn btn-danger">Delete</button>
