@@ -103,14 +103,14 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="modalLabel"></h1>
+                <h1 class="modal-title fs-5" id="modalLabel">Delete Employee</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <p id="modalBody"></p>
+                <p id="modalBody">Are you sure you want to delete this employee?</p>
             </div>
             <div class="modal-footer">
-                <form method="POST" action={{ route('delete', $user->id)}}>
+                <form method="POST" action={{ route('delete', $user->user_id)}}>
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="btn btn-danger">Delete</button>

@@ -164,6 +164,8 @@ Route::get('/booking/{booking}/receipt', [BookingController::class, 'downloadRec
     ->name('booking.receipt.download')
     ->middleware('auth'); // optional if only logged-in users can download
 
+
+
 // admin page routes
 // return views
 Route::get('/admin', [EmployeeController::class, 'index'])
@@ -201,7 +203,7 @@ Route::post('/admin/bookings/create', [BookingController::class, 'receptionBooki
 
 
 // delete record
-Route::delete('/admin/users/{id}', [EmployeeController::class, 'destroy'])
+Route::delete('/admin/users/{user_id}', [EmployeeController::class, 'destroy'])
     ->middleware(['auth', 'role:Super Admin'])
     ->name('delete');
 
