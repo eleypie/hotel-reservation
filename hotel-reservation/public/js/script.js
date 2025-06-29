@@ -3,7 +3,35 @@
 const profileDropdown = document.getElementById('profileDropdown');
 const dropdownMenu = document.getElementById('dropdownMenu');
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function() { 
+
+    const bookingDates = $('#bookingDates');
+    const checkInField = $('#check_in_date');
+    const checkOutField = $('#check_out_date');
+
+    if (bookingDates.length) {
+        bookingDates.daterangepicker({
+            autoUpdateInput: false,
+            minDate: moment(), 
+            locale: {
+                cancelLabel: 'Clear',
+                format: 'YYYY-MM-DD'
+            }
+        });
+
+        bookingDates.on('apply.daterangepicker', function (ev, picker) {
+            $(this).val(picker.startDate.format('YYYY-MM-DD') + ' to ' + picker.endDate.format('YYYY-MM-DD'));
+            checkInField.val(picker.startDate.format('YYYY-MM-DD'));
+            checkOutField.val(picker.endDate.format('YYYY-MM-DD'));
+            setTimeout(calculateTotal, 10);
+        });
+
+        bookingDates.on('cancel.daterangepicker', function (ev, picker) {
+            $(this).val('');
+            checkInField.val('');
+            checkOutField.val('');
+        });
+    }
             
             if (profileDropdown && dropdownMenu) {
                 profileDropdown.addEventListener('click', function(e) {
@@ -60,9 +88,9 @@ $(function() {
     // Update the input field with MM/DD/YYYY format
     $('input[name="daterange"]').on('apply.daterangepicker', function(ev, picker) {
         $(this).val(
-            picker.startDate.format('MM/DD/YYYY') + 
+            picker.startDate.format('YYYY/MM/DD') + 
             ' - ' + 
-            picker.endDate.format('MM/DD/YYYY')
+            picker.endDate.format('YYYY/MM/DD')
         );
     });
 

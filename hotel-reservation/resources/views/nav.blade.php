@@ -17,16 +17,17 @@
                     <li><a href="{{ route('home') }}">Home</a></li>
                     <li><a href="{{ route('room') }}">Rooms</a></li>
                     <li><a href="{{ route('ameneties') }}">Amenities</a></li>
-                    <li><a href="{{ route('cart') }}">My Cart</a></li>
                     <li><a href="{{ route('contact') }}">Contact Us</a></li>
                     <li><a href="{{ route('about') }}">About Us</a></li>
                     @auth
                     <li class="nav-profile">
                         <div class="profile-dropdown">
                             <button class="profile-toggle" id="profileDropdown">
+                                <!-- Profile Picture
                                 <div class="profile-pic-container">
                                     <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Profile" class="profile-pic">
                                 </div>
+                                 -->
                                 <span class="profile-name">{{ Auth::user()->first_name }}</span>
                                 <i class="fas fa-chevron-down dropdown-arrow"></i>
                             </button>

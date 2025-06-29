@@ -145,7 +145,6 @@
                     <div class="price-amount">₱7,500 <span class="text-muted">/ night</span></div>
                     <div class="button-group">
                     <button class="book-btn">Book Now</button>
-                    <button class="cart-btn">Add To Cart</button>
                     </div>
                 </a>
             </div>
