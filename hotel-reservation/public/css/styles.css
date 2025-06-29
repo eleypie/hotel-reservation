@@ -1332,3 +1332,10 @@ input[name="daterange"] {
         font-size: 1.3rem;
     }
 }
+
+.newsletter-quote {
+    font-style: italic;
+    color:rgb(106, 159, 206);
+    font-size: 1.2rem;
+    margin-top: 1rem;
+}

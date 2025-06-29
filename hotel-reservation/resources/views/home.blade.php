@@ -682,17 +682,18 @@
             </div>
         </div>
     </section>
-    <section class="newsletter-section">
-        <div class="newsletter-container">
-            <h2 class="newsletter-title">Stay Updated</h2>
-            <p class="newsletter-description">Subscribe to receive exclusive offers and updates about The Haven Hotel</p>
-            
-            <form class="newsletter-form">
-                <input type="email" class="newsletter-input" placeholder="Enter your email address" value="">
-                <button class="newsletter-button" type="submit">Subscribe</button>
-            </form>
-        </div>
-    </section>
+
+    <!-- Newsletter Section -->
+<section class="newsletter-section">
+    <div class="newsletter-container">
+        <h2 class="newsletter-title">Experience The Haven</h2>
+        <p class="newsletter-quote">
+            “Where exceptional service meets elegant comfort — your perfect stay begins here.”
+        </p>
+    </div>
+</section>
+
+
 
     <footer class="bg-body-tertiary text-center text-lg-start">
         <!-- Copyright -->
