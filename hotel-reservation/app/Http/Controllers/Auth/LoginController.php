@@ -41,18 +41,11 @@ public function login(Request $request)
         $user = Auth::user();
 
         // Redirect based on role
-        if ($user->hasRole('Super Admin')) {
-            return redirect()->route('superadmin-dashboard');
-        } elseif ($user->hasRole('Admin')) {
-            return redirect()->route('admin-dashboard');
-        } elseif ($user->hasRole('Receptionist')) {
-            return redirect()->route('receptionist-dashboard');
-        } elseif ($user->hasRole('User')) {
-            return redirect()->route('user-dashboard'); // or $this->redirectTo
-        } else {
-            Auth::logout();
-            return redirect('/login')->withErrors(['email' => 'Unauthorized role.']);
-        }
+if($user->hasRole('User')) {
+                return redirect()->intended($this->redirectTo);
+            } else {
+                return redirect()->route('admin-dashboard');
+            }
     }
 
     return back()->withErrors([
