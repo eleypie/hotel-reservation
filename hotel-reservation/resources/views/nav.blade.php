@@ -9,6 +9,11 @@
             
             <nav>
                 <ul>
+                    @can('view-admin-site')
+                        <li>
+                            <a href="{{ route('admin-dashboard') }}">Admin Dashboard</a>
+                        </li>
+                    @endcan
                     <li><a href="{{ route('home') }}">Home</a></li>
                     <li><a href="{{ route('room') }}">Rooms</a></li>
                     <li><a href="{{ route('ameneties') }}">Amenities</a></li>

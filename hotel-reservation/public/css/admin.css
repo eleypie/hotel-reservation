@@ -522,6 +522,21 @@ body {
     width: 25%;
 }
 
+.daterangepicker td.invalid {
+    text-decoration: line-through;
+    background-color: #f8d7da;
+    color: #a94442;
+    cursor: not-allowed;
+}
+
+.daterangepicker td.off, 
+.daterangepicker td.disabled, 
+.daterangepicker option.disabled {
+    color: #ccc !important;
+    cursor: not-allowed !important;
+    background: #f5f5f5 !important;
+}
+
 .actions-btns {
     display: flex;
     direction: row;

@@ -1,14 +1,15 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use App\Models\Booking;
 use Spatie\Permission\Models\Role;
+use App\Http\Controllers\Controller;
 
-class AdminController extends Controller
+class EmployeeController extends Controller
 {
     // public function __construct()
     // {

@@ -20,7 +20,7 @@ class RoleSeeder extends Seeder
         $user = Role::create(['name' => 'User']);
 
         $superAdmin->givePermissionTo([
-             'create-role',
+            'create-role',
             'edit-role',
             'delete-role',
             'view-user',
@@ -31,7 +31,8 @@ class RoleSeeder extends Seeder
             'delete-booking',
             'view-room',
             'add-room',
-            'edit-room'
+            'edit-room',
+            'view-admin-site'
         ]);
 
         $admin->givePermissionTo([
@@ -40,7 +41,8 @@ class RoleSeeder extends Seeder
             'delete-booking',
             'view-room',
             'add-room',
-            'edit-room'
+            'edit-room',
+            'view-admin-site'
         ]);
 
         $receptionist->givePermissionTo([
@@ -48,7 +50,8 @@ class RoleSeeder extends Seeder
             'delete-booking',
             'view-room',
             'add-room',
-            'edit-room'
+            'edit-room',
+            'view-admin-site'
         ]);
 
         $user->givePermissionTo([

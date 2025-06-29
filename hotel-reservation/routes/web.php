@@ -7,7 +7,7 @@ use App\Http\Controllers\BookingController;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\WelcomeMail;
 use App\Http\Controllers\Auth\Request; 
-use App\Http\Controllers\AdminController;
+use App\Http\Controllers\Admin\EmployeeController;
 
 
 /*
@@ -166,7 +166,7 @@ Route::get('/booking/{booking}/receipt', [BookingController::class, 'downloadRec
 
 // admin page routes
 // return views
-Route::get('/admin', [AdminController::class, 'index'])
+Route::get('/admin', [EmployeeController::class, 'index'])
     ->middleware(['auth', 'role:Admin|Super Admin|Receptionist'])
     ->name('admin-dashboard');
 
@@ -176,11 +176,9 @@ Route::get('/admin/rooms', function() {
 ->middleware('permission:view-room')
 ->name('admin-rooms');
 
-Route::get('/admin/bookings', function() {
-    return view('admin.bookings');
-})
-->middleware('permission:create-booking')
-->name('admin-bookings');
+Route::get('/admin/bookings', [BookingController::class, 'index']) 
+    ->middleware('permission:create-booking')
+    ->name('admin-bookings');
 
 Route::get('/admin/check-in', function() {
     return view('admin.check-in');
@@ -188,19 +186,26 @@ Route::get('/admin/check-in', function() {
 ->middleware(['auth', 'role:Admin|Super Admin|Receptionist'])
 ->name('admin-checkin');
 
-Route::get('/admin/employees', [AdminController::class, 'displayEmployees'])
+Route::get('/admin/employees', [EmployeeController::class, 'displayEmployees'])
     ->middleware('permission:view-user')
     ->name('admin-employees');
 
 // store data
-Route::post('/admin/employees', [AdminController::class, 'storeEmployee'])
+Route::post('/admin/employees/create', [EmployeeController::class, 'storeEmployee'])
     ->middleware('permission:create-user')
     ->name('employees-store');
 
+Route::post('/admin/bookings/create', [BookingController::class, 'receptionBookingStore'])
+    ->middleware('permission:create-booking')
+    ->name('manual-booking');
+
+
 // delete record
-Route::delete('/admin/users/{id}', [AdminController::class, 'destroy'])
+Route::delete('/admin/users/{id}', [EmployeeController::class, 'destroy'])
     ->middleware(['auth', 'role:Super Admin'])
     ->name('delete');
-Auth::routes();
 
+Route::get('/room-availability', [BookingController::class, 'roomAvailability']);
+
+Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

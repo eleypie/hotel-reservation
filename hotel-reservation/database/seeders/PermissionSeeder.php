@@ -27,7 +27,8 @@ class PermissionSeeder extends Seeder
             'delete-booking',
             'view-room',
             'add-room',
-            'edit-room'
+            'edit-room',
+            'view-admin-site'
         ];
 
         foreach ($permissions as $permission) {
