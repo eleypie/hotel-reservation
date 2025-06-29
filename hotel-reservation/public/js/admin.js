@@ -286,6 +286,52 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
+document.addEventListener('DOMContentLoaded', function () {
+    const navToggle = document.querySelector('.nav-toggle');
+    const closeSidebar = document.querySelector('.close-sidebar');
+    const sidebar = document.querySelector('.sidebar');
+
+    if (navToggle && sidebar) {
+        navToggle.addEventListener('click', function () {
+            sidebar.classList.add('active');
+        });
+    }
+
+    if (closeSidebar && sidebar) {
+        closeSidebar.addEventListener('click', function () {
+            sidebar.classList.remove('active');
+        });
+    }
+
+    // Add active class to nav items
+    const navLinks = document.querySelectorAll('.nav-link');
+    navLinks.forEach(link => {
+        link.addEventListener('click', function () {
+            navLinks.forEach(l => l.classList.remove('active'));
+            this.classList.add('active');
+
+            // Close sidebar on mobile after selecting an item
+            if (window.innerWidth <= 992) {
+                sidebar?.classList.remove('active');
+            }
+        });
+    });
+
+    // Animate stat cards on load
+    const statCards = document.querySelectorAll('.stat-card');
+    statCards.forEach((card, index) => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(20px)';
+
+        setTimeout(() => {
+            card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+            card.style.opacity = '1';
+            card.style.transform = 'translateY(0)';
+        }, index * 150);
+    });
+});
+
+
 // function modalContent() {
 //     const deleteModal = document.getElementById('delete-confirm');
 //     deleteModal.addEventListener('show.bs.modal', function (event) {
@@ -299,3 +345,181 @@ document.addEventListener("DOMContentLoaded", function () {
 //         if (body) modalBody.textContent = body;
 //     });
 // }
+
+// aad-booking.js
+// booking-form.js
+
+function calculateTotal() {
+    const roomTypeSelect = document.getElementById('roomType');
+    const checkInDate = document.getElementById('checkInDate');
+    const checkOutDate = document.getElementById('checkOutDate');
+    const nightsInput = document.getElementById('nights');
+    const totalAmountInput = document.getElementById('totalAmount');
+    
+    if (roomTypeSelect.value && checkInDate.value && checkOutDate.value) {
+        const checkIn = new Date(checkInDate.value);
+        const checkOut = new Date(checkOutDate.value);
+        const timeDiff = checkOut.getTime() - checkIn.getTime();
+        const nights = Math.ceil(timeDiff / (1000 * 3600 * 24));
+        
+        if (nights > 0) {
+            const selectedOption = roomTypeSelect.options[roomTypeSelect.selectedIndex];
+            const pricePerNight = parseFloat(selectedOption.getAttribute('data-price'));
+            const totalAmount = nights * pricePerNight;
+            
+            nightsInput.value = nights;
+            totalAmountInput.value = totalAmount.toFixed(2);
+        } else {
+            nightsInput.value = '';
+            totalAmountInput.value = '';
+            showError('checkOutError', 'Check-out date must be after check-in date');
+        }
+    }
+}
+
+function showError(errorId, message) {
+    const errorElement = document.getElementById(errorId);
+    errorElement.textContent = message;
+    errorElement.classList.add('show');
+}
+
+function hideError(errorId) {
+    const errorElement = document.getElementById(errorId);
+    errorElement.classList.remove('show');
+}
+
+function validateForm() {
+    let isValid = true;
+
+    document.querySelectorAll('.error-message').forEach(el => el.classList.remove('show'));
+
+    const requiredFields = [
+        { id: 'firstName', errorId: 'firstNameError', message: 'First name is required' },
+        { id: 'lastName', errorId: 'lastNameError', message: 'Last name is required' },
+        { id: 'email', errorId: 'emailError', message: 'Email is required' },
+        { id: 'phone', errorId: 'phoneError', message: 'Phone number is required' },
+        { id: 'guestCount', errorId: 'guestCountError', message: 'Number of guests is required' },
+        { id: 'roomType', errorId: 'roomTypeError', message: 'Room type is required' },
+        { id: 'checkInDate', errorId: 'checkInError', message: 'Check-in date is required' },
+        { id: 'checkOutDate', errorId: 'checkOutError', message: 'Check-out date is required' },
+        { id: 'paymentMethod', errorId: 'paymentMethodError', message: 'Payment method is required' }
+    ];
+
+    requiredFields.forEach(field => {
+        const element = document.getElementById(field.id);
+        if (!element.value.trim()) {
+            showError(field.errorId, field.message);
+            isValid = false;
+        }
+    });
+
+    const emailInput = document.getElementById('email');
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (emailInput.value && !emailRegex.test(emailInput.value)) {
+        showError('emailError', 'Please enter a valid email address');
+        isValid = false;
+    }
+
+    const checkInDate = new Date(document.getElementById('checkInDate').value);
+    const checkOutDate = new Date(document.getElementById('checkOutDate').value);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    if (checkInDate < today) {
+        showError('checkInError', 'Check-in date cannot be in the past');
+        isValid = false;
+    }
+
+    if (checkOutDate <= checkInDate) {
+        showError('checkOutError', 'Check-out date must be after check-in date');
+        isValid = false;
+    }
+
+    return isValid;
+}
+
+function submitBookingForm() {
+    if (validateForm()) {
+        document.getElementById('addBookingForm').submit();
+    }
+}
+
+// Set min dates and recalculate on change
+document.addEventListener('DOMContentLoaded', function () {
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('checkInDate').setAttribute('min', today);
+    document.getElementById('checkOutDate').setAttribute('min', today);
+
+    document.getElementById('checkInDate').addEventListener('change', function () {
+        const checkInDate = this.value;
+        document.getElementById('checkOutDate').setAttribute('min', checkInDate);
+        calculateTotal();
+    });
+
+    document.getElementById('checkOutDate').addEventListener('change', calculateTotal);
+    document.getElementById('roomType').addEventListener('change', calculateTotal);
+});
+
+
+// View booking with simulated or real data
+function viewBooking(bookingId) {
+    fetchBookingData(bookingId).then(function (bookingData) {
+        populateViewModal(bookingData);
+        openModal('viewBookingModal');
+    });
+}
+
+// Simulate fetching booking data
+function fetchBookingData(bookingId) {
+    return new Promise(function (resolve) {
+        setTimeout(function () {
+            const sampleData = {
+                booking_id: bookingId,
+                status: 'Checked-in',
+                first_name: 'John',
+                last_name: 'Smith',
+                email: 'john.smith@email.com',
+                phone: '+1 234 567 8900',
+                guest_count: 2,
+                room_no: '101',
+                room_type: 'Deluxe',
+                check_in: '2024-07-01',
+                check_out: '2024-07-05',
+                payment_method: 'GCash',
+                amount: '$800.00',
+                transaction_no: 'TXN123456789',
+                notes: 'Special requests: Late check-in, extra towels'
+            };
+            resolve(sampleData);
+        }, 100);
+    });
+}
+
+// Populate modal fields with booking data
+function populateViewModal(data) {
+    document.getElementById('viewBookingId').textContent = data.booking_id;
+    document.getElementById('viewBookingStatus').textContent = data.status.toUpperCase();
+    document.getElementById('viewBookingStatus').className =
+        `status-badge status-${data.status.toLowerCase().replace('-', '')}`;
+
+    document.getElementById('viewFirstName').textContent = data.first_name;
+    document.getElementById('viewLastName').textContent = data.last_name;
+    document.getElementById('viewEmail').textContent = data.email;
+    document.getElementById('viewPhone').textContent = data.phone;
+    document.getElementById('viewGuestCount').textContent = data.guest_count;
+    document.getElementById('viewRoomNo').textContent = data.room_no;
+    document.getElementById('viewRoomType').textContent = data.room_type;
+    document.getElementById('viewCheckIn').textContent = data.check_in;
+    document.getElementById('viewCheckOut').textContent = data.check_out;
+    document.getElementById('viewPaymentMethod').textContent = data.payment_method;
+    document.getElementById('viewAmount').textContent = data.amount;
+    document.getElementById('viewTransactionNo').textContent = data.transaction_no;
+    document.getElementById('viewNotes').textContent = data.notes;
+}
+
+// Handle transition from view to edit
+function editBookingFromView() {
+    const bookingId = document.getElementById('viewBookingId').textContent;
+    closeModal('viewBookingModal');
+    editBooking(bookingId); // This function should already exist elsewhere
+}
