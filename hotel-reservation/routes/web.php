@@ -245,10 +245,21 @@ Route::delete('/admin/role/delete/{role}', [RoleController::class, 'destroy'])
     ->middleware('permission:delete-role')
     ->name('role-delete');
 
-Route::get('/admin/permissions', [PermissionController::class, 'index'])
-    ->middleware('permission:manage-permissions')
-    ->name('manage-permission');
+// Route::get('/admin/permissions', [PermissionController::class, 'index'])
+//     ->middleware('permission:manage-permissions')
+//     ->name('manage-permission');
 
+Route::post('/admin/permissions', [PermissionController::class, 'store'])
+    ->middleware('permission:manage-permissions')
+    ->name('permissions-store');
+
+Route::put('/admin/permissions/{permission}', [PermissionController::class, 'update'])
+    ->middleware('permission:manage-permissions')
+    ->name('permissions-update');
+
+Route::delete('/admin/permissions/{permission}', [PermissionController::class, 'destroy'])
+    ->middleware('permission:manage-permissions')
+    ->name('permissions-delete');
 
 
 // store data

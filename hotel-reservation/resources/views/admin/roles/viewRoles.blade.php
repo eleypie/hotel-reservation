@@ -60,7 +60,48 @@
             </tbody>
         </table>
 
-        <table class="data-table" style="margin: 4rem 0rem">
+
+        {{-- permissions --}}
+        <div class="section-header" style="margin-top: 4rem">
+            <h2 class="section-title">Permissions</h2>
+            @can('manage-permissions')
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createModal">
+                    Add Permission
+                </button>
+            @endcan
+        </div>
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Permissions</th>
+                    <th class="actions-col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($permissions as $permission)
+                <tr>
+                    <td>{{ $permission->name }}</td>
+                    <td class="actions-btns">
+                        @can('manage-permissions')
+                            <button class="btn btn-warning edit-btn" style="height: 2rem; padding: 0 0.6rem"
+                                data-permission-id="{{ $permission->id }}" data-permission-name="{{ $permission->name }}"
+                                data-bs-toggle="modal" data-bs-target="#editModal">
+                                Rename
+                            </button>
+                        @endcan
+                        @can('manage-permissions')
+                            <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                                    data-bs-target="#delete-confirm" data-role-id="{{ $permission->id }}" style="height: 2rem; padding: 0 0.6rem">
+                                    Delete
+                            </button>
+                        @endcan
+                    </td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+
+        {{-- <table class="data-table" style="margin: 4rem 0rem">
             <tr>
                 <td>
                     <div class="section-header">
@@ -84,7 +125,7 @@
                     @endif
                 </td>
             </tr>
-        </table>
+        </table> --}}
                     
 
         @if (session('success') || session('error'))
@@ -102,6 +143,51 @@
     </div>
 </main>
 @endsection
+
+<div class="modal fade" id="createModal" tabindex="-1">
+    <div class="modal-dialog">
+        <form action="{{ route('permissions-store') }}" method="POST" class="modal-content">
+            @csrf
+            <div class="modal-header">
+                <h5 class="modal-title">Create Permission</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <label>Name:</label>
+                <input type="text" name="name" class="form-control" required>
+                @error('name')
+                    <div class="text-danger mt-1">{{ $message }}</div>
+                @enderror
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary">Create</button>
+                <button type="button" class="btn btn-secondary" style="height: 2.75rem; margin-top:1rem;" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="modal fade" id="editModal" tabindex="-1">
+    <div class="modal-dialog">
+        <form method="POST" class="modal-content" id="editForm">
+            @csrf
+            @method('PUT')
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Permission</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <label>Name:</label>
+                <input type="text" name="name" id="editName" class="form-control" required>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-warning">Update</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>
+
 
 <div class="modal fade" id="delete-confirm" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -139,6 +225,24 @@
 </script>
 
 <script>
+    const editModal = document.getElementById('editModal');
+
+    editModal.addEventListener('show.bs.modal', function (event) {
+        const button = event.relatedTarget;
+
+        const permissionId = button.getAttribute('data-permission-id');
+        const permissionName = button.getAttribute('data-permission-name');
+
+        const form = editModal.querySelector('#editForm');
+        const nameInput = editModal.querySelector('#editName');
+
+        nameInput.value = permissionName;
+        const action = "{{ route('permissions-update', ':id') }}".replace(':id', permissionId);
+        form.action = action;
+    });
+</script>
+
+<script>
     const deleteModal = document.getElementById('delete-confirm');
 
     deleteModal.addEventListener('show.bs.modal', function (event) {
@@ -146,7 +250,7 @@
         const roleId = button.getAttribute('data-role-id');
         const form = deleteModal.querySelector('#deleteForm');
 
-        const action = "{{ route('role-delete', ':id') }}".replace(':id', roleId);
+        const action = "{{ route('permissions-delete', ':id') }}".replace(':id', roleId);
         form.action = action;
     });
 </script>
