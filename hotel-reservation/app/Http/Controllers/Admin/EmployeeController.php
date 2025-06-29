@@ -36,25 +36,15 @@ class EmployeeController extends Controller
         $users = User::whereDoesntHave('roles', function ($query) {
                     $query->where('name', 'User');
                 })->get();
-        return view('admin.employees', compact('roles', 'users'));
+        return view('admin.employees.viewEmployee', compact('roles', 'users'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
-        //
+        $roles = Role::all();
+        return view('admin.employees.createEmployee', compact('roles'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function storeEmployee(Request $request) {
         $request->validate([
             'first_name' => 'required|string|max:255',
@@ -73,54 +63,43 @@ class EmployeeController extends Controller
 
         $user->assignRole($request->role);
         
-        return redirect()->back()->with('success', 'Employee added successfully!');
-    }
-    
-     public function store(Request $request)
-    {
-        //
+        return redirect()->route('admin-employees');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function show()
     {
-        //
+        
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    public function edit($employee_id)
     {
-        //
+        $roles = Role::all();
+        $employee = User::findOrFail($employee_id);
+        return view('admin.employees.editEmployee', [
+            'user' => $employee,
+            'roles' => $roles,
+        ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function update(Request $request, User $employee)
     {
-        //
+        $validated = $request->validate([
+            'first_name' => 'required|string|max:255',
+            'last_name'  => 'required|string|max:255',
+            'email'      => 'required|email|unique:users,email,' . $employee->user_id . ',user_id',
+            'role'       => 'required|exists:roles,name',
+        ]);
+
+        $employee->first_name = $validated['first_name'];
+        $employee->last_name  = $validated['last_name'];
+        $employee->email      = $validated['email'];
+
+        $employee->save();
+        $employee->syncRoles([$validated['role']]);
+
+        return redirect()->route('admin-employees')->with('success', 'Employee updated successfully!');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         User::destroy($id);

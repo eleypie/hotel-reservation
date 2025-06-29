@@ -13,9 +13,7 @@
 <body>
     <div id="adminContainer" class="admin-container" style="display: block;">
         <header class="admin-header">
-            <button onclick="showSideNav()" id="openNavbar" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <i class="bi bi-list"></i>
-            </button> 
+
             <button class="logout-btn" onclick="logout()">
                 <i class="bi bi-box-arrow-right"></i> 
                     <span class="logout-text">Logout</span>

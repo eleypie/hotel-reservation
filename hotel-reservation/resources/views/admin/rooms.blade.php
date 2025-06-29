@@ -2,6 +2,8 @@
 
 @section('title', 'Rooms')
 
+
+
 @section('content')
 <main class="main-content">
     <div class="page-header">
@@ -66,7 +68,7 @@
     </div>
 </main>
 
-<div id="addRoomModal" class="modal">
+  <div id="addRoomModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
                 <h2>Add New Room</h2>
@@ -108,4 +110,5 @@
             </form>
         </div>
     </div>
+
 @endsection
