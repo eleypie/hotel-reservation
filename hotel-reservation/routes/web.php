@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\WelcomeMail;
 use App\Http\Controllers\Auth\Request; 
 use App\Http\Controllers\Admin\EmployeeController;
+use App\Http\Controllers\SuperAdminController;
+
 
 
 /*
@@ -189,6 +191,10 @@ Route::get('/admin/check-in', function() {
 Route::get('/admin/employees', [EmployeeController::class, 'displayEmployees'])
     ->middleware('permission:view-user')
     ->name('admin-employees');
+
+Route::middleware(['auth', 'role:Super Admin'])->group(function () {
+    Route::get('/superadmin', [SuperAdminController::class, 'index'])->name('superadmin-dashboard');
+});
 
 // store data
 Route::post('/admin/employees/create', [EmployeeController::class, 'storeEmployee'])
