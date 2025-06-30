@@ -78,7 +78,8 @@ class BookingController extends Controller
         $service = 1200;
         $total = $subtotal + $tax + $service;
 
-        $userId = Auth::check() && Auth::user()->role === 'User' ? Auth::id() : null;
+        
+        $userId = Auth::id();
         if (!Auth::check()) {
         return redirect()->route('login')->with('error', 'You must be logged in to book.');
 }
@@ -91,15 +92,22 @@ class BookingController extends Controller
             'check_out_date'    => $checkOut,
             'email_confirmation'=> $request->email_confirmation,
             'guest_count'       => $request->guest_count,
-            // 'gcash_phone'       => $request->gcash_phone,
-            // 'gcash_reference'   => $request->gcash_reference,
             'note'              => $request->note,
             'total_price'       => $total,
-            'status'           => 'pending' // ✅ Add this line!
+            'status'           => 'pending' 
         ]);
 
         Mail::to($request->email_confirmation)->send(new BookingReceiptMail($booking));
-        session()->flash('booking_id', $booking->id);
+        session()->flash('booking_id', $booking->id); 
+
+        Payment::create([
+            'booking_id'      => $booking->booking_id,
+            'payment_method'  => 'GCash',
+            'gcash_phone'     => $request->gcash_phone,
+            'gcash_reference' => $request->gcash_reference,
+            'amount'          => $total,
+            'status'          => 'paid', 
+        ]);
 
         return redirect()->back()->with([
             'show_modal' => true,
@@ -209,5 +217,63 @@ class BookingController extends Controller
 {
     return view('booking-form.book-deluxe');
 }
+
+    public function history(Request $request)
+    {
+        $user = Auth::user();
+
+        $query = Booking::with('room.roomType')
+            ->where('user_id', $user->id);
+
+        // Filter by Room Type
+        if ($request->room_type) {
+            $query->whereHas('room.roomType', function ($q) use ($request) {
+                $q->where('room_type', $request->room_type);
+            });
+        }
+
+        // Filter by Date Range
+        if ($request->start_date && $request->end_date) {
+            $query->whereBetween('check_in_date', [
+                Carbon::parse($request->start_date)->startOfDay(),
+                Carbon::parse($request->end_date)->endOfDay()
+            ]);
+        }
+
+        $bookings = Booking::with(['room.roomType']) // not just 'roomType'
+        ->where('user_id', Auth::id())
+        ->paginate(10);
+        $roomTypes = RoomType::pluck('room_type');
+
+        return view('booking-history', compact('bookings', 'roomTypes'));
+    } 
+
+    public function userHistory(Request $request)
+    {
+        $user = Auth::user();
+
+        $query = Booking::with(['room.roomType'])
+            ->where('user_id', $user->id);
+
+        if ($request->filled('start_date')) {
+            $query->whereDate('check_in_date', '>=', $request->start_date);
+        }
+
+        if ($request->filled('end_date')) {
+            $query->whereDate('check_out_date', '<=', $request->end_date);
+        }
+
+        if ($request->filled('room_type')) {
+            $query->whereHas('room.roomType', function ($q) use ($request) {
+                $q->where('room_type', $request->room_type);
+            });
+        }
+
+        $bookings = $query->orderBy('created_at', 'desc')->paginate(10);
+        $roomTypes = RoomType::all();
+
+        return view('user.booking-history', compact('bookings', 'roomTypes'));
+    }
+
 
 }

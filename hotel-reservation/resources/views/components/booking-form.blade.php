@@ -102,22 +102,23 @@
                         
                         <div class="price-summary">
                             <div class="price-row">
-                                <span>Room (3 nights)</span>
-                                <span>₱16,500.00</span>
+                                <span>Room (<span id="nightCount">0</span> nights)</span>
+                                <span>₱<span id="subtotal">0.00</span></span>
                             </div>
                             <div class="price-row">
-                                <span>Taxes & Fees</span>
-                                <span>₱2,475.00</span>
+                                <span>Taxes & Fees (15%)</span>
+                                <span>₱<span id="tax">0.00</span></span>
                             </div>
                             <div class="price-row">
                                 <span>Service Charge</span>
-                                <span>₱1,200.00</span>
+                                <span>₱<span id="service">1200.00</span></span>
                             </div>
                             <div class="price-row total-row">
                                 <span>Total Amount</span>
-                                <span id="">₱20,175.00</span>
+                                <span>₱<span id="total">0.00</span></span>
                             </div>
                         </div>
+
                         
                         @guest
                             <a href="{{ route('login') }}" class="book-btn btn btn-primary w-100">
@@ -135,3 +136,50 @@
                     </form>
                 </div>
             </div>
+            <script>
+document.addEventListener('DOMContentLoaded', function () {
+    const dateInput = document.getElementById('bookingDates');
+    const checkInInput = document.getElementById('check_in_date');
+    const checkOutInput = document.getElementById('check_out_date');
+
+    const roomRate = parseFloat(document.getElementById('roomData').dataset.rate);
+    const serviceFee = 1200;
+
+    function formatPhp(num) {
+        return parseFloat(num).toLocaleString('en-PH', { style: 'decimal', minimumFractionDigits: 2 });
+    }
+
+    function calculateTotal(checkIn, checkOut) {
+        const diffTime = Math.abs(checkOut - checkIn);
+        const nights = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        const subtotal = nights * roomRate;
+        const tax = subtotal * 0.15;
+        const total = subtotal + tax + serviceFee;
+
+        document.getElementById('nightCount').textContent = nights;
+        document.getElementById('subtotal').textContent = formatPhp(subtotal);
+        document.getElementById('tax').textContent = formatPhp(tax);
+        document.getElementById('total').textContent = formatPhp(total);
+    }
+
+    // Initialize date range picker (assuming you use daterangepicker.js or flatpickr)
+    $(function () {
+        $('#bookingDates').daterangepicker({
+            minDate: moment().format('MM/DD/YYYY'),
+            locale: {
+                format: 'MM/DD/YYYY'
+            }
+        }, function(start, end) {
+            const checkIn = new Date(start);
+            const checkOut = new Date(end);
+
+            // Set hidden inputs
+            checkInInput.value = start.format('YYYY-MM-DD');
+            checkOutInput.value = end.format('YYYY-MM-DD');
+
+            // Recalculate price
+            calculateTotal(checkIn, checkOut);
+        });
+    });
+});
+</script>

@@ -38,7 +38,7 @@
                                 <i class="fas fa-chevron-down dropdown-arrow"></i>
                             </button>
                             <div class="dropdown-menu" id="dropdownMenu">
-                                <a href="#"><i class="fas fa-history"></i> My Stays</a>
+                                <a href="{{ route('booking.history') }}"><i class="fas fa-history"></i> My Stays</a>
                                 <form action="{{ route('logout') }}" method="POST" class="d-inline">
                                 @csrf
                                 <button class="dropdown-item" type="submit"><i class="fas fa-sign-out-alt me-2"></i>Sign Out</button>

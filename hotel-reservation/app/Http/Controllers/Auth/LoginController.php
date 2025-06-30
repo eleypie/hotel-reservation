@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Traits\HasRoles;
 
@@ -40,10 +41,11 @@ class LoginController extends Controller
             // Login successful
             $user = Auth::user();
 
-            if($user->hasRole('User')) {
-                return redirect()->intended($this->redirectTo);
-            } else {
+        // Redirect based on role
+        if($user->hasPermissionTo('view-admin-site')) {
                 return redirect()->route('admin-dashboard');
+            } else {
+                return redirect()->intended($this->redirectTo);
             }
 
         }

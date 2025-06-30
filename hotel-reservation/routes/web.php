@@ -271,6 +271,10 @@ Route::post('/admin/bookings/create', [BookingController::class, 'receptionBooki
 
 // delete record
 
-Route::get('/room-availability', [BookingController::class, 'roomAvailability']);
+Route::get('/room-availability', [BookingController::class, 'roomAvailability']); 
+
+Route::get('/booking-history', [App\Http\Controllers\BookingController::class, 'history'])
+    ->name('booking.history')
+    ->middleware('auth');
 
 
