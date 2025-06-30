@@ -198,9 +198,13 @@ Route::get('/admin/boookings/edit/{id}', [BookingController::class, 'edit'])
         ->middleware('permission:edit-booking')
         ->name('admin-booking-edit');
 
-Route::put('/admin/bookings/update/{id}', [BookingController::class, 'update'])
+Route::put('/admin/bookings/update/{booking}', [BookingController::class, 'update'])
     ->middleware('permission:edit-booking')
     ->name('booking-update');
+
+Route::put('/admin/booking/update-status/{booking}', [BookingController::class, 'updateStatus'])
+    ->name('booking-status-update')
+    ->middleware('permission:edit-booking');
 
 Route::delete('/admin/bookings/delete/{id}', [BookingController::class, 'destroy'])
     ->middleware('permission:delete-booking')

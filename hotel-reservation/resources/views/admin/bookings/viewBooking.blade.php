@@ -40,10 +40,24 @@
                         <td>{{ $booking->room_id }}</td>
                         <td>{{ $booking->check_in_date }}</td>
                         <td>{{ $booking->check_out_date }}</td>
-                        <td>{{ $booking->status}}</td>
+                        <td>
+                            @can('edit-booking')
+                                <form action="{{ route('booking-status-update', $booking->id) }}" method="POST">
+                                    @csrf
+                                    @method('PUT')
+                                    <select name="status" class="form-select form-select-sm" onchange="this.form.submit()">
+                                        <option value="Confirmed" {{ $booking->status === 'Confirmed' ? 'selected' : '' }}>Confirmed</option>
+                                        <option value="Checked In" {{ $booking->status === 'Checked In' ? 'selected' : '' }}>Checked In</option>
+                                        <option value="Checked Out" {{ $booking->status === 'Checked Out' ? 'selected' : '' }}>Checked Out</option>
+                                    </select>
+                                </form>
+                            @else
+                                {{ $booking->status }}
+                            @endcan
+                        </td>
                         <td>
                             <div class="actions-btns">
-                                <button class="btn btn-info" onclick="viewBooking({{ $booking->booking_id }})">View</button>
+                                {{-- <button class="btn btn-info" onclick="viewBooking({{ $booking->booking_id }})">View</button> --}}
                                 @can('edit-booking')
                                     <a href="{{ route('admin-booking-edit', $booking->id) }}">
                                         <button class="btn btn-info">Edit</button>

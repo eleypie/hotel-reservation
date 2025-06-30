@@ -26,7 +26,11 @@
         </div>
         <div class="form-group">
             <label for="status">Status</label>
-            <input type="text" name="status" value="{{ old('status', $booking?->status) }}" required>
+            <select name="status" class="form-select form-select-sm" value="{{ old('status', $booking?->status) }}" required>
+                <option value="Confirmed" {{ $booking->status === 'Confirmed' ? 'selected' : '' }}>Confirmed</option>
+                <option value="Checked In" {{ $booking->status === 'Checked In' ? 'selected' : '' }}>Checked In</option>
+                <option value="Checked Out" {{ $booking->status === 'Checked Out' ? 'selected' : '' }}>Checked Out</option>
+            </select>
         </div>
     @endif
     @if (!isset($booking))

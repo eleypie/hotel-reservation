@@ -94,7 +94,7 @@ class BookingController extends Controller
             'guest_count'       => $request->guest_count,
             'note'              => $request->note,
             'total_price'       => $total,
-            'status'           => 'Not Checked-In' 
+            'status'           => 'Confirmed' 
         ]);
 
         Mail::to($request->email_confirmation)->send(new BookingReceiptMail($booking));
@@ -184,7 +184,7 @@ class BookingController extends Controller
             'check_out_date'  => $checkOut,
             'guest_count'     => $request->guest_count,
             'total_price'     => $request->total_price,
-            'status'          => 'Not Checked-In',
+            'status'          => 'Confirmed',
             'note'           => $request->note
         ]);
 
@@ -336,6 +336,19 @@ class BookingController extends Controller
         // ]);
 
         // return redirect()->route('admin-bookings')->with('success', 'Booking updated.');
+    }
+
+    public function updateStatus(Request $request, Booking $booking)
+    {
+        $request->validate([
+            'status' => 'required|in:Confirmed,Checked In,Checked Out',
+        ]);
+
+        $booking->update([
+            'status' => $request->status,
+        ]);
+
+        return redirect()->back()->with('success', 'Booking status updated.');
     }
 
     public function destroy($id)
