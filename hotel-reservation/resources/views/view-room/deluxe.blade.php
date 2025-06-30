@@ -93,9 +93,9 @@
                 </div>
             </div>
 
-            <h4 class="mt-4">Availability</h3>
+            {{-- <h4 class="mt-4">Availability</h3>
             <!-- Date Range Picker -->
-            <input type="text" class="form-control daterange-input" id="daterange" placeholder="Select dates" name="daterange">
+            <input type="text" class="form-control daterange-input" id="daterange" placeholder="Select dates" name="daterange"> --}}
 
             <!-- Reviews Section 
             <h3 class="mt-4">Reviews</h3>

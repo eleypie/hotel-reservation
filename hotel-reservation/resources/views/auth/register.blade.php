@@ -62,7 +62,7 @@
 
                     <div class="mb-3 position-relative">
                         <label for="password" class="form-label">Password</label>
-                        <input type="password" class="form-control" name="password" required>
+                        <input type="password" class="form-control" min="8" name="password" required>
                         <i class="fas fa-eye password-toggle" id="togglePassword"></i>
                         <div class="progress mt-2">
                             <div class="progress-bar" role="progressbar" style="width: 0%"></div>

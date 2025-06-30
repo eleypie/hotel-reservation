@@ -786,6 +786,32 @@
     background-color: #e9f3ff;
 }
 
+  .navy-table-container {
+        background-color: #f8f9fa;
+        border-radius: 1rem;
+        padding: 1.5rem;
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+    }
+
+.cell {
+    padding: 0.8rem 0 !important; 
+}
+
+    /* .table-navy thead {
+        background-color: #001f3f;
+        color: #ffffff;
+    } */
+
+    .table-navy tbody tr:hover {
+        background-color: #e2e6ea;
+    }
+
+    .badge-status {
+        font-size: 0.9rem;
+        padding: 0.5em 0.75em;
+        border-radius: 0.5rem;
+    }
+
 /* Animation */
 @keyframes fadeIn {
     from {

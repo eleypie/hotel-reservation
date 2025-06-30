@@ -10,76 +10,88 @@
             <p>Welcome back! Here's what's happening at your hotel today.</p>
         </div>
 
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-value">156</div>
-                <div class="stat-label">Total Bookings</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-value">89%</div>
-                <div class="stat-label">Occupancy Rate</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-value">$12,450</div>
-                <div class="stat-label">Today's Revenue</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-value">23</div>
-                <div class="stat-label">Check-ins Today</div>
-            </div>
+        
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div id="totalBookings" class="stat-value">...</div>
+            <div class="stat-label">Total Bookings</div>
         </div>
+        <div class="stat-card">
+            <div id="occupancyRate" class="stat-value">...</div>
+            <div class="stat-label">Occupancy Rate</div>
+        </div>
+        <div class="stat-card">
+            <div id="todaysRevenue" class="stat-value">...</div>
+            <div class="stat-label">Today's Revenue</div>
+        </div>
+        <div class="stat-card">
+            <div id="checkInsToday" class="stat-value">...</div>
+            <div class="stat-label">Check-ins Today</div>
+        </div>
+    </div>
 
 <div class="content-section">
     <div class="section-header">
         <h2 class="section-title">Recent Bookings</h2>
     </div>
-    <table class="data-table">
-        <thead>
-            <tr>
-                <th>Booking ID</th>
-                <th>Guest Name</th>
-                <th>Room</th>
-                <th>Check-in</th>
-                <th>Check-out</th>
-                <th>Status</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>BK001</td>
-                <td>John Smith</td>
-                <td>Deluxe Suite 101</td>
-                <td>2025-06-30</td>
-                <td>2025-07-03</td>
-                <td><span class="status-badge status-confirmed">Confirmed</span></td>
-            </tr>
-            <tr>
-                <td>BK004</td>
-                <td>Sarah Wilson</td>
-                <td>Standard Room 102</td>
-                <td>2025-07-02</td>
-                <td>2025-07-06</td>
-                <td><span class="status-badge status-pending">Pending</span></td>
-            </tr>
-            <tr>
-                <td>BK005</td>
-                <td>Michael Brown</td>
-                <td>Deluxe Room 203</td>
-                <td>2025-06-29</td>
-                <td>2025-07-01</td>
-                <td><span class="status-badge status-cancelled">Cancelled</span></td>
-            </tr>
-            <tr>
-                <td>BK006</td>
-                <td>Lisa Anderson</td>
-                <td>Executive Suite 401</td>
-                <td>2025-07-03</td>
-                <td>2025-07-08</td>
-                <td><span class="status-badge status-confirmed">Confirmed</span></td>
-            </tr>
-        </tbody>
-    </table>
-</div>
+    <div class="container mt-4 navy-table-container">
+    <h3 class="text-center text-primary mb-4">Booking Records</h3>
+
+    <div class="table-responsive">
+        <table class="table table-navy table-bordered table-hover text-center align-middle table-borderless">
+            <thead>
+                <tr>
+                    <th>Booking ID</th>
+                    <th>Guest Name</th>
+                    <th>Room</th>
+                    <th>Check In</th>
+                    <th>Check Out</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($bookings as $booking)
+                    <tr>
+                        <td class="cell">{{ $booking->booking_id }}</td>
+                        <td class="cell">{{ $booking->user->first_name }} {{ $booking->user->last_name }}</td>
+                        <td class="cell">{{ $booking->room->roomType->room_name }} {{ $booking->room_id }}</td>
+                        <td class="cell">{{ \Carbon\Carbon::parse($booking->check_in_date)->format('M d, Y') }}</td>
+                        <td class="cell">{{ \Carbon\Carbon::parse($booking->check_out_date)->format('M d, Y') }}</td>
+                        <td class="cell">
+                            <span class="badge badge-status 
+                                @if($booking->status == 'Confirmed') bg-success
+                                @elseif($booking->status == 'Pending') bg-warning text-dark
+                                @elseif($booking->status == 'Cancelled') bg-danger
+                                @else bg-secondary
+                                @endif">
+                                {{ $booking->status }}
+                            </span>
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
     </div>
+</div>
+</div>
+</div>
 </main>
+@endsection
+
+@section('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    fetch("{{ route('dashboard.stats') }}")
+        .then(res => res.json())
+        .then(data => {
+            document.getElementById('totalBookings').textContent = data.totalBookings;
+            document.getElementById('occupancyRate').textContent = data.occupancyRate + '%';
+            document.getElementById('todaysRevenue').textContent = '₱' + Number(data.todaysRevenue).toLocaleString('en-PH', {
+                minimumFractionDigits: 2
+            });
+            document.getElementById('checkInsToday').textContent = data.checkInsToday;
+        })
+        .catch(err => console.error("Failed to load dashboard data", err));
+});
+</script>
 @endsection

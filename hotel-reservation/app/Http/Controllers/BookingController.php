@@ -104,7 +104,7 @@ class BookingController extends Controller
             'booking_id'      => $booking->booking_id,
             'payment_method'  => 'GCash',
             'gcash_phone'     => $request->gcash_phone,
-            'gcash_reference' => $request->gcash_reference,
+            'transaction_number' => $request->gcash_reference,
             'amount'          => $total,
             'status'          => 'paid', 
         ]);

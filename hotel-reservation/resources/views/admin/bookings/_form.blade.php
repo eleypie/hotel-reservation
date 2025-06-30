@@ -35,8 +35,10 @@
     @endif
     @if (!isset($booking))
         <div class="form-group">
-            <input type="hidden" name="check_in_date" id="check_in_date" readonly>
-            <input type="hidden" name="check_out_date" id="check_out_date" readonly>
+            <label for="bookingDates">Date</label>
+                    <input type="text" id="bookingDates" class="form-control" required>
+            <input type="hidden" name="check_in_date" id="check_in_date">
+            <input type="hidden" name="check_out_date" id="check_out_date">
         </div><br>
     @else
         <div class="container">
@@ -53,7 +55,7 @@
         </div><br>
     @endif
     <div class="form-group">
-        <label>Guest Details</label>
+        <label style="text-decoration:underline">Guest Details</label>
         <label for="first_name">First Name</label>
         <input type="text" name="first_name" value="{{ old('first_name', $booking?->user->first_name) }}" required>
         <label for="last_name">Last Name</label>
@@ -64,7 +66,7 @@
         <input type="tel" name="phone" value="{{ old('email', $booking?->user->phone) }}">
     </div>
     <div class="form-group">
-        <label>Room Details</label>
+        <label style="text-decoration:underline">Room Details</label>
         @if (isset($booking))
             <label for="room_id">Room No.</label>
             <input type="text" name="room_id" value="{{ old('room_id', $booking?->room->room_id) }}" required readonly>
@@ -86,7 +88,7 @@
         <input type="guest_count" name="guest_count" value="{{ old('guest_count', $booking?->guest_count) }}" required>
     </div>
     <div class="form-group">
-        <label>Payment Details</label>
+        <label style="text-decoration:underline">Payment Details</label>
         <label for="payment_method">Payment Method</label>
         @if (isset($booking))
             <input type="text" name="payment_method" value="{{ old('payment_method', $booking?->payment->payment_method) }}" required readonly>
@@ -113,6 +115,11 @@
 <button type="submit" class="btn btn-primary">
     {{ isset($booking) ? 'Update Booking' : 'Add Booking' }}
 </button>
+<a href="{{ route('admin-bookings') }}">
+    <button type="button" class="btn btn-secondary" style="margin-top: 1rem; height:2.7rem;">
+        Cancel
+    </button>
+</a>
 
 @section('scripts')
 <script>

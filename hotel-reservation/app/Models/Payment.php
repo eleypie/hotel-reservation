@@ -15,7 +15,7 @@ class Payment extends Model
         'booking_id',
         'payment_method',
         'gcash_phone',
-        'gcash_reference',
+        'transaction_number',
     ];
 
     public function booking()

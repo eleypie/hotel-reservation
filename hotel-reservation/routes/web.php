@@ -170,7 +170,7 @@ Route::get('/booking/{booking}/receipt', [BookingController::class, 'downloadRec
 // admin page routes
 // return views
 Route::get('/admin', [EmployeeController::class, 'index'])
-    ->middleware(['auth', 'role:Admin|Super Admin|Receptionist'])
+    ->middleware('permission:view-admin-site')
     ->name('admin-dashboard');
 
 
@@ -252,6 +252,7 @@ Route::delete('/admin/bookings/delete/{id}', [BookingController::class, 'destroy
     ->name('booking-delete');
 
 
+Route::get('/admin/dashboard-data', [EmployeeController::class, 'getStats'])->name('dashboard.stats');
 
 Route::get('/admin/check-in', function() {
     return view('admin.check-in');
@@ -336,5 +337,7 @@ Route::delete('/admin/permissions/{permission}', [PermissionController::class, '
 Route::get('/room-availability', [BookingController::class, 'roomAvailability']); 
 Route::get('/booking-history', [BookingController::class, 'userHistory'])->name('booking.history')->middleware('auth');
 Route::get('/history', [BookingController::class, 'userHistory'])->name('history')->middleware('auth');
+Route::post('/contact', [App\Http\Controllers\InquiryController::class, 'send'])->name('inquiry.send');
+
 
 

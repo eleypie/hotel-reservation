@@ -136,17 +136,20 @@
                     </form>
                 </div>
             </div>
-            <script>
+<script>
 document.addEventListener('DOMContentLoaded', function () {
     const dateInput = document.getElementById('bookingDates');
     const checkInInput = document.getElementById('check_in_date');
     const checkOutInput = document.getElementById('check_out_date');
-
     const roomRate = parseFloat(document.getElementById('roomData').dataset.rate);
+    const roomTypeId = document.getElementById('roomData').dataset.roomType;
     const serviceFee = 1200;
 
     function formatPhp(num) {
-        return parseFloat(num).toLocaleString('en-PH', { style: 'decimal', minimumFractionDigits: 2 });
+        return parseFloat(num).toLocaleString('en-PH', {
+            style: 'decimal',
+            minimumFractionDigits: 2
+        });
     }
 
     function calculateTotal(checkIn, checkOut) {
@@ -162,24 +165,50 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('total').textContent = formatPhp(total);
     }
 
-    // Initialize date range picker (assuming you use daterangepicker.js or flatpickr)
-    $(function () {
+    function initDatePicker(unavailableDates) {
         $('#bookingDates').daterangepicker({
+            isInvalidDate: function (date) {
+                return unavailableDates.includes(date.format('YYYY-MM-DD'));
+            },
             minDate: moment().format('MM/DD/YYYY'),
+            autoUpdateInput: false,
             locale: {
-                format: 'MM/DD/YYYY'
+                format: 'MM/DD/YYYY',
+                cancelLabel: 'Clear'
             }
-        }, function(start, end) {
+        }, function (start, end) {
             const checkIn = new Date(start);
             const checkOut = new Date(end);
 
-            // Set hidden inputs
             checkInInput.value = start.format('YYYY-MM-DD');
             checkOutInput.value = end.format('YYYY-MM-DD');
 
-            // Recalculate price
+            $('#bookingDates').val(start.format('MM/DD/YYYY') + ' to ' + end.format('MM/DD/YYYY'));
+
             calculateTotal(checkIn, checkOut);
         });
-    });
+
+        $('#bookingDates').on('cancel.daterangepicker', function () {
+            $(this).val('');
+            checkInInput.value = '';
+            checkOutInput.value = '';
+        });
+    }
+
+    // Fetch unavailable dates from backend
+    if (roomTypeId) {
+        fetch(`/room-availability?room_type=${roomTypeId}`)
+            .then(response => response.json())
+            .then(data => {
+                const unavailableDates = data.unavailable_dates || [];
+                initDatePicker(unavailableDates);
+            })
+            .catch(err => {
+                console.error('Error fetching unavailable dates:', err);
+                initDatePicker([]); // fallback if fetch fails
+            });
+    } else {
+        initDatePicker([]); // fallback if no roomTypeId found
+    }
 });
 </script>

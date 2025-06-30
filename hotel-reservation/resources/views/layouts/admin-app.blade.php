@@ -76,7 +76,7 @@ admin-app.blade.php
                 <button class="nav-toggle">
                     <i class="bi bi-list"></i>
                 </button>
-                <h3>Dashboard</h3>
+                {{-- <h3>Dashboard</h3> --}}
             </div>
             <div class="header-right">
                 <div class="user-info">
@@ -94,6 +94,12 @@ admin-app.blade.php
                     </div>
                     <span>{{ $role }}</span>
                 </div>
+                <a href={{ route('home') }} style="text-decoration: none">
+                    <button class="logout-btn">
+                        <i class="bi bi-building"></i>
+                        <span>Hotel Website</span>
+                    </button>
+                </a>
                 <a href={{ route('logout') }} style="text-decoration: none">
                     <button class="logout-btn">
                         <i class="bi bi-box-arrow-right"></i>

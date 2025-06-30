@@ -31,12 +31,11 @@
         <label for="email">Email</label>
         <input type="email" name="email" value="{{ old('email', $user?->email) }}" required>
     </div>
-    @if (!isset($user))
+    {{-- @if (!isset($user)) --}}
         <div class="form-group">
             <label for="password">Password</label>
-            <input type="password" name="password" required>
+            <input type="password" name="password" min="8" required>
         </div>
-    @endif
     <div class="form-group">
         <label>Role</label>
         <select name="role" required>
@@ -51,3 +50,8 @@
 <button type="submit" class="btn btn-primary">
     {{ isset($user) ? 'Update Employee' : 'Add Employee' }}
 </button>
+<a href="{{ route('admin-employees') }}">
+    <button type="button" class="btn btn-secondary" style="margin-top: 1rem; height:2.7rem;">
+        Cancel
+    </button>
+</a>
