@@ -1,159 +1,157 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <title>Home | TheHaven</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Experience luxury in our Deluxe Room with premium amenities and stunning views">
+@extends('layouts.app')
 
-    <!-- Fonts & Icons -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+@section('content')
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<style>
+    .history-header {
+        margin-bottom: 30px;
+        text-align: center;
+    }
+    .history-title {
+        font-size: 2rem;
+        font-weight: bold;
+    }
+    .booking-card {
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        margin-bottom: 30px;
+        overflow: hidden;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    }
+    .booking-header, .booking-footer {
+        padding: 15px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #f8f9fa;
+    }
+    .booking-body {
+        display: flex;
+        gap: 20px;
+        padding: 15px;
+    }
+    .room-image {
+        width: 180px;
+        height: 120px;
+        object-fit: cover;
+        border-radius: 8px;
+    }
+    .room-name {
+        margin: 0;
+        font-size: 1.2rem;
+        font-weight: bold;
+    }
+    .booking-date {
+        margin: 5px 0;
+        color: #666;
+    }
+    .amenities {
+        margin-top: 10px;
+    }
+    .amenity-badge {
+        background: #e9ecef;
+        padding: 5px 10px;
+        margin-right: 5px;
+        border-radius: 20px;
+        font-size: 0.9rem;
+    }
+    .booking-status {
+        padding: 5px 10px;
+        border-radius: 20px;
+        font-size: 0.9rem;
+    }
+    .status-completed {
+        background-color: #28a745;
+        color: white;
+    }
+    .booking-price {
+        font-size: 1.1rem;
+        font-weight: bold;
+    }
+    .action-btns button {
+        margin-left: 10px;
+    }
+</style>
 
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Date Range Picker CSS -->
-    <link rel="stylesheet" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css">
-
-    <!-- Custom CSS -->
-    <link href="{{ asset('css/history.css') }}" rel="stylesheet" />  
-</head>
-<body>
-        <!-- Header Section -->
-    <header>
-        <div class="header-container">
-            <a href="#" class="logo">TheHaven</a>
-            
-            <input type="checkbox" id="side-menu" class="side-menu">
-            <label class="hamb" for="side-menu">
-                <span class="hamb-line"></span>
-            </label>
-            
-            <nav>
-                <ul>
-                    <li><a href="{{ route('home') }}">Home</a></li>
-                    <li><a href="{{ route('room') }}">Rooms</a></li>
-                    <li><a href="{{ route('ameneties') }}">Amenities</a></li>
-                    <li><a href="{{ route('cart') }}">My Cart</a></li>
-                    <li><a href="{{ route('contact') }}">Contact Us</a></li>
-                    <li><a href="{{ route('about') }}">About Us</a></li>
-                    
-                    <li class="nav-profile">
-                        <div class="profile-dropdown">
-                            <button class="profile-toggle">
-                                <div class="profile-pic-container">
-                                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Profile" class="profile-pic">
-                                </div>
-                                <span class="profile-name">John D.</span>
-                                <i class="fas fa-chevron-down dropdown-arrow"></i>
-                            </button>
-                            <div class="dropdown-menu">
-                                <a href="#"><i class="fas fa-history"></i> My Stays</a>
-                                <a href="#"><i class="fas fa-sign-out-alt"></i> Sign Out</a>
-                            </div>
-                        </div>
-                    </li>
-
-                    <div class="auth-buttons">
-                        <a href="{{ route('signin') }}" class="sign-in">Sign In</a>
-                        <a href="{{ route('create-account') }}" class="sign-up">Create Account</a>
-                    </div>
-                </ul>
-            </nav>  
-        </div>
-    </header>
-<body>
-        <div class="container">
-        <!-- History Header -->
-        <div class="history-header">
-            <h1 class="history-title">Booking History</h1>
-        </div>
-
-        <!-- Booking Cards -->
-        <div class="booking-card">
-            <div class="booking-header">
-                <span class="booking-id">Booking #12345</span>
-                <span class="booking-status status-completed">Completed</span>
-            </div>
-            <div class="booking-body">
-                <img src="https://res.cloudinary.com/lastminute/image/upload/q_auto/v1746440041/Genel_Goruntu_5_x1tmz0.jpg" alt="Deluxe Room" class="room-image">
-                <div class="booking-details">
-                    <h3 class="room-name">Deluxe Room</h3>
-                    <div class="booking-date">
-                        <i class="far fa-calendar-alt"></i> Jun 25 - Jun 30, 2024 (5 nights)
-                    </div>
-                    <p>Premium Ocean View • 45 sqm • 2 Adults + 1 Child</p>
-                    <div class="amenities">
-                        <span class="amenity-badge">
-                            <i class="fas fa-wifi"></i> WiFi
-                        </span>
-                        <span class="amenity-badge">
-                            <i class="fas fa-tv"></i> TV
-                        </span>
-                        <span class="amenity-badge">
-                            <i class="fas fa-snowflake"></i> AC
-                        </span>
-                        <span class="amenity-badge">
-                            <i class="fas fa-wine-bottle"></i> Mini Bar
-                        </span>
-                    </div>
-                </div>
-            </div>
-            <div class="booking-footer">
-                <div class="booking-price">$1,200.00</div>
-                <div class="action-btns">
-                    <button class="btn btn-outline">View Receipt</button>
-                    <button class="btn btn-primary">Book Again</button>
-                </div>
-            </div>
-        </div>
+@include('nav')
+<div class="container">
+    <div class="history-header">
+        <h1 class="history-title">Booking History</h1>
+    </div>
 
     
+    @forelse ($bookings as $booking)
         <div class="booking-card">
             <div class="booking-header">
-                <span class="booking-id">Booking #12346</span>
-                <span class="booking-status status-completed">Completed</span>
+                <span class="booking-id">Booking #{{ $booking->booking_id }}</span>
+                <span class="booking-status status-completed">{{ ucfirst($booking->status) }}</span>
             </div>
             <div class="booking-body">
-                <img src="images/family-1.jpg" alt="Family Room" class="room-image">
+                @php
+                    $roomImages = [
+                        'Deluxe'     => 'images/deluxe-1.jpg',
+                        'Family Suite'     => 'images/family-1.jpg',
+                        'Executive Suite'  => 'images/executive-2.jpg',
+                        'Premier'    => 'images/premier-1.jpg',
+                        'Superior'   => 'images/superior-1.jpg',
+                        'Honeymoon Suite'  => 'images/honeymoon-1.jpg',
+                    ];
+
+                    $roomName = $booking->room->roomType->room_name ?? 'Default';
+                    $imagePath = $roomImages[$roomName] ?? 'images/default-room.jpg';
+                @endphp
+                <img src="{{ asset($imagePath) }}" alt="{{ $roomName }}" class="room-image">
                 <div class="booking-details">
-                    <h3 class="room-name">Family Room</h3>
+                    <h3 class="room-name">{{ $booking->room->roomType->room_name ?? 'N/A' }}</h3>
                     <div class="booking-date">
-                        <i class="far fa-calendar-alt"></i> Jul 15 - Jul 20, 2024 (5 nights)
+                        <i class="far fa-calendar-alt"></i>
+                        {{ \Carbon\Carbon::parse($booking->check_in_date)->format('M d, Y') }} -
+                        {{ \Carbon\Carbon::parse($booking->check_out_date)->format('M d, Y') }}
+                        ({{ \Carbon\Carbon::parse($booking->check_out_date)->diffInDays($booking->check_in_date) }} nights)
                     </div>
-                    <p>City View • 60 sqm • 2 Adults + 2 Children</p>
+                    <p>2 Adults • Free Breakfast • 45 sqm</p>
                     <div class="amenities">
-                        <span class="amenity-badge">
-                            <i class="fas fa-wifi"></i> WiFi
-                        </span>
-                        <span class="amenity-badge">
-                            <i class="fas fa-tv"></i> TV
-                        </span>
-                        <span class="amenity-badge">
-                            <i class="fas fa-utensils"></i> Breakfast
-                        </span>
+                        <span class="amenity-badge"><i class="fas fa-wifi"></i> WiFi</span>
+                        <span class="amenity-badge"><i class="fas fa-tv"></i> TV</span>
+                        <span class="amenity-badge"><i class="fas fa-snowflake"></i> AC</span>
+                        <span class="amenity-badge"><i class="fas fa-wine-bottle"></i> Mini Bar</span>
                     </div>
                 </div>
             </div>
             <div class="booking-footer">
-                <div class="booking-price">$1,200.00</div>
+                <div class="booking-price">&#8369;{{ number_format($booking->total_price, 2) }}</div>
                 <div class="action-btns">
-                    <button class="btn btn-outline">View Receipt</button>
-                    <button class="btn btn-primary">Book Again</button>
+                    {{-- <a href="{{ route('booking.receipt.pdf', $booking->id) }}" class="btn btn-outline-secondary">View Receipt</a> --}}
+                    @php
+                        $roomName = $booking->room->roomType->room_name ?? 'Default';
+
+                         $routeMap = [
+                            'Deluxe'     => 'booking-deluxe',
+                            'Family Suite'     => 'booking-family',
+                            'Executive Suite'  => 'booking-executive',
+                            'Premier'    => 'booking-premier',
+                            'Superior'   => 'booking-superior',
+                            'Honeymoon Suite'  => 'booking-honeymoon',
+                        ];
+
+                        $routeName = $routeMap[$roomName] ?? 'room'; // fallback to a default route if not found
+                    @endphp
+
+                    <a href="{{ route($routeName) }}" class="btn btn-primary">Book Again</a>
                 </div>
             </div>
         </div>
+    @empty
+        <div class="text-center py-5">
+            <i class="far fa-calendar-alt fa-3x text-muted"></i>
+            <h4 class="mt-3">No Bookings Yet</h4>
+            <p>Your upcoming and past bookings will appear here.</p>
+            <a href="{{ route('room') }}" class="btn btn-primary">Browse Rooms</a>
+        </div>
+    @endforelse
 
-        <!-- Empty State (Hidden by default) -->
-        <!-- <div class="empty-history">
-            <div class="empty-icon">
-                <i class="far fa-calendar-alt"></i>
-            </div>
-            <h3>No Bookings Yet</h3>
-            <p>Your upcoming and past bookings will appear here</p>
-            <button class="btn btn-primary">Browse Rooms</button>
-        </div> -->
+    <div class="d-flex justify-content-center mt-4">
+        {{ $bookings->links() }}
     </div>
-</body>
-</html>
+</div>
+@endsection

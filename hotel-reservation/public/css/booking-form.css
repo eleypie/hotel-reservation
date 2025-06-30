@@ -41,12 +41,20 @@
         }
 
         .logo {
+        width: 150px;
         font-size: 24px;
         font-weight: bold;
         color: var(--hotel-navy);
         text-decoration: none;
         transition: var(--transition);
+        display: flex;
+        flex-direction: row;
         }
+
+        .logo img {
+        width: 50%;
+    }
+
 
         .logo:hover {
         color: var(--hotel-blue);

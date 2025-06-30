@@ -265,20 +265,20 @@ class BookingController extends Controller
             ]);
         }
 
-        $bookings = Booking::with(['room.roomType']) // not just 'roomType'
-        ->where('user_id', Auth::id())
-        ->paginate(10);
-        $roomTypes = RoomType::pluck('room_type');
+        $bookings = $query->orderBy('created_at', 'desc')->paginate(10);
+        $roomTypes = RoomType::all(); 
+        
 
         return view('booking-history', compact('bookings', 'roomTypes'));
     } 
 
     public function userHistory(Request $request)
     {
-        $user = Auth::user();
+        $user = Auth::user();   
 
-        $query = Booking::with(['room.roomType'])
-            ->where('user_id', $user->id);
+        $query = Booking::where('user_id', $user->user_id);
+        
+        
 
         if ($request->filled('start_date')) {
             $query->whereDate('check_in_date', '>=', $request->start_date);
@@ -289,7 +289,7 @@ class BookingController extends Controller
         }
 
         if ($request->filled('room_type')) {
-            $query->whereHas('room.roomType', function ($q) use ($request) {
+            $query->whereHas('room', function ($q) use ($request) {
                 $q->where('room_type', $request->room_type);
             });
         }
@@ -297,8 +297,9 @@ class BookingController extends Controller
         $bookings = $query->orderBy('created_at', 'desc')->paginate(10);
         $roomTypes = RoomType::all();
 
-        return view('user.booking-history', compact('bookings', 'roomTypes'));
+        return view('history', compact('bookings', 'roomTypes'));
     }
+
 
 
     public function edit($id)
