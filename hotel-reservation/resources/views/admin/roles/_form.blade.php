@@ -31,7 +31,7 @@
                     <div class="form-check d-flex align-items-center">
                         <input class="form-check-input" type="checkbox" name="permissions[]" 
                             value="{{ $permission->id }}" id="permission-{{ $permission->id }}"
-                            {{ in_array($permission->id, $rolePermissions) ? 'checked' : '' }}>
+                            {{ in_array($permission?->id, $rolePermissions) ? 'checked' : '' }}>
                         <label class="form-check-label ms-2">
                             {{ $permission->name }}
                         </label>

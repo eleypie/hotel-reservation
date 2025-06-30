@@ -15,6 +15,7 @@ class Room extends Model
     ];
 
     protected $primaryKey = 'room_id';
+    public $timestamps = false;
 
     public function roomType() {
         return $this->belongsTo(RoomType::class, 'room_type', 'room_type');
