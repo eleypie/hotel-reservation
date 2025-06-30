@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\EmployeeController;
 use App\Http\Controllers\Admin\RoleController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Admin\PermissionController;
+use App\Http\Controllers\Admin\RoomController;
 use App\Models\Booking;
 
 /*
@@ -172,11 +173,30 @@ Route::get('/admin', [EmployeeController::class, 'index'])
     ->middleware(['auth', 'role:Admin|Super Admin|Receptionist'])
     ->name('admin-dashboard');
 
-Route::get('/admin/rooms', function() {
-    return view('admin.rooms');
-})
-->middleware('permission:view-room')
-->name('admin-rooms');
+// Rooms CRUD
+Route::get('/admin/rooms', [RoomController::class, 'index'])
+    ->middleware('permission:view-room')
+    ->name('admin-rooms');
+
+Route::get('/admin/rooms/type/create', [RoomController::class, 'create'])
+    ->middleware('permission:add-room')
+    ->name('admin-room-type-create');
+
+Route::post('/admin/rooms/type/create/', [RoomController::class, 'store'])
+    ->middleware('permission:add-room')
+    ->name('admin-room-type-store');
+
+Route::get('/admin/rooms/type/edit/{id}', [RoomController::class, 'edit'])
+        ->middleware('permission:edit-room')
+        ->name('admin-room-type-edit');
+
+Route::put('/admin/rooms/update/{id}', [RoomController::class, 'update'])
+    ->middleware('permission:edit-room')
+    ->name('room-type-update');
+
+Route::delete('/admin/rooms/type/delete/{id}', [RoomController::class, 'destroy'])
+    ->middleware('permission:edit-room')
+    ->name('room-type-delete');
 
 
 // Bookings CRUD
