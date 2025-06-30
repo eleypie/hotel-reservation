@@ -55,7 +55,7 @@
                             <span class="fw-bold">BOOK20230622145</span>
                         </div>
                         <div class="d-flex justify-content-between py-2">
-                            <span class="text-muted">Room Type:</span>
+                            <span class="text-muted">Room ID:</span>
                             <span>Luxury Suite</span>
                         </div>
                         <div class="d-flex justify-content-between py-2">
@@ -100,7 +100,7 @@
                     </div>
                 </div>
                 
-                <!-- model after clicking the two button -->
+                
                 <div class="modal-footer justify-content-center">
                 <a href="#" id="downloadReceiptBtn" class="btn btn-primary me-2" target="_blank">
                     <i class="fas fa-download me-1"></i> Download Receipt

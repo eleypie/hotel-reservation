@@ -10,16 +10,19 @@ class Payment extends Model
     use HasFactory;
 
     protected $fillable = [
+        'booking_id',
         'payment_id',
         'booking_id',
         'payment_method',
         'gcash_phone',
-        'transaction_number'
+        'gcash_reference',
     ];
 
-    public function payment() {
-        $this->belongsTo(Booking::class, 'booking_id', 'booking_id');
+    public function booking()
+    {
+        return $this->belongsTo(Booking::class, 'booking_id', 'booking_id');
     }
+
 
     const UPDATED_AT = null;
 }

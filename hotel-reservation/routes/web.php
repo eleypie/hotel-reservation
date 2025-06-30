@@ -225,6 +225,10 @@ Route::delete('/admin/users/{user_id}', [EmployeeController::class, 'destroy'])
     ->middleware(['auth', 'role:Super Admin'])
     ->name('employee-delete');
 
-Route::get('/room-availability', [BookingController::class, 'roomAvailability']);
+Route::get('/room-availability', [BookingController::class, 'roomAvailability']); 
+
+Route::get('/booking-history', [App\Http\Controllers\BookingController::class, 'history'])
+    ->name('booking.history')
+    ->middleware('auth');
 
 

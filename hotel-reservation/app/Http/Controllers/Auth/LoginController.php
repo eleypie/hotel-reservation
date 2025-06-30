@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Traits\HasRoles;
 
@@ -41,18 +42,11 @@ public function login(Request $request)
         $user = Auth::user();
 
         // Redirect based on role
-        if ($user->hasRole('Super Admin')) {
-            return redirect()->route('superadmin-dashboard');
-        } elseif ($user->hasRole('Admin')) {
-            return redirect()->route('admin-dashboard');
-        } elseif ($user->hasRole('Receptionist')) {
-            return redirect()->route('receptionist-dashboard');
-        } elseif ($user->hasRole('User')) {
-            return redirect()->route('user-dashboard'); // or $this->redirectTo
-        } else {
-            Auth::logout();
-            return redirect('/login')->withErrors(['email' => 'Unauthorized role.']);
-        }
+        if($user->hasPermissionTo('view-admin-site')) {
+                return redirect()->route('admin-dashboard');
+            } else {
+                return redirect()->intended($this->redirectTo);
+            }
     }
 
     return back()->withErrors([

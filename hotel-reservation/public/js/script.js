@@ -112,8 +112,8 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('modal-transaction-id').textContent = data.gcash_ref || 'N/A';
         document.getElementById('modal-date-time').textContent = new Date().toLocaleString();
         document.querySelector('.booking-details .fw-bold').textContent = data.booking_id;
-        document.querySelector('.booking-details div:nth-child(2) + div span:nth-child(2)').textContent = data.room_type;
-        document.getElementById('total_price').textContent = `₱${parseFloat(data.price).toLocaleString(undefined, { minimumFractionDigits: 2 })}`;
+        document.querySelector('.booking-details div:nth-child(2) + div span:nth-child(2)').textContent = data.room_id;
+        document.getElementById('total_price').textContent = `₱${parseFloat(data.total_price).toLocaleString(undefined, { minimumFractionDigits: 2 })}`;
 
         // Check-in/out
         document.querySelectorAll('.booking-details .d-flex span').forEach(span => {
@@ -200,3 +200,5 @@ document.addEventListener("DOMContentLoaded", function () {
         if (nights > 0) updatePriceSummary(nights);
     }
 });
+
+
