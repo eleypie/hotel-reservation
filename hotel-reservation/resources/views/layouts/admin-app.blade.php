@@ -80,8 +80,19 @@ admin-app.blade.php
             </div>
             <div class="header-right">
                 <div class="user-info">
-                    <div class="user-avatar">SA</div>
-                    <span>Super Admin</span>
+                    <div class="user-avatar">
+                        @php
+                            $role = auth()->user()->getRoleNames()->first();
+                        @endphp
+                        @if ($role === 'Admin')
+                            AD
+                        @elseif ($role === 'Receptionist')
+                            RC
+                        @elseif ($role === 'Super Admin')
+                            SA
+                        @endif
+                    </div>
+                    <span>{{ $role }}</span>
                 </div>
                 <a href={{ route('logout') }} style="text-decoration: none">
                     <button class="logout-btn">

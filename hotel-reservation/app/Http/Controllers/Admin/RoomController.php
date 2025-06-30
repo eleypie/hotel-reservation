@@ -69,4 +69,53 @@ class RoomController extends Controller
 
         return redirect()->route('admin-rooms')->with('success', 'Room type deleted successfully.');
     }
+
+
+    public function createRoom()
+    {
+        $roomTypes = RoomType::all();
+        return view('admin.rooms.createRoom', compact('roomTypes'));
+    }
+
+    public function storeRoom(Request $request)
+    {
+        $request->validate([
+            'room_type' => 'required|exists:room_types,room_type',
+            'room_id' => 'required|unique:rooms,room_id'
+        ]);
+
+        Room::create([
+            'room_type' => $request->room_type,
+            'room_id' => $request->room_id,
+        ]);
+
+        return redirect()->route('admin-rooms')->with('success', 'Room created.');
+    }
+
+    public function editRoom($id)
+    {
+        $roomTypes = RoomType::all();
+        $room = Room::findOrFail($id);
+        return view('admin.rooms.editRoom', compact('room', 'roomTypes'));
+    }
+
+    public function updateRoom(Request $request, Room $room)
+    {
+        $request->validate([
+            'room_type' => 'required|exists:room_types,room_type',
+            'room_id' => 'required|unique:rooms,room_id'
+        ]);
+
+        $room->room_type = $request->room_type;
+        $room->id = $request->id;
+        $room->save();
+
+        return redirect()->route('admin-rooms')->with('success', 'Room updated.');
+    }
+
+    public function destroyRoom(Room $room)
+    {
+        $room->delete();
+        return redirect()->route('admin-rooms')->with('success', 'Room deleted.');
+    }
 }

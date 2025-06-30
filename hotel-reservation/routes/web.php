@@ -175,7 +175,30 @@ Route::get('/admin', [EmployeeController::class, 'index'])
     ->middleware(['auth', 'role:Admin|Super Admin|Receptionist'])
     ->name('admin-dashboard');
 
+
 // Rooms CRUD
+Route::get('/admin/rooms/create', [RoomController::class, 'createRoom'])
+    ->middleware('permission:add-room')
+    ->name('admin-room-create');
+
+Route::post('/admin/rooms/create/', [RoomController::class, 'storeRoom'])
+    ->middleware('permission:add-room')
+    ->name('admin-room-store');
+
+Route::get('/admin/rooms/edit/{id}', [RoomController::class, 'editRoom'])
+        ->middleware('permission:edit-room')
+        ->name('admin-room-edit');
+
+Route::put('/admin/rooms/update/{id}', [RoomController::class, 'updateRoom'])
+    ->middleware('permission:edit-room')
+    ->name('room-update');
+
+Route::delete('/admin/rooms/delete/{room}', [RoomController::class, 'destroyRoom'])
+    ->middleware('permission:edit-room')
+    ->name('room-delete');
+
+
+// Rooms Types CRUD
 Route::get('/admin/rooms', [RoomController::class, 'index'])
     ->middleware('permission:view-room')
     ->name('admin-rooms');
@@ -192,7 +215,7 @@ Route::get('/admin/rooms/type/edit/{id}', [RoomController::class, 'edit'])
         ->middleware('permission:edit-room')
         ->name('admin-room-type-edit');
 
-Route::put('/admin/rooms/update/{id}', [RoomController::class, 'update'])
+Route::put('/admin/rooms/type/update/{id}', [RoomController::class, 'update'])
     ->middleware('permission:edit-room')
     ->name('room-type-update');
 

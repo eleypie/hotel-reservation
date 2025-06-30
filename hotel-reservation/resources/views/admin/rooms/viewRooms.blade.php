@@ -62,9 +62,9 @@
         <div class="section-header">
             <h2 class="section-title">Rooms</h2>
             @can('add-room')
-                <a href="{{ route('admin-room-type-create') }}"> 
+                <a href="{{ route('admin-room-create') }}"> 
                     <button class="btn btn-primary">
-                        Add Room Type
+                        Add Room
                     </button>
                 </a>
             @endcan
@@ -87,10 +87,13 @@
                         <td>{{ $room->roomType->room_name }}</td>
                         <td>
                             @can('edit-room')
-                                <a href="{{ route('admin-room-type-edit', $roomType->room_type) }}" style="text-decoration: none">
+                                <a href="{{ route('admin-room-edit', $room->room_id) }}" style="text-decoration: none">
                                     <button class="btn btn-warning">Edit</button>
                                 </a>
-                                <button class="btn btn-danger" onclick="deleteRoom(this)">Delete</button>
+                                <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                                        data-bs-target="#delete-confirm-room" data-id="{{ $room->room_id }}">
+                                        Delete
+                                </button>
                             @endcan
                         </td>
                     </tr>
@@ -159,14 +162,36 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="modalLabel">Delete Role</h1>
+                <h1 class="modal-title fs-5" id="modalLabel">Delete Room Type</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <p id="modalBody">Are you sure you want to delete this role?</p>
+                <p id="modalBody">Are you sure you want to delete this room type?</p>
             </div>
             <div class="modal-footer">
                 <form id="deleteForm" method="POST" action={{ route('role-delete', $roomType->room_type)}}>
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="delete-confirm-room" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="modalLabel">Delete Room</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p id="modalBody">Are you sure you want to delete this room?</p>
+            </div>
+            <div class="modal-footer">
+                <form id="deleteRoomForm" method="POST" action="">
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="btn btn-danger">Delete</button>
@@ -201,6 +226,19 @@
         const form = deleteModal.querySelector('#deleteForm');
 
         const action = "{{ route('room-type-delete', ':id') }}".replace(':id', roleId);
+        form.action = action;
+    });
+</script>
+
+<script>
+    const deleteRoomModal = document.getElementById('delete-confirm-room');
+
+    deleteRoomModal.addEventListener('show.bs.modal', function (event) {
+        const button = event.relatedTarget;
+        const roomId = button.getAttribute('data-id');
+        const form = deleteRoomModal.querySelector('#deleteRoomForm');
+
+        const action = "{{ route('room-delete', ':id') }}".replace(':id', roomId);
         form.action = action;
     });
 </script>
