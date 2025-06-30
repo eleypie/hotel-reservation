@@ -1,12 +1,17 @@
-@extends('layouts.app')
+@extends('layouts.app') 
+
+@section('title', 'History')
+
+@include('nav')
+
 
 @section('content')
-<div class="container">
+<div class="container history-container" >
     <h2 class="mb-4">My Booking History</h2>
 
     <!-- Filter Form -->
-    <form method="GET" action="{{ route('booking.history') }}" class="row g-3 mb-4">
-        <div class="col-md-3">
+    <form method="GET" action="{{ route('booking.history') }}" class="row g-3 mb-4 booking-filter-form">
+        <div class="col-md-3 ">
             <label for="start_date" class="form-label">Start Date</label>
             <input type="date" id="start_date" name="start_date" class="form-control"
                    value="{{ request('start_date') }}">
@@ -38,7 +43,7 @@
 
     <!-- Booking History Table -->
     @if ($bookings->count())
-        <div class="table-responsive">
+        <div class="table-responsive history-table">
             <table class="table table-bordered align-middle">
                 <thead class="table-light">
                     <tr>

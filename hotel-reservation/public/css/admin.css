@@ -731,6 +731,61 @@
     background-color: #e0a800;
 }
 
+.permissions-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    
+}
+
+.permission-item {
+    margin-left: -2.5rem;
+    margin-right: 3rem;
+    font-size: 0.7rem;
+    list-style: none;
+    background-color: #e0f0ff; 
+    color: #004080; 
+    padding: 4px 12px;
+    border-radius: 999px; 
+    white-space: nowrap;
+    border: 1px solid #b0d4f1;
+}
+
+.modal-dialog {
+    padding-top: 10rem
+}
+
+.statusMessage, .inputError {
+    margin-top: 4rem;
+}
+
+#rename, #deleteP {
+    height: 2.75rem; 
+    margin-top:1rem;
+}
+
+#deleteP {
+    height: 2.75rem;
+}
+
+.custom-radio-card {
+        border: 1px solid #dee2e6;
+        border-radius: 0.5rem;
+        padding: 1rem;
+        transition: border-color 0.3s, box-shadow 0.3s;
+        cursor: pointer;
+    }
+
+.custom-radio-card:hover {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 0.1rem rgba(13, 110, 253, 0.25);
+}
+
+.form-check-input:checked + .custom-radio-card {
+    border-color: #0d6efd;
+    background-color: #e9f3ff;
+}
+
 /* Animation */
 @keyframes fadeIn {
     from {

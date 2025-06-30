@@ -40,7 +40,7 @@
                         @endcan
                         @can('delete-user')
                             <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete-confirm" 
-                                    data-title="Delete Employee" data-body="Are you sure you want to delete this employee?">
+                                    data-role-id="{{ $user->user_id }}">
                                     Delete
                             </button>
                         @endcan
@@ -49,18 +49,16 @@
                 @endforeach
         </table>
 
-        {{-- move to upper right --}}
-        @if (session('success'))
-            <div class="alert alert-success alert-dismissible fade show mt-3" role="alert" style="z-index: 100">
-                {{ session('success') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            </div>
-        @endif
-
-        @if (session('error'))
-            <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert" style="z-index: 100">
-                {{ session('error') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        @if (session('success') || session('error'))
+            <div class="position-fixed top-0 end-0 p-3 statusMessage" style="z-index: 1100;">
+                <div id="toastMessage" class="toast align-items-center text-white {{ session('success') ? 'bg-success' : 'bg-danger' }} border-0 show" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="d-flex">
+                        <div class="toast-body">
+                            {{ session('success') ?? session('error') }}
+                        </div>
+                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                </div>
             </div>
         @endif
     </div>
@@ -103,46 +101,9 @@
     </div>
 </div>
 
-{{-- <div id="editEmployeeModal" class="modal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h2>Edit Employee</h2>
-            <button class="close-btn" onclick="closeModal('addEmployeeModal')">&times;</button>
-        </div>
-        <form method="POST" action="{{ route('employees-update') }}">
-            @csrf
-            <div class="form-grid">
-                <div class="form-group">
-                    <label for="first-name">First Name</label>
-                    <input type="text" name="first_name" required>
-                    <label for="last-name">Last Name</label>
-                    <input type="text" name="last_name" required>
-                </div>
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" name="email"  required>
-                </div>
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" name="password"  required>
-                </div>
-                <div class="form-group">
-                    <label>Role</label>
-                    <select name="role" required>
-                        @foreach ($roles as $role)
-                            <option value="{{ $role->name }}">{{ ucfirst($role->name) }}</option>
-                        @endforeach
-                    </select>
-                </div>
-            </div>
-            <button type="submit" class="btn btn-primary">Add Employee</button>
-        </form>
-    </div>
-</div> --}}
-
 <div class="modal fade" id="delete-confirm" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">
-        <div class="modal-content">
+        <div class="modal-content" >
             <div class="modal-header">
                 <h1 class="modal-title fs-5" id="modalLabel">Delete Employee</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -151,7 +112,7 @@
                 <p id="modalBody">Are you sure you want to delete this employee?</p>
             </div>
             <div class="modal-footer">
-                <form method="POST" action={{ route('employee-delete', $user->user_id)}}>
+                <form id="deleteForm" method="POST" action={{ route('employee-delete', $user->user_id)}}>
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="btn btn-danger">Delete</button>
@@ -161,4 +122,31 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('scripts')
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const toastEl = document.querySelector('.toast');
+        if (toastEl) {
+            const bsToast = bootstrap.Toast.getOrCreateInstance(toastEl);
+            setTimeout(() => {
+                bsToast.hide(); // hides the toast after 3 seconds
+            }, 3000);
+        }
+    });
+</script>
+
+<script>
+    const deleteModal = document.getElementById('delete-confirm');
+
+    deleteModal.addEventListener('show.bs.modal', function (event) {
+        const button = event.relatedTarget;
+        const empId = button.getAttribute('data-role-id');
+        const form = deleteModal.querySelector('#deleteForm');
+
+        const action = "{{ route('employee-delete', ':id') }}".replace(':id', empId);
+        form.action = action;
+    });
+</script>
 @endsection

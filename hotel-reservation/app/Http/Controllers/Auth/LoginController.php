@@ -10,7 +10,6 @@ use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Traits\HasRoles;
 
-
 class LoginController extends Controller
 {
     use HasRoles;
@@ -29,17 +28,18 @@ class LoginController extends Controller
     }
 
     // Handle login POST
-public function login(Request $request)
-{
-    $request->validate([
-        'email'    => 'required|email',
-        'password' => 'required',
-    ]);
+    public function login(Request $request)
+    {
+        $request->validate([
+            'email'    => 'required|email',
+            'password' => 'required',
+        ]);
 
-    $credentials = $request->only('email', 'password');
+        $credentials = $request->only('email', 'password');
 
-    if (Auth::attempt($credentials, $request->filled('remember'))) {
-        $user = Auth::user();
+        if (Auth::attempt($credentials, $request->filled('remember'))) {
+            // Login successful
+            $user = Auth::user();
 
         // Redirect based on role
         if($user->hasPermissionTo('view-admin-site')) {
@@ -47,12 +47,14 @@ public function login(Request $request)
             } else {
                 return redirect()->intended($this->redirectTo);
             }
-    }
 
-    return back()->withErrors([
-        'email' => 'Invalid credentials.',
-    ])->withInput($request->only('email', 'remember'));
-}
+        }
+
+        // Login failed
+        return back()->withErrors([
+            'email' => 'Invalid credentials.',
+        ])->withInput($request->only('email', 'remember'));
+    }
 
     // Handle logout
     public function logout(Request $request)

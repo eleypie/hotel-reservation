@@ -29,16 +29,18 @@ class RoleSeeder extends Seeder
             'delete-user',
             'create-booking',
             'delete-booking',
+            'edit-booking',
             'view-room',
             'add-room',
             'edit-room',
-            'view-admin-site'
+            'view-admin-site',
+            'manage-permissions'
         ]);
 
         $admin->givePermissionTo([
-            'view-user',
             'create-booking',
             'delete-booking',
+            'edit-booking',
             'view-room',
             'add-room',
             'edit-room',
@@ -48,9 +50,8 @@ class RoleSeeder extends Seeder
         $receptionist->givePermissionTo([
             'create-booking',
             'delete-booking',
+            'edit-booking',
             'view-room',
-            'add-room',
-            'edit-room',
             'view-admin-site'
         ]);
 

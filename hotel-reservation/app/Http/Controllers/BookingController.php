@@ -23,7 +23,7 @@ class BookingController extends Controller
     public function index() {
         $roomTypes = RoomType::all();
         $bookings = Booking::all();
-        return view('admin.bookings', compact('bookings', 'roomTypes'));
+        return view('admin.bookings.viewBooking', compact('bookings', 'roomTypes'));
     }
 
     public function downloadReceipt($bookingId)
@@ -94,7 +94,7 @@ class BookingController extends Controller
             'guest_count'       => $request->guest_count,
             'note'              => $request->note,
             'total_price'       => $total,
-            'status'           => 'pending' 
+            'status'           => 'Confirmed' 
         ]);
 
         Mail::to($request->email_confirmation)->send(new BookingReceiptMail($booking));
@@ -125,9 +125,14 @@ class BookingController extends Controller
     }
 
 
+    public function manualCreate() 
+    {
+        $roomTypes = RoomType::all();
+        return view('admin.bookings.createBooking', compact('roomTypes'));
+    }
+
     public function receptionBookingStore(Request $request) {
         //$roomType = Room::where('room_type', $request->room_type)->pluck('room_type');
-        dd(Auth::check(), Auth::id(), Auth::user());
         $checkIn = Carbon::parse($request->check_in_date);
         $checkOut = Carbon::parse($request->check_out_date);
 
@@ -144,7 +149,17 @@ class BookingController extends Controller
             'check_in_date'      => 'required|date',
             'check_out_date'     => 'required|date|after:check_in_date',
             'guest_count'        => 'required|integer|min:1',
+            'total_price'             => 'required',
+            'payment_method'     => 'required'
         ]);
+
+        if (trim(strtolower($request->payment_method)) === 'cash') {
+            $latestPayment = Payment::orderBy('payment_id', 'desc')->first();
+            $nextPaymentId = $latestPayment ? $latestPayment->id + 1 : 1;
+            $transactionNumber = 'TN-' . str_pad($nextPaymentId, 6, '0', STR_PAD_LEFT);
+        } else {
+            $transactionNumber = $request->transaction_number;
+        }
 
         $latest = Booking::orderBy('id', 'desc')->first();
         $nextId = $latest ? $latest->id + 1 : 1;
@@ -169,18 +184,16 @@ class BookingController extends Controller
             'check_out_date'  => $checkOut,
             'guest_count'     => $request->guest_count,
             'total_price'     => $request->total_price,
-            'status'          => 'NOT CHECKED-IN'
+            'status'          => 'Confirmed',
+            'note'           => $request->note
         ]);
 
-        $latestPayment = Payment::orderBy('payment_id', 'desc')->first();
-        $nextPaymentId = $latestPayment ? $latestPayment->id + 1 : 1;
-        $transactionNumber = 'TN-' . str_pad($nextPaymentId, 6, '0', STR_PAD_LEFT);
 
         Payment::create([
             'booking_id'       => $booking->booking_id,
-            'payment_method'   => 'cash',    //change to $request->payment_method later if booking form has it
-            'gcash-phone'      => null,
-            'transaction_number' => $transactionNumber,
+            'payment_method'   => $request->payment_method,
+            'gcash_phone'      => $request->gcash_phone ?: null,
+            'transaction_number' => $transactionNumber
         ]);
 
         //return redirect()->route('admin-bookings')->with('error', 'Booking creation failed!');
@@ -189,6 +202,7 @@ class BookingController extends Controller
 
     public function roomAvailability(Request $request) {
         $roomTypeId = $request->query('room_type');
+        $totalRooms = Room::where('room_type', $roomTypeId)->count();
 
         $bookings = Booking::whereHas('room', function ($query) use ($roomTypeId) {
         $query->where('room_type', $roomTypeId);
@@ -196,27 +210,38 @@ class BookingController extends Controller
         ->with('room')
         ->get(['check_in_date', 'check_out_date']);
 
-        $unavailableDates = [];
+        $dateCounts = [];
 
         foreach ($bookings as $booking) {
             $current = strtotime($booking->check_in_date);
             $end = strtotime($booking->check_out_date);
 
             while ($current <= $end) {
-                $unavailableDates[] = date('Y-m-d', $current);
+                $date = date('Y-m-d', $current);
+                if (!isset($dateCounts[$date])) {
+                    $dateCounts[$date] = 0;
+                }
+                $dateCounts[$date]++;
                 $current = strtotime('+1 day', $current);
             }
         }
 
-    return response()->json([
-        'unavailable_dates' => $unavailableDates
-    ]);
+        $unavailableDates = [];
+        foreach ($dateCounts as $date => $count) {
+            if ($count >= $totalRooms) {
+                $unavailableDates[] = $date;
+            }
+        }
+
+        return response()->json([
+            'unavailable_dates' => $unavailableDates
+        ]);
     } 
 
     public function showDeluxeForm()
-{
-    return view('booking-form.book-deluxe');
-}
+    {
+        return view('booking-form.book-deluxe');
+    }
 
     public function history(Request $request)
     {
@@ -275,5 +300,67 @@ class BookingController extends Controller
         return view('user.booking-history', compact('bookings', 'roomTypes'));
     }
 
+
+    public function edit($id)
+    {
+        $booking = Booking::findorFail($id);
+
+        return view('admin.bookings.editBooking', compact('booking'));
+    }
+
+    public function update(Request $request, Booking $booking, )
+    {
+        $request->validate([
+            'status' => 'required',
+            'email_confirmation' => 'required',
+            'guest_count' => 'required'
+        ]);
+
+        try {
+            $booking->update([
+                'status' => $request->status,
+                'email_confirmation' => $request->email_confirmation,
+                'guest_count' => $request->guest_count
+            ]);
+
+
+            return redirect()->route('admin-bookings')->with('success', 'Booking updated.');
+        } catch (\Exception $e) {
+            return redirect()->route('admin-bookings')->with('error', 'Failed to update booking.');
+        }
+
+        // $booking->update([
+        //     'user_id' => $request->user_id,
+        //     'room_id' => $request->room_id,
+        //     'payment_id' => $request->payment_id,
+        // ]);
+
+        // return redirect()->route('admin-bookings')->with('success', 'Booking updated.');
+    }
+
+    public function updateStatus(Request $request, Booking $booking)
+    {
+        $request->validate([
+            'status' => 'required|in:Confirmed,Checked In,Checked Out',
+        ]);
+
+        $booking->update([
+            'status' => $request->status,
+        ]);
+
+        return redirect()->back()->with('success', 'Booking status updated.');
+    }
+
+    public function destroy($id)
+    {
+        $booking = Booking::findOrFail($id);
+
+        try {
+            $booking->delete();
+            return redirect()->route('admin-bookings')->with('success', 'Booking deleted successfully.');
+        } catch (\Exception $e) {
+            return redirect()->route('admin-bookings')->with('error', 'Failed to delete booking.');
+        }
+    }
 
 }
