@@ -23,18 +23,16 @@
                    value="{{ request('end_date') }}">
         </div>
 
-        {{-- <div class="col-md-3">
+         <div class="col-md-3">
             <label for="room_type" class="form-label">Room Type</label>
             <select name="room_type" id="room_type" class="form-select">
                 <option value="">All</option>
-                @foreach ($roomTypes as $roomType)
-                    <option value="{{ $roomType->room_type }}"
-                        {{ request('room_type') == $roomType->room_type ? 'selected' : '' }}>
-                        {{ $roomType->room_name }}
-                    </option>
-                @endforeach
+                @foreach ($bookings as $booking)
+                <td>{{ $booking->room_id }}</td>
+                <td>{{ optional($booking->room)->room_type }}</td>
+            @endforeach
             </select>
-        </div> --}}
+        </div> 
 
         <div class="col-md-3 d-flex align-items-end">
             <button type="submit" class="btn btn-primary w-100">Filter</button>

@@ -54,7 +54,7 @@
             </div>
             
             <!-- Booking Form -->
-            @include('components.booking-form', ['roomType' => 'Superior', 'ratePerNight' => 3800])
+            @include('components.booking-form', ['roomTypeId' => 2, 'ratePerNight' => 3800])
         </div>
     </div>
 

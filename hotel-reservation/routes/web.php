@@ -166,8 +166,6 @@ Route::get('/booking/{booking}/receipt', [BookingController::class, 'downloadRec
     ->name('booking.receipt.download')
     ->middleware('auth'); // optional if only logged-in users can download
 
-
-
 // admin page routes
 // return views
 Route::get('/admin', [EmployeeController::class, 'index'])
@@ -293,9 +291,7 @@ Route::delete('/admin/permissions/{permission}', [PermissionController::class, '
 // delete record
 
 Route::get('/room-availability', [BookingController::class, 'roomAvailability']); 
-
-Route::get('/booking-history', [App\Http\Controllers\BookingController::class, 'history'])
-    ->name('booking.history')
-    ->middleware('auth');
+Route::get('/booking-history', [BookingController::class, 'userHistory'])->name('booking.history')->middleware('auth');
+Route::get('/history', [BookingController::class, 'userHistory'])->name('history')->middleware('auth');
 
 

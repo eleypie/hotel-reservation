@@ -67,14 +67,14 @@
 
         <div class="details highlight">
             <p><strong>Booking ID:</strong> {{ $booking->booking_id }}</p>
-            <p><strong>Room Type:</strong> {{ $booking->room_type }}</p>
+            <p><strong>Room ID:</strong> {{ $booking->room_id }}</p>
             <p><strong>Check-in:</strong> {{ \Carbon\Carbon::parse($booking->check_in_date)->format('F j, Y') }}</p>
             <p><strong>Check-out:</strong> {{ \Carbon\Carbon::parse($booking->check_out_date)->format('F j, Y') }}</p>
             <p><strong>Guest Count:</strong> {{ $booking->guest_count }}</p>
         </div>
 
         <div class="details">
-            <p class="total"><strong>Total Amount:</strong> ₱{{ number_format($booking->price, 2) }}</p>
+            <p class="total"><strong>Total Amount:</strong> ₱{{ number_format($booking->total_price, 2) }}</p>
         </div>
 
         <div class="footer">
