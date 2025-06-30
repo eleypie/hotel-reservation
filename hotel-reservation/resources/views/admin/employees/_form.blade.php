@@ -4,6 +4,19 @@
     $user = $user ?? null;
 @endphp
 
+@if ($errors->any())
+    <div class="position-absolute top-0 end-0 p-3 inputError" style="z-index: 1050;">
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>Input Error!</strong>
+            <ul class="mb-0">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    </div>
+@endif
 
 <div class="form-grid">
     <div class="form-group">

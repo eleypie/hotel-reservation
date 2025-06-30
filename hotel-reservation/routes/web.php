@@ -11,8 +11,7 @@ use App\Http\Controllers\Admin\EmployeeController;
 use App\Http\Controllers\Admin\RoleController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Admin\PermissionController;
-
-
+use App\Models\Booking;
 
 /*
 |--------------------------------------------------------------------------
@@ -181,9 +180,33 @@ Route::get('/admin/rooms', function() {
 ->middleware('permission:view-room')
 ->name('admin-rooms');
 
+
+// Bookings CRUD
 Route::get('/admin/bookings', [BookingController::class, 'index']) 
     ->middleware('permission:create-booking')
     ->name('admin-bookings');
+
+Route::get('/admin/bookings/create', [BookingController::class, 'manualCreate'])
+    ->middleware('permission:create-booking')
+    ->name('admin-booking-create');
+
+Route::post('/admin/bookings/create', [BookingController::class, 'receptionBookingStore'])
+    ->middleware('permission:create-booking')
+    ->name('manual-store');
+
+Route::get('/admin/boookings/edit/{id}', [BookingController::class, 'edit'])
+        ->middleware('permission:edit-booking')
+        ->name('admin-booking-edit');
+
+Route::put('/admin/bookings/update/{id}', [BookingController::class, 'update'])
+    ->middleware('permission:edit-booking')
+    ->name('booking-update');
+
+Route::delete('/admin/bookings/delete/{id}', [BookingController::class, 'destroy'])
+    ->middleware('permission:delete-booking')
+    ->name('booking-delete');
+
+
 
 Route::get('/admin/check-in', function() {
     return view('admin.check-in');
@@ -261,12 +284,6 @@ Route::delete('/admin/permissions/{permission}', [PermissionController::class, '
     ->middleware('permission:manage-permissions')
     ->name('permissions-delete');
 
-
-// store data
-
-Route::post('/admin/bookings/create', [BookingController::class, 'receptionBookingStore'])
-    ->middleware('permission:create-booking')
-    ->name('manual-booking');
 
 
 // delete record

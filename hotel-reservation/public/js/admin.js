@@ -1,19 +1,57 @@
 // Make sure DOM is loaded before adding event listeners
+const roomSelect = document.getElementById('bookingRoom');
+const totalAmountInput = document.getElementById('totalAmount');
+const checkInInput = document.getElementById('check_in_date');
+const checkOutInput = document.getElementById('check_out_date');
+
 document.addEventListener('DOMContentLoaded', function() {
-    // Set today's date as default for date inputs
-    // const today = new Date().toISOString().split('T')[0];
-    const checkInInput = document.getElementById('check_in_date');
-    const checkOutInput = document.getElementById('check_out_date');
-    
-    // if (checkInInput) checkInInput.value = today;
-    // if (checkOutInput) checkOutInput.value = today;
+    initializeBookingDateRangePicker();
+    // booking total computation
 
     
-    // booking total computation
-    const roomSelect = document.getElementById('bookingRoom');
-    const totalAmountInput = document.getElementById('totalAmount');
+    $('#bookingDates').on('apply.daterangepicker', function () {
+        calculateTotal();
+    });
     
-    function calculateTotal() {
+    // // format date for database
+    // const bookingDates = $('#bookingDates');
+    // const checkInField = $('#check_in_date');
+    // const checkOutField = $('#check_out_date');
+
+    // if (bookingDates.length) {
+    //     bookingDates.daterangepicker({
+    //         autoUpdateInput: false,
+    //         minDate: moment(), 
+    //         locale: {
+    //             cancelLabel: 'Clear',
+    //             format: 'YYYY-MM-DD'
+    //         }
+    //     });
+
+    //     bookingDates.on('apply.daterangepicker', function (ev, picker) {
+    //         $(this).val(picker.startDate.format('YYYY-MM-DD') + ' to ' + picker.endDate.format('YYYY-MM-DD'));
+    //         checkInField.val(picker.startDate.format('YYYY-MM-DD'));
+    //         checkOutField.val(picker.endDate.format('YYYY-MM-DD'));
+    //         console.log("date changed");
+    //     });
+
+    //     bookingDates.on('cancel.daterangepicker', function (ev, picker) {
+    //         $(this).val('');
+    //         checkInField.val('');
+    //         checkOutField.val('');
+    //     });
+    //     calculateTotal();
+    // }
+
+    // [checkInInput, checkOutInput].forEach(input => {
+    //     if (input) {
+    //         input.addEventListener('change', calculateTotal);
+    //         input.addEventListener('input', calculateTotal);
+    //     }
+    // });
+});
+
+function calculateTotal() {
         const roomOption = roomSelect.options[roomSelect.selectedIndex];
         const price = parseFloat(roomOption.getAttribute('data-price')) || 0;
         
@@ -34,21 +72,20 @@ document.addEventListener('DOMContentLoaded', function() {
             totalAmountInput.value = '';
         }
     }
-    
-    roomSelect.addEventListener('change', calculateTotal);
-    $('#bookingDates').on('apply.daterangepicker', function () {
-        calculateTotal();
-    });
-    
-    // format date for database
+
+function initializeBookingDateRangePicker() {
     const bookingDates = $('#bookingDates');
     const checkInField = $('#check_in_date');
     const checkOutField = $('#check_out_date');
+    const roomSelect = $('#bookingRoom');
 
     if (bookingDates.length) {
+        bookingDates.off('apply.daterangepicker');
+        bookingDates.off('cancel.daterangepicker');
+
         bookingDates.daterangepicker({
             autoUpdateInput: false,
-            minDate: moment(), 
+            minDate: moment(),
             locale: {
                 cancelLabel: 'Clear',
                 format: 'YYYY-MM-DD'
@@ -56,30 +93,30 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
         bookingDates.on('apply.daterangepicker', function (ev, picker) {
-            $(this).val(picker.startDate.format('YYYY-MM-DD') + ' to ' + picker.endDate.format('YYYY-MM-DD'));
+            const formatted = picker.startDate.format('YYYY-MM-DD') + ' to ' + picker.endDate.format('YYYY-MM-DD');
+            $(this).val(formatted);
             checkInField.val(picker.startDate.format('YYYY-MM-DD'));
             checkOutField.val(picker.endDate.format('YYYY-MM-DD'));
-            setTimeout(calculateTotal, 10);
+            console.log("Date changed");
+            calculateTotal();
         });
 
-        bookingDates.on('cancel.daterangepicker', function (ev, picker) {
+        bookingDates.on('cancel.daterangepicker', function () {
             $(this).val('');
             checkInField.val('');
             checkOutField.val('');
         });
-    }
 
-    // const modal = document.getElementById('delete-confirm');
-    // modal.addEventListener('show.bs.modal', function (event) {
-    //     const button = event.relatedTarget;
-    
-    //     const title = button.getAttribute('data-title');
-    //     const body = button.getAttribute('data-body');
-    
-    //     modal.querySelector('.modal-title').textContent = title;
-    //     modal.querySelector('#modalBody').textContent = body;
-    // });
-});
+        if (checkInField.val() && checkOutField.val()) {
+            calculateTotal();
+        }
+
+        if (roomSelect.length) {
+            roomSelect.on('change', calculateTotal);
+        }
+    }
+}
+
 
 // Navigation functionality
 function showSection(sectionName, clickedElement = null) {
@@ -273,9 +310,10 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
         bookingInput.on('apply.daterangepicker', function (ev, picker) {
-            $(this).val(picker.startDate.format('YYYY-MM-DD') + ' - ' + picker.endDate.format('YYYY-MM-DD'));
+            $(this).val(picker.startDate.format('YYYY-MM-DD') + ' to ' + picker.endDate.format('YYYY-MM-DD'));
             checkInInput.val(picker.startDate.format('YYYY-MM-DD'));
             checkOutInput.val(picker.endDate.format('YYYY-MM-DD'));
+            calculateTotal();
         });
 
         bookingInput.on('cancel.daterangepicker', function () {
@@ -332,50 +370,33 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 
-// function modalContent() {
-//     const deleteModal = document.getElementById('delete-confirm');
-//     deleteModal.addEventListener('show.bs.modal', function (event) {
-//         const button = event.relatedTarget;
-//         const title = button.getAttribute('data-title');
-//         const body = button.getAttribute('data-body');
-//         const modalTitle = deleteModal.querySelector('.modal-title');
-//         const modalBody = deleteModal.querySelector('#modalBody');
-
-//         if (title) modalTitle.textContent = title;
-//         if (body) modalBody.textContent = body;
-//     });
-// }
-
-// aad-booking.js
-// booking-form.js
-
-function calculateTotal() {
-    const roomTypeSelect = document.getElementById('roomType');
-    const checkInDate = document.getElementById('checkInDate');
-    const checkOutDate = document.getElementById('checkOutDate');
-    const nightsInput = document.getElementById('nights');
-    const totalAmountInput = document.getElementById('totalAmount');
+// function calculateTotal() {
+//     const roomTypeSelect = document.getElementById('bookingRoom');
+//     const checkInDate = document.getElementById('check_in_date');
+//     const checkOutDate = document.getElementById('check_out_date');
+//     const nightsInput = document.getElementById('nights');
+//     const totalAmountInput = document.getElementById('totalAmount');
     
-    if (roomTypeSelect.value && checkInDate.value && checkOutDate.value) {
-        const checkIn = new Date(checkInDate.value);
-        const checkOut = new Date(checkOutDate.value);
-        const timeDiff = checkOut.getTime() - checkIn.getTime();
-        const nights = Math.ceil(timeDiff / (1000 * 3600 * 24));
+//     if (roomTypeSelect.value && checkInDate.value && checkOutDate.value) {
+//         const checkIn = new Date(checkInDate.value);
+//         const checkOut = new Date(checkOutDate.value);
+//         const timeDiff = checkOut.getTime() - checkIn.getTime();
+//         const nights = Math.ceil(timeDiff / (1000 * 3600 * 24));
         
-        if (nights > 0) {
-            const selectedOption = roomTypeSelect.options[roomTypeSelect.selectedIndex];
-            const pricePerNight = parseFloat(selectedOption.getAttribute('data-price'));
-            const totalAmount = nights * pricePerNight;
+//         if (nights > 0) {
+//             const selectedOption = roomTypeSelect.options[roomTypeSelect.selectedIndex];
+//             const pricePerNight = parseFloat(selectedOption.getAttribute('data-price'));
+//             const totalAmount = nights * pricePerNight;
             
-            nightsInput.value = nights;
-            totalAmountInput.value = totalAmount.toFixed(2);
-        } else {
-            nightsInput.value = '';
-            totalAmountInput.value = '';
-            showError('checkOutError', 'Check-out date must be after check-in date');
-        }
-    }
-}
+//             nightsInput.value = nights;
+//             totalAmountInput.value = totalAmount.toFixed(2);
+//         } else {
+//             nightsInput.value = '';
+//             totalAmountInput.value = '';
+//             showError('checkOutError', 'Check-out date must be after check-in date');
+//         }
+//     }
+// }
 
 function showError(errorId, message) {
     const errorElement = document.getElementById(errorId);

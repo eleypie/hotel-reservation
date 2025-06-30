@@ -8,7 +8,7 @@
         <div class="section-header">
             <h2 class="section-title">Permissions Management</h2>
         </div>
-        <form method="POST" action="{{ route('role-update', $role) }}">
+        <form method="POST" action="">
             @method('PUT')
             @csrf
 
@@ -27,20 +27,32 @@
             @endif
 
             <div class=" container-fluid">
-                <div class="form-group">
-                    <label for="first-name">Role Name</label>
-                    <input type="text" name="name" value="{{ old('name', $role?->name) }}" required>
+                <div class="form-group" style="display:flex; flex-direction:row;">
+                    <a href="">
+                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createModal">
+                            Create Permission
+                        </button>
+                    </a>
+                    <a href="">
+                        <button class="btn btn-warning" id="rename">Rename Selected Permission</button>
+                    </a>
+                    <button type="button" id="deleteP" class="btn btn-danger" data-bs-toggle="modal"
+                            data-bs-target="#delete-confirm" data-role-id="">
+                            Delete Selected Permission
+                    </button>
                 </div><br>
                 <div class="form-group">
                     <label>List of Permissions</label>
+                    
+
+
                     <div class="row">
                         @foreach($permissions as $permission)
                             <div class="col-12 col-md-4">
                                 <div class="form-check d-flex align-items-center">
-                                    <input class="form-check-input" type="checkbox" name="permissions[]" 
-                                        value="{{ $permission->id }}" id="permission-{{ $permission->id }}"
-                                        {{ in_array($permission->id, $rolePermissions) ? 'checked' : '' }}>
-                                    <label class="form-check-label ms-2">
+                                    <label class="custom-radio-card ms-2">
+                                        <input class="form-radio" type="radio" name="id" 
+                                        value="{{ $permission->id }}">
                                         {{ $permission->name }}
                                     </label>
                                 </div>
@@ -49,12 +61,9 @@
                     </div>
                 </div>
             </div>
-            <button type="submit" class="btn btn-primary">
-                {{ isset($role) ? 'Update Role' : 'Add Role' }}
-            </button>
             <a href="{{ route('admin-roles') }}">
-                <button type="button" class="btn btn-secondary" style="margin-top: 1rem; height:2.7rem;">
-                    Cancel
+                <button type="button" class="btn btn-secondary" style="margin-top: 1rem; height:2.7rem; width:5rem">
+                    Back
                 </button>
             </a>
         </form>
