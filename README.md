@@ -67,12 +67,17 @@ php artisan migrate
 php artisan serve
 ```
 
+# 👩‍💼 Project Manager/ UI&UX Designer
+- Loriel Ann Coniconde
+  
 # 🎀 Frontend Developer 
 - Loriel Ann Coniconde
 - Anaise Nicole Narisma
+
+# ✒️ Technical Writer
 - Kristina Amor Marzan
   
-# 💻 Backend Developer
+# 💻 Backend Developer/ Database Administrator
 - Shen Jhoryl Porcalla
 - Roan Maye Dinglasan
 
